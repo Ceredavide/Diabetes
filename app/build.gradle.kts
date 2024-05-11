@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "ch.hslu.mobpro.diabetes"
-        minSdk = 24
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -38,7 +38,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
+        kotlinCompilerExtensionVersion = "1.5.2"
     }
 }
 

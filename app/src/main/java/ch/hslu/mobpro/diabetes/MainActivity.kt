@@ -10,28 +10,33 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
 import ch.hslu.mobpro.diabetes.ui.screens.WelcomeScreen
+import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var preferenceManager: PreferenceManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPref = this.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
-        val isFirstTime = sharedPref.getBoolean("isFirstTime", false)
+        preferenceManager = PreferenceManager(this)
 
         setContent {
-            if (isFirstTime) {
-                WelcomeScreen(onCompleted = {
-                    sharedPref.edit().putBoolean("isFirstTime", false).apply()
-                    setContent { App() }
-                })
-            } else {
-                App()
+            DiabeticsTheme {
+                if (preferenceManager.isFirstTime()) {
+                    WelcomeScreen(onCompleted = {
+                        preferenceManager.setFirstTime(false)
+                        setContent { App() }
+                    })
+                } else {
+                    App()
+                }
             }
         }
     }

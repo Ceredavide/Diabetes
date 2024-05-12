@@ -1,18 +1,26 @@
 package ch.hslu.mobpro.diabetes
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-private lateinit var binding: ActivityMainBinding
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var db: AppDatabase
+    private var productDao: ProductDAO? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +38,38 @@ private lateinit var binding: ActivityMainBinding
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val db = Room.databaseBuilder(
+
+        db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
             AppDatabase.NAME
         ).build()
 
+        productDao = db.productDao()
+
+        // Test code
+        lifecycleScope.launch {
+            try {
+                // Switch to the IO dispatcher for database operations
+                withContext(Dispatchers.IO) {
+                    insertSampleProduct()
+                    logAllProducts()
+                }
+            } catch (e: Exception) {
+                // Handle any exceptions that occur during database operation
+                Log.e("DatabaseError", "Error: ${e.message}")
+            }
+        }
+    }
+
+    private suspend fun insertSampleProduct() {
+        productDao?.insertProduct(Product(1, "Apple", 30))
+    }
+
+    private suspend fun logAllProducts() {
+        val products = productDao?.getAll()
+        products?.forEach { product ->
+            Log.d("MINE", product.name ?: "Unknown product")
+        }
     }
 }

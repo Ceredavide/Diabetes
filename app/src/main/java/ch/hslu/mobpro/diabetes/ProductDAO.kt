@@ -19,6 +19,9 @@ interface ProductDAO {
     @Query("SELECT * FROM product WHERE uid IN (:names)")
     fun loadAllByName(names: List<String>): List<Product>
 
+    @Query("SELECT * FROM product WHERE product_name = :name")
+    fun getProductByName(name: String): Product?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(vararg product: Product)
 

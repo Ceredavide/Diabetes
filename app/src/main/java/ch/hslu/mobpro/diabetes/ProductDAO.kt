@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import ch.hslu.mobpro.diabetes.Product
 
 @Dao
@@ -20,6 +21,9 @@ interface ProductDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(vararg product: Product)
+
+    @Update
+    fun updateProduct(vararg product: Product)
 
     @Delete
     fun deleteProduct(vararg product: Product)

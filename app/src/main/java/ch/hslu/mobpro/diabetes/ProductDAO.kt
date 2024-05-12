@@ -1,6 +1,9 @@
-package ch.hslu.mobpro.diabetes.ui
+package ch.hslu.mobpro.diabetes
 
 import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import ch.hslu.mobpro.diabetes.Product
 
@@ -14,4 +17,10 @@ interface ProductDAO {
 
     @Query("SELECT * FROM product WHERE uid IN (:names)")
     fun loadAllByName(names: List<String>): List<Product>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertProduct(vararg product: Product)
+
+    @Delete
+    fun deleteProduct(vararg product: Product)
 }

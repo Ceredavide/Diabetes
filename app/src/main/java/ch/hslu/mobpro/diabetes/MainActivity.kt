@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var db: AppDatabase
-    private var productDao: ProductDAO? = null
+    private lateinit var productDao: ProductDAO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,12 +63,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun insertSampleProduct() {
-        productDao?.insertProduct(Product(1, "Apple", 30))
+        productDao.insertProduct(Product(1, "Apple", 30))
     }
 
     private suspend fun logAllProducts() {
-        val products = productDao?.getAll()
-        products?.forEach { product ->
+        val products = productDao.getAll()
+        products.forEach { product ->
             Log.d("MINE", product.name ?: "Unknown product")
         }
     }

@@ -4,6 +4,8 @@ plugins {
 
     //RoomDB
     //id("com.google.devtools.ksp")
+    id("kotlin-android")
+    id("kotlin-kapt") // Add this line
 }
 
 android {
@@ -68,7 +70,8 @@ dependencies {
     //RoomDB
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    //annotationProcessor("androidx.room:room-compiler:$roomVersion")
     //ksp("androidx.room:room-compiler:$roomVersion")
 
     // Choose one of the following:

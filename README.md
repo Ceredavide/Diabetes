@@ -1,4 +1,4 @@
-# Mobile Programming Projekt - Technology Radar
+# Mobile Programming Projekt - Diabetes
 Davide Ceresa, Marc Federspiel
 
 # 1. Einführung und Ziele

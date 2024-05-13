@@ -41,6 +41,16 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        navView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navigation_enter_manual -> {
+                    // Navigate to the specific fragment
+                    navController.navigate(R.id.navigation_enter_manual)
+                    true
+                }
+                else -> false
+            }
+        }
 
         db = Room.databaseBuilder(
             applicationContext,

@@ -7,7 +7,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -18,8 +21,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
         Screen.Home,
-        Screen.Dashboard,
-        Screen.Notifications
+        Screen.Products,
+        Screen.Profile
     )
     BottomNavigation(
         backgroundColor = Color.White,
@@ -52,6 +55,6 @@ fun currentRoute(navController: NavHostController): String? {
 
 enum class Screen(val route: String, val icon: ImageVector, val title: String) {
     Home("home", Icons.Filled.Home, "Home"),
-    Dashboard("dashboard", Icons.Filled.Dashboard, "Dashboard"),
-    Notifications("notifications", Icons.Filled.Notifications, "Notifications")
+    Products("dashboard", Icons.Filled.Restaurant, "Products"),
+    Profile("notifications", Icons.Filled.Person, "Profile")
 }

@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         navView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_enter_manual -> {
-                    // Navigate to the specific fragment
                     navController.navigate(R.id.navigation_enter_manual)
                     true
                 }
@@ -63,23 +62,24 @@ class MainActivity : AppCompatActivity() {
         // Test code
         lifecycleScope.launch {
             try {
-                // Switch to the IO dispatcher for database operations
                 withContext(Dispatchers.IO) {
+
                     //insertSampleProduct()
                     logAllProducts()
                 }
             } catch (e: Exception) {
-                // Handle any exceptions that occur during database operation
                 Log.e("DatabaseError", "Error: ${e.message}")
             }
         }
     }
 
     private suspend fun insertSampleProduct() {
+
         productDao.insertProduct(Product(1, "Apple", 30))
     }
 
     private suspend fun logAllProducts() {
+
         val products = productDao.getAll()
         products.forEach { product ->
             Log.d("MINE", product.name ?: "Unknown product")

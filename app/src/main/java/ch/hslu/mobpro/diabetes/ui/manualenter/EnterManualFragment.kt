@@ -21,7 +21,7 @@ class EnterManualFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val enterManualViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+            ViewModelProvider(this).get(EnterManualViewModel::class.java)
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root

@@ -26,6 +26,6 @@
     <fragment
         android:id="@+id/navigation_enter_manual"
         android:name="ch.hslu.mobpro.diabetes.ui.manualenter.EnterManualFragment"
-        android:label="@string/title_notifications"
+        android:label="Enter Product Manually"
         tools:layout="@layout/fragment_enter_manual" />
 </navigation>

@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             try {
                 // Switch to the IO dispatcher for database operations
                 withContext(Dispatchers.IO) {
-                    insertSampleProduct()
+                    //insertSampleProduct()
                     logAllProducts()
                 }
             } catch (e: Exception) {

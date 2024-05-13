@@ -1,7 +1,6 @@
 package ch.hslu.mobpro.diabetes
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,7 +15,7 @@ import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
-import ch.hslu.mobpro.diabetes.ui.screens.WelcomeScreen
+import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,6 +30,7 @@ class MainActivity : ComponentActivity() {
             DiabeticsTheme {
                 if (preferenceManager.isFirstTime()) {
                     WelcomeScreen(onCompleted = {
+                        preferenceManager.setUserinfo(it)
                         preferenceManager.setFirstTime(false)
                         setContent { App() }
                     })

@@ -1,7 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import ch.hslu.mobpro.diabetes.ui.custom_components.AddButton
-import ch.hslu.mobpro.diabetes.ui.custom_components.FloatTextField
+import ch.hslu.mobpro.diabetes.ui.components.AddButton
+import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 
 @Composable
 fun EnterManualScreen() {

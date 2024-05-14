@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.custom_components
+package ch.hslu.mobpro.diabetes.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

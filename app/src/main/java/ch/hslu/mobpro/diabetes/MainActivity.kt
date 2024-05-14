@@ -15,6 +15,7 @@ import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
+import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
@@ -96,6 +97,7 @@ fun App() {
             composable("home") { HomeScreen() }
             composable("dashboard") { ProductsScreen() }
             composable("notifications") { ProfileScreen() }
+            composable("enter manually") { EnterManualScreen() }
         }
     }
 }

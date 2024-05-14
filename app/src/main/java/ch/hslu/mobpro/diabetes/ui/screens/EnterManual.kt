@@ -15,17 +15,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import ch.hslu.mobpro.diabetes.ui.components.AddButton
+import ch.hslu.mobpro.diabetes.MainActivity
+import ch.hslu.mobpro.diabetes.Product
+import ch.hslu.mobpro.diabetes.ui.components.RoundButton
 import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 
 @Composable
 fun EnterManualScreen() {
 
     var text by remember { mutableStateOf(TextFieldValue("")) }
-    var carbs by remember { mutableStateOf("0") }
+    var carbs by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -51,12 +52,39 @@ fun EnterManualScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        AddButton(
+        RoundButton(
             onClick = {
-                Log.d("Mine", "ADD")
-             }
-        ) {
-            Text(text = "+", color = Color.White) // Button content
-        }
+
+                    val productName = text.text
+                    val carbsFloat = carbs.toFloatOrNull()
+                    if (onAdd(productName, carbsFloat)) {
+
+                        text = TextFieldValue();
+                        carbs = ""
+                    }
+            },
+            text = "+"
+        ) {}
     }
+
+}
+fun onAdd(productName: String, carbs: Float?): Boolean {
+
+    if (validate(productName, carbs)) {
+
+        val product = Product(productName, carbs!!)
+        //MainActivity.productDao.insertProduct(product)
+        return true
+    }
+
+    return false
+}
+fun validate(productName: String, carbs: Float?): Boolean {
+
+    if (carbs == null || carbs == 0.0f) {
+
+        return false
+    }
+    
+    return productName.isNotEmpty()
 }

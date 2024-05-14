@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey;
 
 @Entity
 data class Product(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "product_name") val name: String?,
-    @ColumnInfo(name = "carbs") val carbs: Int?
-)
+    @ColumnInfo(name = "carbs") val carbs: Float?
+) {
+    constructor(name: String, carbs: Float) : this(0, name, carbs)
+}

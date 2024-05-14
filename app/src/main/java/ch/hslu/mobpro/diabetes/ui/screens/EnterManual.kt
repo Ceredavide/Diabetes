@@ -1,5 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,14 +16,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ch.hslu.mobpro.diabetes.ui.custom_components.AddButton
+import ch.hslu.mobpro.diabetes.ui.custom_components.FloatTextField
 
 @Composable
 fun EnterManualScreen() {
 
     var text by remember { mutableStateOf(TextFieldValue("")) }
+    var carbs by remember { mutableStateOf("0") }
 
     Column(
         modifier = Modifier
@@ -39,10 +44,20 @@ fun EnterManualScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Entered text: ${text.text}",
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
+        FloatTextField(
+            value = carbs,
+            onValueChange = { carbs = it },
+            label = "CARBOHYDRATES / 100G"
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        AddButton(
+            onClick = {
+                Log.d("Mine", "ADD")
+             }
+        ) {
+            Text(text = "+", color = Color.White) // Button content
+        }
     }
 }

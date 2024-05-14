@@ -17,8 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun AddButton(
+fun RoundButton(
     onClick: () -> Unit,
+    text: String,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
@@ -32,7 +33,7 @@ fun AddButton(
             onClick = onClick,
             content = {
                 Text(
-                    text = "+",
+                    text = text,
                     color = Color.White,
                     style = TextStyle(fontSize = 50.sp) // Adjust the font size here
                 )

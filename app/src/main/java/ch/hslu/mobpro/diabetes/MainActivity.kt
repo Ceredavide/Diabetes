@@ -28,9 +28,10 @@ import kotlinx.coroutines.withContext
 class MainActivity : ComponentActivity() {
 
     //private lateinit var binding: ActivityMainBinding
-    private lateinit var db: AppDatabase
-    private lateinit var productDao: ProductDAO
-
+    companion object {
+        lateinit var db: AppDatabase
+        lateinit var productDao: ProductDAO
+    }
     private lateinit var preferenceManager: PreferenceManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,19 +45,6 @@ class MainActivity : ComponentActivity() {
 
         productDao = db.productDao()
 
-        // Test code
-        lifecycleScope.launch {
-            try {
-                withContext(Dispatchers.IO) {
-
-                    //insertSampleProduct()
-                    logAllProducts()
-                }
-            } catch (e: Exception) {
-                Log.e("DatabaseError", "Error: ${e.message}")
-            }
-        }
-
         setContent {
             DiabeticsTheme {
                 if (preferenceManager.isFirstTime()) {
@@ -69,18 +57,6 @@ class MainActivity : ComponentActivity() {
                     App()
                 }
             }
-        }
-    }
-    private suspend fun insertSampleProduct() {
-
-        productDao.insertProduct(Product(1, "Apple", 30))
-    }
-
-    private suspend fun logAllProducts() {
-
-        val products = productDao.getAll()
-        products.forEach { product ->
-            Log.d("MINE", product.name ?: "Unknown product")
         }
     }
 }

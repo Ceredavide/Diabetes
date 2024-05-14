@@ -1,6 +1,11 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+
+    //RoomDB
+    //id("com.google.devtools.ksp")
+    id("kotlin-android")
+    id("kotlin-kapt") // Add this line
 }
 
 android {
@@ -44,6 +49,7 @@ android {
 
 dependencies {
 
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -54,6 +60,8 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.compose)
+    //implementation(libs.core.ktx)
+    //implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,6 +70,13 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
+
+    //RoomDB
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    //annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    //ksp("androidx.room:room-compiler:$roomVersion")
 
     // Choose one of the following:
     // Material Design 3

@@ -31,12 +31,21 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.database.Product
+import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ProductListItem(product: Product, editable: Boolean) {
+
 
     Row (
         modifier = Modifier
@@ -64,14 +73,16 @@ fun ProductListItem(product: Product, editable: Boolean) {
         )
         if (editable) {
             EditDeleteIcons(
-                modifier = Modifier.padding(8.dp) // Adjust padding as needed
+                product = product,
+                modifier = Modifier.padding(8.dp)
             )
         }
     }
 }
 
 @Composable
-private fun EditDeleteIcons(modifier: Modifier = Modifier) {
+private fun EditDeleteIcons(product: Product,  modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
     Row(modifier = modifier) {
         Icon(
             imageVector = Icons.Default.Edit,
@@ -80,7 +91,11 @@ private fun EditDeleteIcons(modifier: Modifier = Modifier) {
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.LightGray)
                 .padding(4.dp)
-                .clickable { }
+                .clickable {
+
+                    //val productJson = Gson().toJson(product)
+                    //navController.navigate("edit_product?productJson=$productJson")
+                }
         )
         Spacer(modifier = Modifier.padding(3.dp))
         Icon(
@@ -94,3 +109,4 @@ private fun EditDeleteIcons(modifier: Modifier = Modifier) {
         )
     }
 }
+

@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentRecomposeScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -15,6 +16,7 @@ import ch.hslu.mobpro.diabetes.database.AppDatabase
 import ch.hslu.mobpro.diabetes.database.ProductDAO
 
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
+import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
 import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
@@ -72,8 +74,9 @@ fun App() {
             composable("dashboard") { ProductsScreen() }
             composable("notifications") { ProfileScreen() }
             composable("enter manually") { EnterManualScreen() }
+            composable("edit_product") { EditProduct()}
         }
     }
 
-    //SearchLocalScreen()
+    SearchLocalScreen()
 }

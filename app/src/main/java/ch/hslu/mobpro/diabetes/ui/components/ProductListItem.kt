@@ -59,6 +59,9 @@ fun ProductListItem(product: Product, editable: Boolean) {
 
                 }
         )
+        Text(
+            text ="${product.carbs}/100g"
+        )
         if (editable) {
             EditDeleteIcons(
                 modifier = Modifier.padding(8.dp) // Adjust padding as needed
@@ -74,9 +77,9 @@ private fun EditDeleteIcons(modifier: Modifier = Modifier) {
             imageVector = Icons.Default.Edit,
             contentDescription = "Edit",
             modifier = Modifier
-                .fillMaxHeight()
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.LightGray)
+                .padding(4.dp)
                 .clickable { }
         )
         Spacer(modifier = Modifier.padding(3.dp))
@@ -86,8 +89,8 @@ private fun EditDeleteIcons(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.Red)
+                .padding(4.dp)
                 .clickable { }
-                .padding(start = 8.dp) // Adjust padding as needed
         )
     }
 }

@@ -21,6 +21,9 @@ import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.Product
 import ch.hslu.mobpro.diabetes.ui.components.RoundButton
 import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun EnterManualScreen() {
@@ -57,6 +60,7 @@ fun EnterManualScreen() {
 
                     val productName = text.text
                     val carbsFloat = carbs.toFloatOrNull()
+
                     if (onAdd(productName, carbsFloat)) {
 
                         text = TextFieldValue();
@@ -65,15 +69,38 @@ fun EnterManualScreen() {
             },
             text = "+"
         ) {}
-    }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // For easy way to delete all products for now
+        RoundButton(
+            onClick = {
+
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    val products = MainActivity.productDao.getAll()
+                    for (product in products) {
+                        Log.d("DELETE", "deleted ${product.name}")
+                        MainActivity.productDao.deleteProduct(product)
+                    }
+                }
+            },
+            text = "-"
+        ) {}
+    }
 }
+
 fun onAdd(productName: String, carbs: Float?): Boolean {
 
     if (validate(productName, carbs)) {
 
         val product = Product(productName, carbs!!)
-        //MainActivity.productDao.insertProduct(product)
+        CoroutineScope(Dispatchers.IO).launch {
+            val productDao = MainActivity.productDao
+
+            productDao.insertProduct(product)
+        }
+
         return true
     }
 

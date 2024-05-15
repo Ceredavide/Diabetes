@@ -50,7 +50,6 @@ fun SearchLocalScreen() {
             value = text,
             onValueChange = {
                 text = it
-                // Call the function to update the products list
                 onTextInputChange(it.text, productsState)
             },
             label = { Text("PRODUCT NAME") },
@@ -78,17 +77,18 @@ fun SearchLocalScreen() {
                 ) {
 
                     ProductListItem(product = productsState.value[index], editable = true)
-                    Spacer(modifier = Modifier.height(50.dp))
+                    Spacer(modifier = Modifier.height(60.dp))
                 }
             }
         }
     }
 }
 
-fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
+private fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
 
 
     CoroutineScope(Dispatchers.IO).launch {
+
         if (productName.isNotEmpty()) {
 
             val allProducts = MainActivity.productDao.findProductsFuzzy(productName)

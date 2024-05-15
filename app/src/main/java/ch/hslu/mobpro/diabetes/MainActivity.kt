@@ -19,6 +19,7 @@ import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
+import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
 
@@ -73,4 +74,6 @@ fun App() {
             composable("enter manually") { EnterManualScreen() }
         }
     }
+
+    //SearchLocalScreen()
 }

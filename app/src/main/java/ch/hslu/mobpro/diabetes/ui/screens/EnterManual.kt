@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.MainActivity
-import ch.hslu.mobpro.diabetes.Product
+import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.RoundButton
 import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 import kotlinx.coroutines.CoroutineScope

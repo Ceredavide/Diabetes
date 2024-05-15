@@ -21,6 +21,9 @@ interface ProductDAO {
     @Query("SELECT * FROM product WHERE product_name = :name")
     fun getProductByName(name: String): Product?
 
+    @Query("SELECT * FROM product WHERE product_name LIKE '%' || :productName || '%'")
+    fun findProductsFuzzy(productName: String): List<Product>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(vararg product: Product)
 

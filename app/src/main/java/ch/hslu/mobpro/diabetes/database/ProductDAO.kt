@@ -32,4 +32,7 @@ interface ProductDAO {
 
     @Delete
     fun deleteProduct(vararg product: Product)
+
+    @Query("DELETE FROM product WHERE product_name = :name")
+    fun deleteProductByName(name: String)
 }

@@ -3,4 +3,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="carbs_per_100g">CARBOHYDRATES/100G</string>
+    <string name="product_name">PRODUCT NAME</string>
 </resources>

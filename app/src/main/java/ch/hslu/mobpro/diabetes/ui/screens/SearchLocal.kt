@@ -23,10 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
+import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +55,7 @@ fun SearchLocalScreen(navController: NavController) {
                 text = it
                 onTextInputChange(it.text, productsState)
             },
-            label = { Text("PRODUCT NAME") },
+            label = { Text(stringResource(id = R.string.product_name)) },
             modifier = Modifier.fillMaxWidth()
         )
 

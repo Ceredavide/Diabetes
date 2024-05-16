@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.provider.Settings.Global.putString
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -56,7 +57,6 @@ import kotlinx.coroutines.withContext
 @Composable
 fun ProductListItem(navController: NavController, product: Product, editable: Boolean) {
 
-
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -89,6 +89,8 @@ fun ProductListItem(navController: NavController, product: Product, editable: Bo
 @Composable
 private fun EditDeleteIcons(navController: NavController, product: Product,  modifier: Modifier = Modifier) {
 
+    val context = LocalContext.current
+
     Row(modifier = modifier) {
         Icon(
             imageVector = Icons.Default.Edit,
@@ -99,7 +101,9 @@ private fun EditDeleteIcons(navController: NavController, product: Product,  mod
                 .padding(4.dp)
                 .clickable { navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}") }
         )
+
         Spacer(modifier = Modifier.padding(3.dp))
+
         Icon(
             imageVector = Icons.Default.Delete,
             contentDescription = "Delete",
@@ -107,7 +111,14 @@ private fun EditDeleteIcons(navController: NavController, product: Product,  mod
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.Red)
                 .padding(4.dp)
-                .clickable { }
+                .clickable {
+
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        MainActivity.productDao.deleteProductByName(product.name!!)
+                    }
+                    Toast.makeText(context, "DELETED PRODUCT ${product.name}", Toast.LENGTH_LONG).show()
+                }
         )
     }
 }

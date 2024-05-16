@@ -62,10 +62,8 @@ fun ProductListItem(navController: NavController, product: Product, editable: Bo
             .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
             .border(2.dp, MaterialTheme.colors.primary, RectangleShape)
-            .clickable {
-
-            }
-            .padding(1.dp),
+            .padding(1.dp)
+            .clickable { },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -76,9 +74,8 @@ fun ProductListItem(navController: NavController, product: Product, editable: Bo
                 .padding(10.dp)
                 .clickable { }
         )
-        Text(
-            text ="${product.carbs}/100g"
-        )
+        Text(text ="${product.carbs}/100g")
+
         if (editable) {
             EditDeleteIcons(
                 navController = navController,
@@ -112,8 +109,6 @@ private fun EditDeleteIcons(navController: NavController, product: Product,  mod
                 .padding(4.dp)
                 .clickable { }
         )
-
-
     }
 }
 

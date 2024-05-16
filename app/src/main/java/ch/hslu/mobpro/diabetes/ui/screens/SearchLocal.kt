@@ -45,7 +45,7 @@ fun SearchLocalScreen(navController: NavController) {
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Top
     ) {
-        var text by remember { mutableStateOf(TextFieldValue("B")) }
+        var text by remember { mutableStateOf(TextFieldValue("")) }
 
         TextField(
             value = text,

@@ -1,5 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,15 +21,13 @@ import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.database.Product
 
 @Composable
-fun EditProduct() {
+fun EditProduct(productName: String, productCarbs: Float) {
 
-    val navController = rememberNavController()
-    val productJson = navController.currentBackStackEntry?.arguments?.getString("productJson")
-    //val product = Gson().fromJson(productJson, Product::class.java)
-
+    Log.d("EDIT", productName);
 
     Column(
         modifier = Modifier
@@ -36,14 +35,12 @@ fun EditProduct() {
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Top
     ) {
-        //var text by remember { mutableStateOf(TextFieldValue(product.name!!)) }
 
-        Box(modifier = Modifier
-            .fillMaxWidth()
-        ) {
-            /*Text(text = product.name!!)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "${product.carbs}/100g")
-        */}
-    } 
+
+        Text(text = productName)
+        Spacer(modifier = Modifier.height(15.dp))
+        Text(text = "${productCarbs}/100g")
+
+
+    }
 }

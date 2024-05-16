@@ -71,6 +71,8 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+    val nav_version = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
     //RoomDB
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")

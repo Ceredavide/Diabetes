@@ -1,6 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -32,7 +34,7 @@ fun EnterManualScreen() {
 
     var text by remember { mutableStateOf(TextFieldValue("")) }
     var carbs by remember { mutableStateOf("") }
-
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -65,6 +67,7 @@ fun EnterManualScreen() {
 
                     if (onAdd(productName, carbsFloat)) {
 
+                        Toast.makeText(context, "SAVED ${productName}", Toast.LENGTH_LONG).show()
                         text = TextFieldValue();
                         carbs = ""
                     }
@@ -82,9 +85,10 @@ fun EnterManualScreen() {
 
                     val products = MainActivity.productDao.getAll()
                     for (product in products) {
-                        Log.d("DELETE", "deleted ${product.name}")
+
                         MainActivity.productDao.deleteProduct(product)
                     }
+                    Toast.makeText(context, "DELETED ALL PRODUCTS", Toast.LENGTH_LONG).show()
                 }
             },
             text = "-"

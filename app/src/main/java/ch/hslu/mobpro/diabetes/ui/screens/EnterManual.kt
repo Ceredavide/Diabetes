@@ -15,9 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.MainActivity
+import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.RoundButton
 import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
@@ -41,7 +43,7 @@ fun EnterManualScreen() {
         TextField(
             value = text,
             onValueChange = { text = it },
-            label = { Text("PRODUCT NAME") },
+            label = { Text(stringResource(id = R.string.product_name)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -50,7 +52,7 @@ fun EnterManualScreen() {
         FloatTextField(
             value = carbs,
             onValueChange = { carbs = it },
-            label = "CARBOHYDRATES / 100G"
+            label = stringResource(id = R.string.carbs_per_100g)
         )
 
         Spacer(modifier = Modifier.height(16.dp))

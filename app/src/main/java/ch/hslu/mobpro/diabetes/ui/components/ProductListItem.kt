@@ -1,5 +1,8 @@
 package ch.hslu.mobpro.diabetes.ui.components
 
+import android.os.Bundle
+import android.provider.Settings.Global.putString
+import android.util.Log
 import android.widget.Button
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -24,6 +28,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.database.Product
+import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +54,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun ProductListItem(product: Product, editable: Boolean) {
+fun ProductListItem(navController: NavController, product: Product, editable: Boolean) {
 
 
     Row (
@@ -73,6 +83,7 @@ fun ProductListItem(product: Product, editable: Boolean) {
         )
         if (editable) {
             EditDeleteIcons(
+                navController = navController,
                 product = product,
                 modifier = Modifier.padding(8.dp)
             )
@@ -81,8 +92,15 @@ fun ProductListItem(product: Product, editable: Boolean) {
 }
 
 @Composable
-private fun EditDeleteIcons(product: Product,  modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
+private fun EditDeleteIcons(navController: NavController, product: Product,  modifier: Modifier = Modifier) {
+
+    var editClicked by remember {
+        mutableStateOf(false)
+    }
+    var deleteClicked by remember {
+        mutableStateOf(false)
+    }
+
     Row(modifier = modifier) {
         Icon(
             imageVector = Icons.Default.Edit,
@@ -91,11 +109,7 @@ private fun EditDeleteIcons(product: Product,  modifier: Modifier = Modifier) {
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.LightGray)
                 .padding(4.dp)
-                .clickable {
-
-                    //val productJson = Gson().toJson(product)
-                    //navController.navigate("edit_product?productJson=$productJson")
-                }
+                .clickable { editClicked = true }
         )
         Spacer(modifier = Modifier.padding(3.dp))
         Icon(
@@ -105,8 +119,19 @@ private fun EditDeleteIcons(product: Product,  modifier: Modifier = Modifier) {
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.Red)
                 .padding(4.dp)
-                .clickable { }
+                .clickable { deleteClicked = true }
         )
+
+        if (editClicked) {
+
+            Log.d("Mine", "Clicked")
+            navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}")
+        }
+        else if (deleteClicked) {
+
+        }
     }
 }
+
+
 

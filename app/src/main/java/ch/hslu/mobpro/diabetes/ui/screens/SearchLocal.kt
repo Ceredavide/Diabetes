@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
@@ -34,7 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SearchLocalScreen() {
+fun SearchLocalScreen(navController: NavController) {
 
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
 
@@ -44,7 +45,7 @@ fun SearchLocalScreen() {
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Top
     ) {
-        var text by remember { mutableStateOf(TextFieldValue("")) }
+        var text by remember { mutableStateOf(TextFieldValue("B")) }
 
         TextField(
             value = text,
@@ -76,7 +77,10 @@ fun SearchLocalScreen() {
                         },
                 ) {
 
-                    ProductListItem(product = productsState.value[index], editable = true)
+                    ProductListItem(
+                        navController = navController,
+                        product = productsState.value[index],
+                        editable = true)
                     Spacer(modifier = Modifier.height(60.dp))
                 }
             }

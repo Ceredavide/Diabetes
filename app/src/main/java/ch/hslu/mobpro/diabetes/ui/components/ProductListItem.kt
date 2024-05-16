@@ -74,9 +74,7 @@ fun ProductListItem(navController: NavController, product: Product, editable: Bo
             fontSize = 16.sp,
             modifier = Modifier
                 .padding(10.dp)
-                .clickable {
-
-                }
+                .clickable { }
         )
         Text(
             text ="${product.carbs}/100g"
@@ -94,13 +92,6 @@ fun ProductListItem(navController: NavController, product: Product, editable: Bo
 @Composable
 private fun EditDeleteIcons(navController: NavController, product: Product,  modifier: Modifier = Modifier) {
 
-    var editClicked by remember {
-        mutableStateOf(false)
-    }
-    var deleteClicked by remember {
-        mutableStateOf(false)
-    }
-
     Row(modifier = modifier) {
         Icon(
             imageVector = Icons.Default.Edit,
@@ -109,7 +100,7 @@ private fun EditDeleteIcons(navController: NavController, product: Product,  mod
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.LightGray)
                 .padding(4.dp)
-                .clickable { editClicked = true }
+                .clickable { navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}") }
         )
         Spacer(modifier = Modifier.padding(3.dp))
         Icon(
@@ -119,17 +110,10 @@ private fun EditDeleteIcons(navController: NavController, product: Product,  mod
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.Red)
                 .padding(4.dp)
-                .clickable { deleteClicked = true }
+                .clickable { }
         )
 
-        if (editClicked) {
 
-            Log.d("Mine", "Clicked")
-            navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}")
-        }
-        else if (deleteClicked) {
-
-        }
     }
 }
 

@@ -7,15 +7,18 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentRecomposeScope
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.database.AppDatabase
+import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.database.ProductDAO
 
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
+import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
 import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
@@ -69,14 +72,19 @@ fun App() {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
     ) {
-        NavHost(navController, startDestination = "home") {
-            composable("home") { HomeScreen() }
-            composable("dashboard") { ProductsScreen() }
-            composable("notifications") { ProfileScreen() }
-            composable("enter manually") { EnterManualScreen() }
-            composable("edit_product") { EditProduct()}
+        NavHost(navController, startDestination = Routes.home) {
+            composable(Routes.home) { HomeScreen() }
+            composable(Routes.dashboard) { ProductsScreen() }
+            composable(Routes.notifications) { ProfileScreen() }
+            composable(Routes.enterManually) { EnterManualScreen() }
+            composable(Routes.editProduct + "/{name}/{carbs}") {
+
+                val productName = it.arguments?.getString("name")
+                val productCarbs = it.arguments?.getString("carbs")?.toFloat()
+                EditProduct(productName!!, productCarbs!!)
+            }
+            composable(Routes.searchLocal) { SearchLocalScreen(navController = navController)}
         }
     }
 
-    SearchLocalScreen()
 }

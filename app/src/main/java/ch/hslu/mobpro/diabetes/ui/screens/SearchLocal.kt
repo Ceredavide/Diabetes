@@ -1,6 +1,5 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -68,7 +65,6 @@ fun SearchLocalScreen(navController: NavController) {
                     Modifier
                         .fillMaxWidth()
                         .clickable {
-                            Log.d("Mine", "click")
                             Toast
                                 .makeText(
                                     currentContext,

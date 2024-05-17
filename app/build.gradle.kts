@@ -80,6 +80,10 @@ dependencies {
     //annotationProcessor("androidx.room:room-compiler:$roomVersion")
     //ksp("androidx.room:room-compiler:$roomVersion")
 
+    // ViewModel
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
+
     // Choose one of the following:
     // Material Design 3
     implementation("androidx.compose.material3:material3")

@@ -67,7 +67,7 @@ fun EnterManualScreen() {
                     if (onAdd(productName, carbsFloat)) {
 
                         Toast.makeText(context, "SAVED ${productName}", Toast.LENGTH_LONG).show()
-                        text = TextFieldValue();
+                        text = TextFieldValue()
                         carbs = ""
                     }
             },

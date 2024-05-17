@@ -28,13 +28,15 @@ import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
+import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SearchLocalScreen(navController: NavController) {
+fun SearchLocalScreen(navController: NavController, ingredientViewModel: IngredientViewModel?) {
 
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
 
@@ -78,7 +80,9 @@ fun SearchLocalScreen(navController: NavController) {
                     ProductListItem(
                         navController = navController,
                         product = productsState.value[index],
-                        editable = true)
+                        editable = ingredientViewModel == null,
+                        ingredientViewModel = ingredientViewModel
+                    )
                     Spacer(modifier = Modifier.height(60.dp))
                 }
             }

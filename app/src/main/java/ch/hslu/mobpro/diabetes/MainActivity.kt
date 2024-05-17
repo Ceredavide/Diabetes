@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentRecomposeScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,6 +20,7 @@ import ch.hslu.mobpro.diabetes.database.ProductDAO
 
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.screens.ComposeMeal
 import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
 import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
@@ -27,6 +29,7 @@ import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
 import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
+import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -69,6 +72,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
+    val ingredientViewModel: IngredientViewModel = viewModel()
+
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
     ) {
@@ -83,7 +88,30 @@ fun App() {
                 val productCarbs = it.arguments?.getString("carbs")?.toFloat()
                 EditProduct(productName!!, productCarbs!!)
             }
-            composable(Routes.searchLocal) { SearchLocalScreen(navController = navController)}
+
+            composable(Routes.searchLocal + "/{route}") {
+
+                SearchLocalScreen(navController = navController, ingredientViewModel)
+            }
+            composable(Routes.searchLocal) {
+
+                SearchLocalScreen(navController = navController, ingredientViewModel)
+            }
+            composable(Routes.composeMeal) {
+
+                ComposeMeal(
+                    navController = navController,
+                    ingredientViewModel = ingredientViewModel,
+                    productName = null)
+            }
+            composable(Routes.composeMeal + "/{product}") {
+
+                ComposeMeal(
+                    navController = navController,
+                    ingredientViewModel = ingredientViewModel,
+                    productName = it.arguments?.getString("product")
+                )
+            }
         }
     }
 

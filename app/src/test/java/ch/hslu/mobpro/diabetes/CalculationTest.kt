@@ -29,8 +29,8 @@ class CalculationTest {
         val glucoseLevel = 5.0f
         val insulinPer1mmol_L = 0.5f
         val insulinPer10gCarbs = 1.2f
-        val lowrBorderGlucose = 4.0f
-        val upperBorderGlucose = 8.0f
+        val lowrBoundGlucoseLevel = 4.0f
+        val upperBoundGlucoseLevel = 8.0f
 
         val ingredients = listOf<Ingredient>(
             Ingredient(
@@ -46,8 +46,8 @@ class CalculationTest {
         val insulinDose = calculateInsulinDose(
             insulinPer10gCarbs = insulinPer10gCarbs,
             insulinPer1mmmol_L = insulinPer1mmol_L,
-            lowerBorderGlucose = lowrBorderGlucose,
-            upperBorderGlucose = upperBorderGlucose,
+            lowerBoundGlucoseLevel = lowrBoundGlucoseLevel,
+            upperBoundGlucoseLevel = upperBoundGlucoseLevel,
             glucoseLevel = glucoseLevel,
             ingredients = ingredients
         )

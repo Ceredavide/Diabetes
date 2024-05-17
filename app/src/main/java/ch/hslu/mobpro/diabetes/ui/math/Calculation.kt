@@ -9,8 +9,8 @@ fun Float.truncate(digits: Int): Float {
 }
 fun calculateInsulinDose(insulinPer10gCarbs: Float,
                          insulinPer1mmmol_L: Float,
-                         lowerBorderGlucose: Float,
-                         upperBorderGlucose: Float,
+                         lowerBoundGlucoseLevel: Float,
+                         upperBoundGlucoseLevel: Float,
                          glucoseLevel: Float,
                          ingredients:List<Ingredient>): Float {
 
@@ -19,7 +19,7 @@ fun calculateInsulinDose(insulinPer10gCarbs: Float,
     }.sum()
 
     var insulinDose = 0.0f
-    if (glucoseLevel < lowerBorderGlucose) {
+    if (glucoseLevel < lowerBoundGlucoseLevel) {
 
         insulinDose = calculateTooLow(
             insulinPer10gCarbs = insulinPer10gCarbs,
@@ -28,7 +28,7 @@ fun calculateInsulinDose(insulinPer10gCarbs: Float,
             glucoseLevel = glucoseLevel
         )
     }
-    else if (glucoseLevel > upperBorderGlucose) {
+    else if (glucoseLevel > upperBoundGlucoseLevel) {
 
         insulinDose = calculateTooHigh(
             insulinPer10gCarbs = insulinPer10gCarbs,

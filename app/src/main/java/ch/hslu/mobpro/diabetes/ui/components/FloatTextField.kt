@@ -1,6 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -29,8 +30,8 @@ fun FloatTextField(
         label = { Text(label) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         visualTransformation = VisualTransformation.None,
-        textStyle = TextStyle(fontSize = 16.sp, color = Color.Black), // Adjust as needed
-        modifier = modifier.fillMaxWidth()
+        textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+        modifier = modifier.wrapContentWidth()
     )
 }
 

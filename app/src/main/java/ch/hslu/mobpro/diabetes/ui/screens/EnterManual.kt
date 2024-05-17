@@ -1,5 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ fun EnterManualScreen() {
     var text by remember { mutableStateOf(TextFieldValue("")) }
     var carbs by remember { mutableStateOf("") }
     val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -64,7 +66,7 @@ fun EnterManualScreen() {
                     val productName = text.text
                     val carbsFloat = carbs.toFloatOrNull()
 
-                    if (onAdd(productName, carbsFloat)) {
+                    if (onAdd(productName, carbsFloat, context)) {
 
                         Toast.makeText(context, "SAVED ${productName}", Toast.LENGTH_LONG).show()
                         text = TextFieldValue()
@@ -95,9 +97,9 @@ fun EnterManualScreen() {
     }
 }
 
-fun onAdd(productName: String, carbs: Float?): Boolean {
+fun onAdd(productName: String, carbs: Float?, context: Context): Boolean {
 
-    if (validate(productName, carbs)) {
+    if (validate(productName, carbs, context)) {
 
         val product = Product(productName, carbs!!)
         CoroutineScope(Dispatchers.IO).launch {
@@ -111,12 +113,33 @@ fun onAdd(productName: String, carbs: Float?): Boolean {
 
     return false
 }
-fun validate(productName: String, carbs: Float?): Boolean {
+fun validate(productName: String, carbs: Float?, context: Context): Boolean {
 
-    if (carbs == null || carbs == 0.0f) {
+    val productNameEmpty = productName.isEmpty()
+    val carbsIsNull = carbs == null
+    if (productNameEmpty && carbsIsNull) {
 
-        return false
+        Toast.makeText(context,
+            "PLEASE ENTER A VALUE FOR ${context.getString(R.string.product_name)} and ${context.getString(R.string.carbs_per_100g)}",
+            Toast.LENGTH_LONG).show()
+    }
+    else {
+        if (carbsIsNull) {
+
+            Toast.makeText(
+                context,
+                "PLEASE ENTER A VALUE FOR ${context.getString(R.string.carbs_per_100g)}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        if (productNameEmpty) {
+            Toast.makeText(
+                context,
+                "PLEASE ENTER A VALUE FOR ${context.getString(R.string.product_name)}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
     
-    return productName.isNotEmpty()
+    return !productNameEmpty && !carbsIsNull
 }

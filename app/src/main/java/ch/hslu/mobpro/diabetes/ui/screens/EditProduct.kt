@@ -1,5 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -95,7 +96,7 @@ fun EditProduct(productName: String, productCarbs: Float) {
                 .background(color),
             onClick = {
 
-                if (changeDetected && onSave(nameImput.text, carbsInput.toFloatOrNull())) {
+                if (changeDetected && onSave(nameImput.text, carbsInput.toFloatOrNull(), context)) {
 
                     Toast.makeText(context, "SAVED CHANGES", Toast.LENGTH_LONG).show()
                 }
@@ -119,9 +120,9 @@ fun hasChanged(originalName: String,
     return originalName != newName || originalCarbs != newCarbs
 }
 
-fun onSave(productName: String, carbs: Float?): Boolean {
+fun onSave(productName: String, carbs: Float?, context: Context): Boolean {
 
-    if (validate(productName, carbs)) {
+    if (validate(productName, carbs, context)) {
 
         val product = Product(productName, carbs!!)
         CoroutineScope(Dispatchers.IO).launch {

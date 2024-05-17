@@ -90,7 +90,7 @@ fun SearchLocalScreen(navController: NavController) {
     }
 }
 
-private fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
+fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
 
 
     CoroutineScope(Dispatchers.IO).launch {

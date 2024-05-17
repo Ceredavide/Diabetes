@@ -1,5 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,7 +29,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.database.Product
+import ch.hslu.mobpro.diabetes.ui.math.Ingredient
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,7 +39,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProductListItem(navController: NavController,
                     product: Product,
-                    editable: Boolean) {
+                    editable: Boolean,
+                    ingredientViewModel: IngredientViewModel?) {
+
 
     Row (
         modifier = Modifier
@@ -44,7 +49,13 @@ fun ProductListItem(navController: NavController,
             .clip(RoundedCornerShape(4.dp))
             .border(2.dp, MaterialTheme.colors.primary, RectangleShape)
             .padding(1.dp)
-            .clickable { },
+            .clickable {
+                if (ingredientViewModel != null) {
+
+                    ingredientViewModel.addIngredient(Ingredient(product = product, weightAmount = 0f))
+                    navController.navigate(Routes.composeMeal + "/${product.name}")
+                }
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -53,7 +64,6 @@ fun ProductListItem(navController: NavController,
             fontSize = 16.sp,
             modifier = Modifier
                 .padding(10.dp)
-                .clickable { }
         )
         Text(text ="${product.carbs}/100g")
 

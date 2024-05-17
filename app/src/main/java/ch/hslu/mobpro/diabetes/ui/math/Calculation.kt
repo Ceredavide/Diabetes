@@ -18,7 +18,7 @@ fun calculateInsulinDose(insulinPer10gCarbs: Float,
        it.calculateCarbs()
     }.sum()
 
-    var insulinDose = 0.0f
+    val insulinDose: Float
     if (glucoseLevel < lowerBoundGlucoseLevel) {
 
         insulinDose = calculateTooLow(

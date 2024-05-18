@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.database.Product
+import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

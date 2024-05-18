@@ -11,16 +11,18 @@ import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.ui.theme.Typography
 
 data class Step(val number: Int, val title: String, val content: @Composable () -> Unit)
 
 data class UserPreferences(
-    var name: MutableState<String>, var age: MutableState<String>, var email: MutableState<String>
+    var name: MutableState<String>, var upperBoundGlucoseLevel: MutableState<Float>, var lowerBoundsGlucoseLevel: MutableState<Float>
 )
 
 
@@ -30,16 +32,16 @@ fun WelcomeScreen(onCompleted: (userInfo : UserPreferences) -> Unit) {
     val userProfileState by remember {
         mutableStateOf(
             UserPreferences(
-                name = mutableStateOf("Name"),
-                age = mutableStateOf("30"),
-                email = mutableStateOf("email@example.com")
+                name = mutableStateOf(""),
+                upperBoundGlucoseLevel = mutableStateOf(8.0f),
+                lowerBoundsGlucoseLevel = mutableStateOf(4.0f)
             )
         )
     }
 
-    val steps: List<Step> = listOf(Step(0, "Welcome to Diabetes") { Text("Pls use this app") },
+    val steps: List<Step> = listOf(Step(0, "Welcome to Diabetes") { Text(stringResource(R.string.welcome_text)) },
         Step(1, "Istruzioni sull'uso dell'app") { UserInfoForm(userProfileState) },
-        Step(2, "You're done!") { Text("You're done!") })
+        Step(2, "You're done!") { Text(stringResource(R.string.welcome_steup_complete)) })
 
     var currentStep by remember { mutableStateOf(steps.first()) }
 
@@ -90,7 +92,7 @@ fun UserInfoForm(userProfileState: UserPreferences) {
         OutlinedTextField(
             value = userProfileState.name.value,
             onValueChange = { userProfileState.name.value = it },
-            label = { Text("Inserisci qualcosa") },
+            label = { Text("User Name") },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
@@ -98,9 +100,9 @@ fun UserInfoForm(userProfileState: UserPreferences) {
             })
         )
         OutlinedTextField(
-            value = userProfileState.age.value,
-            onValueChange = { userProfileState.age.value = it },
-            label = { Text("Inserisci qualcosa 2") },
+            value = userProfileState.upperBoundGlucoseLevel.value.toString(),
+            onValueChange = { userProfileState.upperBoundGlucoseLevel.value = it.toFloat() },
+            label = { Text("Maximum Glucose Level") },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number).copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
@@ -108,9 +110,9 @@ fun UserInfoForm(userProfileState: UserPreferences) {
             })
         )
         OutlinedTextField(
-            value = userProfileState.email.value,
-            onValueChange = { userProfileState.email.value = it },
-            label = { Text("Inserisci qualcosa 3") },
+            value = userProfileState.lowerBoundsGlucoseLevel.value.toString(),
+            onValueChange = { userProfileState.lowerBoundsGlucoseLevel.value = it.toFloat() },
+            label = { Text("Minimum Glucose Level") },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {

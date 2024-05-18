@@ -17,8 +17,8 @@ class PreferenceManager(context: Context) {
 
     fun setUserinfo(userInfo: UserPreferences) {
         sharedPreferences.edit().putString("name", userInfo.name.value).apply()
-        sharedPreferences.edit().putString("age", userInfo.age.value).apply()
-        sharedPreferences.edit().putString("email", userInfo.email.value).apply()
+        sharedPreferences.edit().putString("age", userInfo.upperBoundGlucoseLevel.value.toString()).apply()
+        sharedPreferences.edit().putString("email", userInfo.lowerBoundsGlucoseLevel.value.toString()).apply()
     }
 
 }

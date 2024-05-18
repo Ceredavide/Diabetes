@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.database
+package ch.hslu.mobpro.diabetes.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete

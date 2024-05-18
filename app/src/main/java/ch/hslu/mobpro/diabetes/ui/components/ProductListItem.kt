@@ -40,9 +40,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProductListItem(navController: NavController,
                     product: Product,
-                    editable: Boolean) {
-
-    val ingredientViewModel: IngredientViewModel = viewModel()
+                    editable: Boolean,
+                    ingredientViewModel: IngredientViewModel?) {
 
     Row (
         modifier = Modifier
@@ -52,9 +51,16 @@ fun ProductListItem(navController: NavController,
             .padding(1.dp)
             .clickable {
 
-                ingredientViewModel.addIngredient(Ingredient(product = product, weightAmount = 0f))
-                navController.navigate(Routes.composeMeal + "/${product.name}")
-            },
+                if (!editable) {
+                    ingredientViewModel?.addIngredient(
+                        Ingredient(
+                            product = product,
+                            weightAmount = 0f
+                        )
+                    )
+                    navController.navigate(Routes.composeMeal)
+                }
+                               },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

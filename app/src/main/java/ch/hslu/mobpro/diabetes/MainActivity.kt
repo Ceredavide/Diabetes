@@ -2,21 +2,17 @@ package ch.hslu.mobpro.diabetes
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.database.AppDatabase
-import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.database.ProductDAO
 
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
@@ -27,6 +23,7 @@ import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
+import ch.hslu.mobpro.diabetes.ui.screens.ResultScreen
 import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
@@ -73,6 +70,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
+    val ingredientViewModel: IngredientViewModel = viewModel()
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
@@ -91,13 +89,20 @@ fun App() {
             composable(Routes.searchLocal + "/{editable}") {
 
                 val editable = it.arguments?.getString("editable").toBoolean()
-                SearchLocalScreen(navController = navController, editable = editable)
+                SearchLocalScreen(navController = navController, editable = editable, ingredientViewModel = ingredientViewModel)
             }
             composable(Routes.searchLocal) {
 
-                SearchLocalScreen(navController = navController, editable =  true)
+                SearchLocalScreen(navController = navController, editable =  true, null)
             }
-            composable(Routes.composeMeal) { ComposeMeal(navController = navController) }
+            composable(Routes.composeMeal) {
+
+                ComposeMeal(navController = navController, ingredientViewModel = ingredientViewModel)
+            }
+            composable(Routes.resultScreen) {
+
+                ResultScreen(navController = navController, ingredientViewModel = ingredientViewModel)
+            }
         }
     }
 

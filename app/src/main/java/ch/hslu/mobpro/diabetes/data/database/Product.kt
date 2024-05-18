@@ -1,8 +1,8 @@
 package ch.hslu.mobpro.diabetes.data.database
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity
 data class Product(

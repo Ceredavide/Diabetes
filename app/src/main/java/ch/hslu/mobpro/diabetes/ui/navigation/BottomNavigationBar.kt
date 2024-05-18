@@ -5,6 +5,7 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.FoodBank
 import androidx.compose.material.icons.filled.Home
@@ -24,9 +25,9 @@ fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
         Screen.Home,
         Screen.Products,
-        Screen.Profile,
         Screen.EnterManual,
         Screen.SearchLocal,
+        Screen.Profile,
     )
     BottomNavigation(
         backgroundColor = Color.White,
@@ -60,7 +61,7 @@ fun currentRoute(navController: NavHostController): String? {
 enum class Screen(val route: String, val icon: ImageVector, val title: String) {
     Home(Routes.home, Icons.Filled.Home, "Home"),
     Products(Routes.dashboard, Icons.Filled.Restaurant, "Products"),
+    EnterManual(Routes.enterManually, Icons.Filled.Add, "Add Product"),
+    SearchLocal(Routes.searchLocal, Icons.Filled.Search, "Search"),
     Profile(Routes.notifications, Icons.Filled.Person, "Profile"),
-    EnterManual(Routes.enterManually, Icons.Filled.FoodBank, "Enter Manuak"),
-    SearchLocal(Routes.searchLocal, Icons.Filled.Search, "Search")
 }

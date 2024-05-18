@@ -1,32 +1,85 @@
 package ch.hslu.mobpro.diabetes
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import ch.hslu.mobpro.diabetes.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
+import ch.hslu.mobpro.diabetes.data.database.AppDatabase
+import ch.hslu.mobpro.diabetes.data.database.ProductDAO
 
-class MainActivity : AppCompatActivity() {
+import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
+import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
+import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
+import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
+import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
+import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
+import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
+import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
+import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
 
-private lateinit var binding: ActivityMainBinding
+class MainActivity : ComponentActivity() {
 
+    companion object {
+        lateinit var db: AppDatabase
+        lateinit var productDao: ProductDAO
+    }
+    private lateinit var preferenceManager: PreferenceManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-     binding = ActivityMainBinding.inflate(layoutInflater)
-     setContentView(binding.root)
+        preferenceManager = PreferenceManager(this)
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            AppDatabase.NAME
+        ).build()
 
-        val navView: BottomNavigationView = binding.navView
+        productDao = db.productDao()
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        setContent {
+            DiabeticsTheme {
+                if (preferenceManager.isFirstTime()) {
+                    WelcomeScreen(onCompleted = {
+                        preferenceManager.setUserinfo(it)
+                        preferenceManager.setFirstTime(false)
+                        setContent { App() }
+                    })
+                } else {
+                    App()
+                }
+            }
+        }
     }
+}
+
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun App() {
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = { BottomNavigationBar(navController) }
+    ) {
+        NavHost(navController, startDestination = Routes.home) {
+            composable(Routes.home) { HomeScreen() }
+            composable(Routes.dashboard) { ProductsScreen() }
+            composable(Routes.enterManually) { EnterManualScreen() }
+            composable(Routes.editProduct + "/{name}/{carbs}") {
+                val productName = it.arguments?.getString("name")
+                val productCarbs = it.arguments?.getString("carbs")?.toFloat()
+                EditProduct(productName!!, productCarbs!!)
+            }
+            composable(Routes.searchLocal) { SearchLocalScreen(navController = navController)}
+            composable(Routes.notifications) { ProfileScreen() }
+        }
+    }
+
 }

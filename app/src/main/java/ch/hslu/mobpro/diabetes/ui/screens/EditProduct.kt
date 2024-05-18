@@ -73,8 +73,10 @@ fun EditProduct(productName: String, productCarbs: Float) {
         FloatTextField(
             value = carbsInput,
             onValueChange = {
-                changeDetected = hasChanged(productName, nameImput.text, productCarbs, it.toFloat())
-                if (changeDetected) {
+
+                val newCarbs = it.toFloatOrNull()
+                changeDetected = hasChanged(productName, nameImput.text, productCarbs, it.toFloatOrNull())
+                if (changeDetected && newCarbs != null) {
 
                     color = Color.Green
                 }

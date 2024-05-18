@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.math.Ingredient
@@ -42,7 +43,9 @@ import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 
 @Composable
-fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientViewModel) {
+fun IngredientListItem(ingredient: Ingredient) {
+
+    val ingredientViewModel: IngredientViewModel = viewModel()
 
     Row(
         modifier = Modifier
@@ -69,7 +72,10 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
 
             FloatTextField(
                 value = carbsInput,
-                onValueChange = { carbsInput = it },
+                onValueChange = {
+                    carbsInput = it
+                    ingredient.weightAmount = carbsInput.toFloat()
+                },
                 label = "ENTER ${stringResource(id = R.string.carbs_per_100g)}"
             )
 
@@ -79,7 +85,7 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
 
         Icon(
             imageVector = Icons.Default.Delete,
-            contentDescription = "Edit",
+            contentDescription = "Delete",
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)

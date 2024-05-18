@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.database.Product
@@ -39,9 +40,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProductListItem(navController: NavController,
                     product: Product,
-                    editable: Boolean,
-                    ingredientViewModel: IngredientViewModel?) {
+                    editable: Boolean) {
 
+    val ingredientViewModel: IngredientViewModel = viewModel()
 
     Row (
         modifier = Modifier
@@ -50,11 +51,9 @@ fun ProductListItem(navController: NavController,
             .border(2.dp, MaterialTheme.colors.primary, RectangleShape)
             .padding(1.dp)
             .clickable {
-                if (ingredientViewModel != null) {
 
-                    ingredientViewModel.addIngredient(Ingredient(product = product, weightAmount = 0f))
-                    navController.navigate(Routes.composeMeal + "/${product.name}")
-                }
+                ingredientViewModel.addIngredient(Ingredient(product = product, weightAmount = 0f))
+                navController.navigate(Routes.composeMeal + "/${product.name}")
             },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -65,7 +64,6 @@ fun ProductListItem(navController: NavController,
             modifier = Modifier
                 .padding(10.dp)
         )
-        Text(text ="${product.carbs}/100g")
 
         if (editable) {
             EditDeleteIcons(

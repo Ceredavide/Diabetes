@@ -1,5 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
+import android.text.Editable
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +37,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SearchLocalScreen(navController: NavController, ingredientViewModel: IngredientViewModel?) {
+fun SearchLocalScreen(navController: NavController,
+                      editable: Boolean) {
 
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
 
@@ -80,8 +82,7 @@ fun SearchLocalScreen(navController: NavController, ingredientViewModel: Ingredi
                     ProductListItem(
                         navController = navController,
                         product = productsState.value[index],
-                        editable = ingredientViewModel == null,
-                        ingredientViewModel = ingredientViewModel
+                        editable = editable,
                     )
                     Spacer(modifier = Modifier.height(60.dp))
                 }

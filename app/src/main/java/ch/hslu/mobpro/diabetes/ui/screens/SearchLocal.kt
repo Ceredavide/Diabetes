@@ -38,7 +38,8 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun SearchLocalScreen(navController: NavController,
-                      editable: Boolean) {
+                      editable: Boolean,
+                      ingredientViewModel: IngredientViewModel?) {
 
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
 
@@ -83,6 +84,7 @@ fun SearchLocalScreen(navController: NavController,
                         navController = navController,
                         product = productsState.value[index],
                         editable = editable,
+                        ingredientViewModel = ingredientViewModel
                     )
                     Spacer(modifier = Modifier.height(60.dp))
                 }

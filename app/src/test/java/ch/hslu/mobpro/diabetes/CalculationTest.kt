@@ -3,7 +3,7 @@ package ch.hslu.mobpro.diabetes
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.math.Ingredient
 import ch.hslu.mobpro.diabetes.ui.math.calculateCorrectionTooHigh
-import ch.hslu.mobpro.diabetes.ui.math.calculateInsulinDose
+import ch.hslu.mobpro.diabetes.ui.math.calculateInsulinDoseAndTotalCarbs
 import ch.hslu.mobpro.diabetes.ui.math.calculateNormal
 import ch.hslu.mobpro.diabetes.ui.math.calculateTooHigh
 import ch.hslu.mobpro.diabetes.ui.math.calculateTooLow
@@ -32,7 +32,7 @@ class CalculationTest {
         val lowrBoundGlucoseLevel = 4.0f
         val upperBoundGlucoseLevel = 8.0f
 
-        val ingredients = listOf<Ingredient>(
+        val ingredients = listOf(
             Ingredient(
                 product = Product(name = "Banane", carbs = 20.0f),
                 weightAmount = 200.0f
@@ -43,7 +43,7 @@ class CalculationTest {
             ),
         )
 
-        val insulinDose = calculateInsulinDose(
+        val (insulinDose, totalCarbs) = calculateInsulinDoseAndTotalCarbs(
             insulinPer10gCarbs = insulinPer10gCarbs,
             insulinPer1mmmol_L = insulinPer1mmol_L,
             lowerBoundGlucoseLevel = lowrBoundGlucoseLevel,
@@ -53,6 +53,7 @@ class CalculationTest {
         )
 
         assertEquals(16.8f, insulinDose)
+        assertEquals(140.0f, totalCarbs)
     }
     @Test
     fun testCalculationNormal() {

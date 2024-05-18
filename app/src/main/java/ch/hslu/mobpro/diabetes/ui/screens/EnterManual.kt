@@ -1,6 +1,8 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
 import android.content.Context
+import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +31,8 @@ import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
+import java.util.logging.Handler
 
 @Composable
 fun EnterManualScreen() {
@@ -66,12 +71,21 @@ fun EnterManualScreen() {
                     val productName = text.text
                     val carbsFloat = carbs.toFloatOrNull()
 
-                    if (onAdd(productName, carbsFloat, context)) {
+                    onAdd(
+                        productName = productName,
+                        carbs = carbsFloat,
+                        context = context,
+                        onSuccess  = {
 
-                        Toast.makeText(context, "SAVED ${productName}", Toast.LENGTH_LONG).show()
-                        text = TextFieldValue()
-                        carbs = ""
-                    }
+                            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                            text = TextFieldValue()
+                            carbs = ""
+                        },
+                        onFailure = {
+
+                            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                        })
+
             },
             text = "+"
         ) {}
@@ -97,22 +111,38 @@ fun EnterManualScreen() {
     }
 }
 
-fun onAdd(productName: String, carbs: Float?, context: Context): Boolean {
+fun onAdd(productName: String,
+          carbs: Float?,
+          context: Context,
+          onSuccess: (String) -> Unit,
+          onFailure: (String) -> Unit) {
+
 
     if (validate(productName, carbs, context)) {
 
         val product = Product(productName, carbs!!)
+
         CoroutineScope(Dispatchers.IO).launch {
-            val productDao = MainActivity.productDao
 
-            productDao.insertProduct(product)
+            if (!productExistsCheck(productName = productName, context = context)) {
+
+                MainActivity.productDao.insertProduct(product)
+
+                val runnable = Runnable { onSuccess("${productName} SAVED") }
+                android.os.Handler(Looper.getMainLooper()).post(runnable)
+            }
+            else {
+
+                val runnable = Runnable { onFailure("${productName} ALREADY EXISTS\nPLEASE MODIFY EXISTING ONE") }
+                android.os.Handler(Looper.getMainLooper()).post(runnable)
+            }
         }
-
-        return true
     }
-
-    return false
 }
+
+
+
+
 fun validate(productName: String, carbs: Float?, context: Context): Boolean {
 
     val productNameEmpty = productName.isEmpty()
@@ -143,3 +173,14 @@ fun validate(productName: String, carbs: Float?, context: Context): Boolean {
     
     return !productNameEmpty && !carbsIsNull
 }
+
+fun productExistsCheck(productName: String, context: Context): Boolean {
+
+    if (MainActivity.productDao.getProductByName(productName) != null) {
+
+        return true
+    }
+
+    return false
+}
+

@@ -2,7 +2,7 @@ package ch.hslu.mobpro.diabetes.ui.math
 
 import ch.hslu.mobpro.diabetes.database.Product
 
-class Ingredient(val product: Product, val weightAmount: Float) {
+class Ingredient(val product: Product, var weightAmount: Float) {
 
     fun calculateCarbs(): Float {
 

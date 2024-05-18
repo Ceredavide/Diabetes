@@ -7,12 +7,12 @@ fun Float.truncate(digits: Int): Float {
 
     return (this * 10.0f.pow(digits)).roundToInt().toFloat() / 10.0f.pow(digits)
 }
-fun calculateInsulinDose(insulinPer10gCarbs: Float,
-                         insulinPer1mmmol_L: Float,
-                         lowerBoundGlucoseLevel: Float,
-                         upperBoundGlucoseLevel: Float,
-                         glucoseLevel: Float,
-                         ingredients:List<Ingredient>): Float {
+fun calculateInsulinDoseAndTotalCarbs(insulinPer10gCarbs: Float,
+                                      insulinPer1mmmol_L: Float,
+                                      lowerBoundGlucoseLevel: Float,
+                                      upperBoundGlucoseLevel: Float,
+                                      glucoseLevel: Float,
+                                      ingredients:List<Ingredient>): Pair<Float, Float> {
 
     val totalCarbs = ingredients.map {
        it.calculateCarbs()
@@ -45,7 +45,7 @@ fun calculateInsulinDose(insulinPer10gCarbs: Float,
         )
     }
 
-    return insulinDose.truncate(1)
+    return Pair(insulinDose.truncate(1), totalCarbs)
 }
 
 fun calculateNormal(insulinPer10gCarbs: Float, carbs: Float): Float {

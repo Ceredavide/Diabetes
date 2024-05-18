@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.math.Ingredient
@@ -43,9 +44,7 @@ import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 
 @Composable
-fun IngredientListItem(ingredient: Ingredient) {
-
-    val ingredientViewModel: IngredientViewModel = viewModel()
+fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientViewModel, check: Boolean) {
 
     Row(
         modifier = Modifier
@@ -57,7 +56,10 @@ fun IngredientListItem(ingredient: Ingredient) {
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        var carbsInput by remember { mutableStateOf("") }
+
+        val amount = if (ingredient.weightAmount == 0.0f) "" else ingredient.weightAmount.toString()
+        var carbsInput by remember { mutableStateOf(amount) }
+        var color by remember { mutableStateOf(Color.LightGray) }
 
         Column() {
 
@@ -74,10 +76,26 @@ fun IngredientListItem(ingredient: Ingredient) {
                 value = carbsInput,
                 onValueChange = {
                     carbsInput = it
-                    ingredient.weightAmount = carbsInput.toFloat()
+                    ingredient.weightAmount = carbsInput.toFloatOrNull()
                 },
-                label = "ENTER ${stringResource(id = R.string.carbs_per_100g)}"
-            )
+                label = "ENTER ${stringResource(id = R.string.carbs_per_100g)}",
+                modifier = Modifier.background(color)
+            ) .also {
+
+                if (check) {
+                    if (carbsInput.isEmpty() || ingredient.weightAmount == 0.0f) {
+
+                        color = Color.Red
+                    } else {
+                        color = Color.LightGray
+                    }
+                }
+                else {
+
+                    color = Color.LightGray
+                }
+            }
+
 
 
         }
@@ -90,7 +108,7 @@ fun IngredientListItem(ingredient: Ingredient) {
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(4.dp))
-                .background(Color.LightGray)
+                .background(Color.Transparent)
                 .padding(4.dp)
                 .clickable {
 
@@ -99,4 +117,14 @@ fun IngredientListItem(ingredient: Ingredient) {
         )
 
     }
+}
+
+ @Preview
+@Composable
+fun IngredientListItemPreview() {
+
+    val ingredientViewModel: IngredientViewModel = viewModel()
+     val ingredient = Ingredient(Product("Banane", 20.0f), 100.0f)
+
+     IngredientListItem(ingredient = ingredient, ingredientViewModel = ingredientViewModel, check = false)
 }

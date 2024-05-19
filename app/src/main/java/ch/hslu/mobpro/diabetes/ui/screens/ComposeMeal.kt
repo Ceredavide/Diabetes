@@ -30,7 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.ui.components.IngredientListItem
 import ch.hslu.mobpro.diabetes.ui.components.RoundButton
-import ch.hslu.mobpro.diabetes.ui.math.Ingredient
+import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 

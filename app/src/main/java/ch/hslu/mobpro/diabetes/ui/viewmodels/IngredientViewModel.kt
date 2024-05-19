@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ch.hslu.mobpro.diabetes.ui.math.Ingredient
+import ch.hslu.mobpro.diabetes.math.Ingredient
 
 class IngredientViewModel: ViewModel() {
 

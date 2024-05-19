@@ -1,7 +1,7 @@
 package ch.hslu.mobpro.diabetes
 
 import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.ui.math.Ingredient
+import ch.hslu.mobpro.diabetes.math.Ingredient
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

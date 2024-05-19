@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.math
+package ch.hslu.mobpro.diabetes.math
 
 import androidx.compose.ui.geometry.times
 import ch.hslu.mobpro.diabetes.data.database.Product

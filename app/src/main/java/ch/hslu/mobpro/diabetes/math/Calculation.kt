@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.math
+package ch.hslu.mobpro.diabetes.math
 
 import kotlin.math.pow
 import kotlin.math.roundToInt

@@ -50,9 +50,7 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
-            .border(2.dp, MaterialTheme.colors.primary, RectangleShape)
-            .padding(1.dp),
-        //horizontalArrangement = Arrangement.SpaceBetween,
+            .border(2.dp, MaterialTheme.colors.primary, RectangleShape),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -106,6 +104,7 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
             contentDescription = "Delete",
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(10.dp)
                 .aspectRatio(1f)
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.Transparent)

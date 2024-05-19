@@ -6,7 +6,11 @@ plugins {
     //id("com.google.devtools.ksp")
     id("kotlin-android")
     id("kotlin-kapt") // Add this line
+
+    kotlin("plugin.serialization") version "1.5.21" // Use the appropriate version
+
 }
+
 
 android {
     namespace = "ch.hslu.mobpro.diabetes"
@@ -83,6 +87,17 @@ dependencies {
     // ViewModel
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
+
+    // Http
+    //implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    //implementation("io.ktor:ktor-client-core:1.6.7")
+    //implementation("io.ktor:ktor-client-cio:1.6.7")
+    //implementation("io.ktor:ktor-client-content-negotiation:1.6.7")
+    //implementation("io.ktor:ktor-serialization-kotlinx-json:1.6.7")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0") // Use the appropriate version
+    implementation("com.google.code.gson:gson:2.8.8")
+
 
     // Choose one of the following:
     // Material Design 3

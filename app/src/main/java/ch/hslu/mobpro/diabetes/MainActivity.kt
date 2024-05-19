@@ -1,6 +1,7 @@
 package ch.hslu.mobpro.diabetes
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -53,10 +54,10 @@ class MainActivity : ComponentActivity() {
                     WelcomeScreen(onCompleted = {
                         preferenceManager.setUserinfo(it)
                         preferenceManager.setFirstTime(false)
-                        setContent { App() }
+                        setContent { App(this) }
                     })
                 } else {
-                    App()
+                    App(this)
                 }
             }
         }
@@ -66,7 +67,7 @@ class MainActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun App() {
+fun App(context: Context) {
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
 
@@ -97,7 +98,7 @@ fun App() {
             }
             composable(Routes.resultScreen) {
 
-                ResultScreen(navController = navController, ingredientViewModel = ingredientViewModel)
+                ResultScreen(navController = navController, ingredientViewModel = ingredientViewModel, context = context)
             }
             composable(Routes.searchLocal) { SearchLocalScreen(
                 navController = navController,

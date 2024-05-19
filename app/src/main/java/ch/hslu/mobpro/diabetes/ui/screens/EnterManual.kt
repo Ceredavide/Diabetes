@@ -60,7 +60,8 @@ fun EnterManualScreen() {
         FloatTextField(
             value = carbs,
             onValueChange = { carbs = it },
-            label = stringResource(id = R.string.carbs_per_100g)
+            label = stringResource(id = R.string.carbs_per_100g),
+            positiveLimit = 100.0f
         )
 
         Spacer(modifier = Modifier.height(16.dp))

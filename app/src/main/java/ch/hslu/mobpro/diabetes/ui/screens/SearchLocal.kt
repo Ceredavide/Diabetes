@@ -1,6 +1,5 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
-import android.text.Editable
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +28,6 @@ import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
-import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

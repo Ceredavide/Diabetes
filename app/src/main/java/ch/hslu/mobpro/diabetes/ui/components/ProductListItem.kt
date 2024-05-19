@@ -8,10 +8,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -24,10 +26,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.database.Product
 import ch.hslu.mobpro.diabetes.ui.math.Ingredient
@@ -60,7 +64,7 @@ fun ProductListItem(navController: NavController,
                     )
                     navController.navigate(Routes.composeMeal)
                 }
-                               },
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -89,37 +93,52 @@ private fun EditDeleteIcons(navController: NavController,
     val context = LocalContext.current
 
     Row(modifier = modifier) {
-        Icon(
-            imageVector = Icons.Default.Edit,
-            contentDescription = "Edit",
+        IconButton(
             modifier = Modifier
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.LightGray)
-                .padding(4.dp)
-                .clickable { navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}") }
-        )
+                .padding(4.dp),
+            onClick = { navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}") }
+        ) {
+            Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+        }
 
         Spacer(modifier = Modifier.padding(3.dp))
 
-        Icon(
-            imageVector = Icons.Default.Delete,
-            contentDescription = "Delete",
+        IconButton(
             modifier = Modifier
                 .clip(RoundedCornerShape(4.dp))
                 .background(Color.Red)
-                .padding(4.dp)
-                .clickable {
+                .padding(4.dp),
+                onClick =  {
 
                     CoroutineScope(Dispatchers.IO).launch {
 
                         MainActivity.productDao.deleteProductByName(product.name!!)
                     }
-                    Toast.makeText(context, "DELETED PRODUCT ${product.name}", Toast.LENGTH_LONG).show()
+                    Toast
+                        .makeText(context, "DELETED PRODUCT ${product.name}", Toast.LENGTH_LONG)
+                        .show()
                     navController.navigate(Routes.searchLocal)
                 }
-        )
+        ) {
+           Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+        }
     }
 }
 
+@Preview
+@Composable
+fun ProductListItemPreview() {
+
+    val navController = rememberNavController()
+    val product = Product("Banane", 2.0f)
+
+    ProductListItem(
+        navController = navController,
+        product = product,
+        editable = true
+        , ingredientViewModel = null)
+}
 
 

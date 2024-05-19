@@ -24,6 +24,13 @@ interface ProductDAO {
     @Query("SELECT * FROM product WHERE product_name LIKE '%' || :productName || '%'")
     fun findProductsFuzzy(productName: String): List<Product>
 
+    @Query("SELECT * FROM product ORDER BY product_name ASC")
+    fun getAllOrdered(): List<Product>
+
+    @Query("SELECT * FROM product WHERE product_name LIKE :productName || '%' ORDER BY product_name ASC")
+    fun findProductsFuzzyOrdered(productName: String): List<Product>
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(vararg product: Product)
 

@@ -76,7 +76,7 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
                     ingredient.weightAmount = carbsInput.toFloatOrNull()
                 },
                 label = "ENTER ${stringResource(id = R.string.carbs_per_100g)}",
-                modifier = Modifier.background(color)
+                modifier = Modifier.background(color),
             ) .also {
 
                 if (check) {

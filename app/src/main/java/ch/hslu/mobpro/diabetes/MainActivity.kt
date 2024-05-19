@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,17 +14,19 @@ import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
 import ch.hslu.mobpro.diabetes.data.database.ProductDAO
-
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.screens.ComposeMeal
 import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
 import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
+import ch.hslu.mobpro.diabetes.ui.screens.ResultScreen
 import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
+import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -65,6 +68,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     val navController = rememberNavController()
+    val ingredientViewModel: IngredientViewModel = viewModel()
+
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
     ) {
@@ -75,9 +80,29 @@ fun App() {
             composable(Routes.editProduct + "/{name}/{carbs}") {
                 val productName = it.arguments?.getString("name")
                 val productCarbs = it.arguments?.getString("carbs")?.toFloat()
-                EditProduct(productName!!, productCarbs!!)
+                EditProduct(productName = productName!!, productCarbs = productCarbs!!)
             }
-            composable(Routes.searchLocal) { SearchLocalScreen(navController = navController)}
+            composable(Routes.searchLocal + "/{editable}") {
+
+                val editable = it.arguments?.getString("editable").toBoolean()
+                SearchLocalScreen(navController = navController, editable = editable, ingredientViewModel = ingredientViewModel)
+            }
+            composable(Routes.searchLocal) {
+
+                SearchLocalScreen(navController = navController, editable =  true, null)
+            }
+            composable(Routes.composeMeal) {
+
+                ComposeMeal(navController = navController, ingredientViewModel = ingredientViewModel)
+            }
+            composable(Routes.resultScreen) {
+
+                ResultScreen(navController = navController, ingredientViewModel = ingredientViewModel)
+            }
+            composable(Routes.searchLocal) { SearchLocalScreen(
+                navController = navController,
+                editable = true,
+                ingredientViewModel = ingredientViewModel)}
             composable(Routes.notifications) { ProfileScreen() }
         }
     }

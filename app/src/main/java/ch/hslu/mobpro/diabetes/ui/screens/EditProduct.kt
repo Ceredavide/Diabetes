@@ -73,8 +73,10 @@ fun EditProduct(productName: String, productCarbs: Float) {
         FloatTextField(
             value = carbsInput,
             onValueChange = {
-                changeDetected = hasChanged(productName, nameImput.text, productCarbs, it.toFloat())
-                if (changeDetected) {
+
+                val newCarbs = it.toFloatOrNull()
+                changeDetected = hasChanged(productName, nameImput.text, productCarbs, it.toFloatOrNull())
+                if (changeDetected && newCarbs != null) {
 
                     color = Color.Green
                 }
@@ -96,7 +98,7 @@ fun EditProduct(productName: String, productCarbs: Float) {
                 .background(color),
             onClick = {
 
-                if (changeDetected && onSave(nameImput.text, carbsInput.toFloatOrNull(), context)) {
+                if (changeDetected && onSave(productName, nameImput.text, carbsInput.toFloatOrNull(), context)) {
 
                     Toast.makeText(context, "SAVED CHANGES", Toast.LENGTH_LONG).show()
                 }
@@ -120,15 +122,17 @@ fun hasChanged(originalName: String,
     return originalName != newName || originalCarbs != newCarbs
 }
 
-fun onSave(productName: String, carbs: Float?, context: Context): Boolean {
+fun onSave(originalName: String, productName: String, carbs: Float?, context: Context): Boolean {
 
     if (validate(productName, carbs, context)) {
 
-        val product = Product(productName, carbs!!)
         CoroutineScope(Dispatchers.IO).launch {
 
             val productDao = MainActivity.productDao
-            productDao.insertProduct(product)
+            val product = productDao.getProductByName(originalName)
+            product!!.name = productName
+            product.carbs = carbs
+            productDao.updateProduct(product)
         }
 
         return true

@@ -1,5 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
+import android.text.Editable
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,13 +29,17 @@ import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
+import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SearchLocalScreen(navController: NavController) {
+fun SearchLocalScreen(navController: NavController,
+                      editable: Boolean,
+                      ingredientViewModel: IngredientViewModel?) {
 
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
 
@@ -78,13 +83,16 @@ fun SearchLocalScreen(navController: NavController) {
                     ProductListItem(
                         navController = navController,
                         product = productsState.value[index],
-                        editable = true)
+                        editable = editable,
+                        ingredientViewModel = ingredientViewModel
+                    )
                     Spacer(modifier = Modifier.height(60.dp))
                 }
             }
         }
     }
 }
+
 
 fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
 
@@ -93,11 +101,7 @@ fun onTextInputChange(productName: String, productsState: MutableState<List<Prod
 
         if (productName.isNotEmpty()) {
 
-            val allProducts = MainActivity.productDao.findProductsFuzzy(productName)
-            val foundProducts = allProducts.filter {
-                it.name?.startsWith(productName,
-                    ignoreCase = true) ?: false
-            }
+            val foundProducts = MainActivity.productDao.findProductsFuzzyOrdered(productName)
             withContext(Dispatchers.Main) {
 
                 productsState.value = foundProducts

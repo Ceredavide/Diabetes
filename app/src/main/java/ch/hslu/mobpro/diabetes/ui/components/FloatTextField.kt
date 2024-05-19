@@ -1,6 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -23,18 +24,29 @@ fun FloatTextField(
         value = value,
         onValueChange = { newValue ->
             if (newValue.isValidNumericInput()) {
+                if (newValue.startsWith('.')) {
+
+                    onValueChange("0$newValue")
+                }
+                else {
+
+                    onValueChange(newValue)
+                }
+            }
+            else if (newValue.isEmpty()) {
+
                 onValueChange(newValue)
             }
         },
         label = { Text(label) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         visualTransformation = VisualTransformation.None,
-        textStyle = TextStyle(fontSize = 16.sp, color = Color.Black), // Adjust as needed
-        modifier = modifier.fillMaxWidth()
+        textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+        modifier = modifier.wrapContentWidth()
     )
 }
 
 // Extension function to check if a string is a valid numeric input
 fun String.isValidNumericInput(): Boolean {
-    return matches("-?\\d*\\.?\\d*".toRegex())
+    return matches("\\d*\\.?\\d*".toRegex())
 }

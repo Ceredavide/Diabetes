@@ -1,5 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.screens
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,25 +27,27 @@ import ch.hslu.mobpro.diabetes.ui.math.Ingredient
 import ch.hslu.mobpro.diabetes.ui.math.calculateInsulinDoseAndTotalCarbs
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
+
 @Composable
-fun ResultScreen(navController: NavController, ingredientViewModel: IngredientViewModel) {
+fun ResultScreen(navController: NavController, ingredientViewModel: IngredientViewModel, context: Context) {
 
     val ingredients = ingredientViewModel.ingredients
-    
+    val sharedPreferences: SharedPreferences = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
+
     Column {
         // temporary values for testing
         val glucoseLevel = 5.0f
-        val lowerBoundGlucoseLevel = 4.0f
-        val upperBoundGlucoseLevel = 8.0f
+        val lowerBoundGlucoseLevel = sharedPreferences.getString("email", "4.0f")?.toFloat()
+        val upperBoundGlucoseLevel = sharedPreferences.getString("age", "8.0f")?.toFloat()
         val insulinPer10gCarbs = 1.2f
         val insulinPer1mmol_L = 0.5f
-        val userName = "Test User"
+        val userName = sharedPreferences.getString("name", "Unknown")
 
         val (insulinDose, totalCarbs) = calculateInsulinDoseAndTotalCarbs(
             insulinPer10gCarbs = insulinPer10gCarbs,
             insulinPer1mmol_L = insulinPer1mmol_L,
-            lowerBoundGlucoseLevel = lowerBoundGlucoseLevel,
-            upperBoundGlucoseLevel = upperBoundGlucoseLevel,
+            lowerBoundGlucoseLevel = lowerBoundGlucoseLevel!!,
+            upperBoundGlucoseLevel = upperBoundGlucoseLevel!!,
             glucoseLevel = glucoseLevel,
             ingredients = ingredientViewModel.ingredients
         )
@@ -53,7 +58,7 @@ fun ResultScreen(navController: NavController, ingredientViewModel: IngredientVi
         ) {
 
             Text(text = "User", fontSize = 32.sp)
-            Text(text = userName, fontSize = 32.sp)
+            Text(text = userName!!, fontSize = 32.sp)
         }
 
         Row(
@@ -113,5 +118,5 @@ fun ResultScreenPreview() {
     ingredientViewModel.ingredients.add(Ingredient(Product("Weiss Brot", 50.0f), 100.0f))
     val navController = rememberNavController()
 
-    ResultScreen(navController = navController, ingredientViewModel = ingredientViewModel)
+    ResultScreen(navController = navController, ingredientViewModel = ingredientViewModel, LocalContext.current)
 }

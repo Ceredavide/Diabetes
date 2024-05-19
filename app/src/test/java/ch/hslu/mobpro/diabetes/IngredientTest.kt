@@ -1,6 +1,6 @@
 package ch.hslu.mobpro.diabetes
 
-import ch.hslu.mobpro.diabetes.database.Product
+import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.ui.math.Ingredient
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -8,7 +8,7 @@ import org.junit.Test
 class IngredientTest {
 
     @Test
-    fun testCakcukateTotalCarbs() {
+    fun testCalculateTotalCarbs() {
 
         val ingredient = Ingredient(
             product = Product(name = "Banane", carbs = 20.0f),

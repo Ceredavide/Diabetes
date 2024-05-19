@@ -85,6 +85,7 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
 
                         color = Color.Red
                     } else {
+
                         color = Color.LightGray
                     }
                 }

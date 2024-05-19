@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -73,6 +74,12 @@ fun ResultScreen(navController: NavController, ingredientViewModel: IngredientVi
             Text(text = "Toal carbohydrates", fontSize = 32.sp)
             Text(text = "${totalCarbs}g", fontSize = 32.sp)
         }
+
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 8.dp
+        )
+
         ingredients.map {
             
             Row(
@@ -91,7 +98,6 @@ fun ResultScreen(navController: NavController, ingredientViewModel: IngredientVi
             onClick = { navController.navigate(Routes.composeMeal) },
             modifier = Modifier
                 .clip(RoundedCornerShape(4.dp))
-
         ) {
             Text(text = "BACK TO COMPOSITION")
         }

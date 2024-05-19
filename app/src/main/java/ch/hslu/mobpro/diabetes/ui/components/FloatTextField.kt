@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun FloatTextField(
     value: String,
+    positiveLimit: Float? = null,
     onValueChange: (String) -> Unit,
     label: String,
     modifier: Modifier = Modifier
@@ -29,7 +30,13 @@ fun FloatTextField(
                     onValueChange("0$newValue")
                 }
                 else {
+                    val floatValue = newValue.toFloatOrNull()
+                    if (positiveLimit != null && floatValue != null) {
+                        if (floatValue > positiveLimit) {
 
+                            return@TextField
+                        }
+                    }
                     onValueChange(newValue)
                 }
             }
@@ -46,7 +53,6 @@ fun FloatTextField(
     )
 }
 
-// Extension function to check if a string is a valid numeric input
 fun String.isValidNumericInput(): Boolean {
     return matches("\\d*\\.?\\d*".toRegex())
 }

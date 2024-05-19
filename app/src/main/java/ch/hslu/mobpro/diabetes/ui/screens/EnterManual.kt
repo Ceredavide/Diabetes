@@ -176,11 +176,6 @@ fun validate(productName: String, carbs: Float?, context: Context): Boolean {
 
 fun productExistsCheck(productName: String, context: Context): Boolean {
 
-    if (MainActivity.productDao.getProductByName(productName) != null) {
-
-        return true
-    }
-
-    return false
+    return MainActivity.productDao.getProductByName(productName) != null
 }
 

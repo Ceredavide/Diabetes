@@ -1,6 +1,6 @@
 package ch.hslu.mobpro.diabetes
 
-import ch.hslu.mobpro.diabetes.database.Product
+import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.ui.math.Ingredient
 import ch.hslu.mobpro.diabetes.ui.math.calculateCorrectionTooHigh
 import ch.hslu.mobpro.diabetes.ui.math.calculateInsulinDoseAndTotalCarbs

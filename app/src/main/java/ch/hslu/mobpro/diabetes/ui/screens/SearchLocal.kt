@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.getProductOpenFoodFactsExample
+import ch.hslu.mobpro.diabetes.http.getProductOpenFoodFactsExample
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope

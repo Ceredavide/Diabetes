@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes
+package ch.hslu.mobpro.diabetes.http
 
 import android.util.Log
 import com.google.gson.annotations.SerializedName

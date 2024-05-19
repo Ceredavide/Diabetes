@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -24,10 +25,11 @@ fun RoundButton(
     content: @Composable () -> Unit
 ) {
     Box(
-        modifier = modifier.size(56.dp)
+        modifier = modifier
+            .size(56.dp)
             .clip(CircleShape)
             .background(MaterialTheme.colors.primary),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         IconButton(
             onClick = onClick,
@@ -39,6 +41,15 @@ fun RoundButton(
                 )
             }
         )
+    }
+}
+
+@Preview
+@Composable
+fun RoundButtonPreview() {
+
+    RoundButton(onClick = { /*TODO*/ }, text = "+") {
+
     }
 }
 

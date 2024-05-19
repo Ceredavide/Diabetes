@@ -12,7 +12,7 @@ fun calculateInsulinDoseAndTotalCarbs(insulinPer10gCarbs: Float,
                                       lowerBoundGlucoseLevel: Float,
                                       upperBoundGlucoseLevel: Float,
                                       glucoseLevel: Float,
-                                      ingredients:List<Ingredient>): Pair<Float, Float> {
+                                      ingredients:List<Ingredient>): Pair<Int, Float> {
 
     val totalCarbs = ingredients.map {
        it.calculateCarbs()
@@ -45,7 +45,7 @@ fun calculateInsulinDoseAndTotalCarbs(insulinPer10gCarbs: Float,
         )
     }
 
-    return Pair(insulinDose.truncate(1), totalCarbs)
+    return Pair(insulinDose.truncate(1).roundToInt(), totalCarbs)
 }
 
 fun calculateNormal(insulinPer10gCarbs: Float, carbs: Float): Float {

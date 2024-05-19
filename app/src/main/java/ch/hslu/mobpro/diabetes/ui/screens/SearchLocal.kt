@@ -93,6 +93,7 @@ fun SearchLocalScreen(navController: NavController,
     }
 }
 
+
 fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
 
 
@@ -100,11 +101,7 @@ fun onTextInputChange(productName: String, productsState: MutableState<List<Prod
 
         if (productName.isNotEmpty()) {
 
-            val allProducts = MainActivity.productDao.findProductsFuzzy(productName)
-            val foundProducts = allProducts.filter {
-                it.name?.startsWith(productName,
-                    ignoreCase = true) ?: false
-            }
+            val foundProducts = MainActivity.productDao.findProductsFuzzyOrdered(productName)
             withContext(Dispatchers.Main) {
 
                 productsState.value = foundProducts

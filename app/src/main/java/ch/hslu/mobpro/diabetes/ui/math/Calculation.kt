@@ -8,7 +8,7 @@ fun Float.truncate(digits: Int): Float {
     return (this * 10.0f.pow(digits)).roundToInt().toFloat() / 10.0f.pow(digits)
 }
 fun calculateInsulinDoseAndTotalCarbs(insulinPer10gCarbs: Float,
-                                      insulinPer1mmmol_L: Float,
+                                      insulinPer1mmol_L: Float,
                                       lowerBoundGlucoseLevel: Float,
                                       upperBoundGlucoseLevel: Float,
                                       glucoseLevel: Float,
@@ -23,7 +23,7 @@ fun calculateInsulinDoseAndTotalCarbs(insulinPer10gCarbs: Float,
 
         insulinDose = calculateTooLow(
             insulinPer10gCarbs = insulinPer10gCarbs,
-            insulinePer1mmmol_L = insulinPer1mmmol_L,
+            insulinePer1mmol_L = insulinPer1mmol_L,
             carbs = totalCarbs,
             glucoseLevel = glucoseLevel
         )
@@ -32,7 +32,7 @@ fun calculateInsulinDoseAndTotalCarbs(insulinPer10gCarbs: Float,
 
         insulinDose = calculateTooHigh(
             insulinPer10gCarbs = insulinPer10gCarbs,
-            insulinePer1mmmol_L = insulinPer1mmmol_L,
+            insulinePer1mmol_L = insulinPer1mmol_L,
             carbs = totalCarbs,
             glucoseLevel = glucoseLevel
         )
@@ -52,27 +52,27 @@ fun calculateNormal(insulinPer10gCarbs: Float, carbs: Float): Float {
 
     return insulinPer10gCarbs / 10.0f * carbs
 }
-fun calculateTooLow(insulinPer10gCarbs: Float, insulinePer1mmmol_L: Float, carbs: Float, glucoseLevel: Float): Float {
+fun calculateTooLow(insulinPer10gCarbs: Float, insulinePer1mmol_L: Float, carbs: Float, glucoseLevel: Float): Float {
 
-    return calculateNormal(insulinPer10gCarbs, carbs) - calculateCorrectionTooLow(insulinePer1mmmol_L, glucoseLevel)
+    return calculateNormal(insulinPer10gCarbs, carbs) - calculateCorrectionTooLow(insulinePer1mmol_L, glucoseLevel)
 }
 
-fun calculateCorrectionTooLow(insulinePer1mmmol_L: Float, glucoseLevel: Float): Float {
+fun calculateCorrectionTooLow(insulinePer1mmol_L: Float, glucoseLevel: Float): Float {
 
     val normalValue = 5.5f
     val differenceToNormalValue = normalValue - glucoseLevel
 
-    return insulinePer1mmmol_L * differenceToNormalValue
+    return insulinePer1mmol_L * differenceToNormalValue
 }
-fun calculateTooHigh(insulinPer10gCarbs: Float, insulinePer1mmmol_L: Float, carbs: Float, glucoseLevel: Float): Float {
+fun calculateTooHigh(insulinPer10gCarbs: Float, insulinePer1mmol_L: Float, carbs: Float, glucoseLevel: Float): Float {
 
-    return calculateNormal(insulinPer10gCarbs, carbs) + calculateCorrectionTooHigh(insulinePer1mmmol_L, glucoseLevel)
+    return calculateNormal(insulinPer10gCarbs, carbs) + calculateCorrectionTooHigh(insulinePer1mmol_L, glucoseLevel)
 }
 
-fun calculateCorrectionTooHigh(insulinePer1mmmol_L: Float, glucoseLevel: Float): Float {
+fun calculateCorrectionTooHigh(insulinePer1mmol_L: Float, glucoseLevel: Float): Float {
 
     val normalValue = 5.5f
     val differenceToNormalValue = glucoseLevel - normalValue
 
-    return insulinePer1mmmol_L * differenceToNormalValue
+    return insulinePer1mmol_L * differenceToNormalValue
 }

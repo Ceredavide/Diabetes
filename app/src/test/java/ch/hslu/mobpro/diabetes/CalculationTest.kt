@@ -45,7 +45,7 @@ class CalculationTest {
 
         val (insulinDose, totalCarbs) = calculateInsulinDoseAndTotalCarbs(
             insulinPer10gCarbs = insulinPer10gCarbs,
-            insulinPer1mmmol_L = insulinPer1mmol_L,
+            insulinPer1mmol_L = insulinPer1mmol_L,
             lowerBoundGlucoseLevel = lowrBoundGlucoseLevel,
             upperBoundGlucoseLevel = upperBoundGlucoseLevel,
             glucoseLevel = glucoseLevel,

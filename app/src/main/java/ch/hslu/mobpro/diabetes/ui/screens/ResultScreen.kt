@@ -34,12 +34,12 @@ fun ResultScreen(navController: NavController, ingredientViewModel: IngredientVi
         val lowerBoundGlucoseLevel = 4.0f
         val upperBoundGlucoseLevel = 8.0f
         val insulinPer10gCarbs = 1.2f
-        val insulinPer1mmmol_L = 0.5f
+        val insulinPer1mmol_L = 0.5f
         val userName = "Test User"
 
         val (insulinDose, totalCarbs) = calculateInsulinDoseAndTotalCarbs(
             insulinPer10gCarbs = insulinPer10gCarbs,
-            insulinPer1mmmol_L = insulinPer1mmmol_L,
+            insulinPer1mmol_L = insulinPer1mmol_L,
             lowerBoundGlucoseLevel = lowerBoundGlucoseLevel,
             upperBoundGlucoseLevel = upperBoundGlucoseLevel,
             glucoseLevel = glucoseLevel,

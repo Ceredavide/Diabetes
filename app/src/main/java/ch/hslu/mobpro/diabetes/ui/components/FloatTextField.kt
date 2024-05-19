@@ -24,6 +24,17 @@ fun FloatTextField(
         value = value,
         onValueChange = { newValue ->
             if (newValue.isValidNumericInput()) {
+                if (newValue.startsWith('.')) {
+
+                    onValueChange("0$newValue")
+                }
+                else {
+
+                    onValueChange(newValue)
+                }
+            }
+            else if (newValue.isEmpty()) {
+
                 onValueChange(newValue)
             }
         },
@@ -37,5 +48,5 @@ fun FloatTextField(
 
 // Extension function to check if a string is a valid numeric input
 fun String.isValidNumericInput(): Boolean {
-    return matches("-?\\d*\\.?\\d*".toRegex())
+    return matches("\\d*\\.?\\d*".toRegex())
 }

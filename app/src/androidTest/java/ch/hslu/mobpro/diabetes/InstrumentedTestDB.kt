@@ -102,4 +102,32 @@ class InstrumentedTestDB {
         assertEquals("Banane", retrievedProduct!!.name)
         assertEquals(20.0f, retrievedProduct.carbs)
     }
+
+    @Test
+    fun testGetOrdered() {
+
+        val product = Product("ag", 20.0f)
+        val product1 = Product("ab", 10.0f)
+        productDao.insertProduct(product)
+        productDao.insertProduct(product1)
+
+        val allProducts = productDao.getAllOrdered()
+        assertEquals("ab", allProducts[0].name)
+        assertEquals("ag", allProducts[1].name)
+    }
+
+    @Test
+    fun testFindProductsFuzzyOrdered() {
+
+        val product = Product("ag", 20.0f)
+        val product1 = Product("bg", 20.0f)
+        val product2 = Product("ab", 10.0f)
+        productDao.insertProduct(product)
+        productDao.insertProduct(product1)
+        productDao.insertProduct(product2)
+
+        val allProducts = productDao.findProductsFuzzyOrdered("a")
+        assertEquals("ab", allProducts[0].name)
+        assertEquals("ag", allProducts[1].name)
+    }
 }

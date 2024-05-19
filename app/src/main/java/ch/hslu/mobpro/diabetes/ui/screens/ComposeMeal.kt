@@ -66,19 +66,20 @@ fun ComposeMeal(navController: NavController, ingredientViewModel: IngredientVie
                         check = true
                     }
                           },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(4.dp))
+                modifier = Modifier.padding(top = 10.dp)
             ) {
                 Text(text = "CALCULATE", color = Color.White)
             }
 
             Button(
-                onClick = { ingredientViewModel.clearIngredients() }
+                onClick = { ingredientViewModel.clearIngredients() },
+                modifier = Modifier.padding(top = 10.dp)
             ) {
                 Text(text = "CLEAR", color = Color.White)
             }
 
             RoundButton(
+                modifier = Modifier.padding(top = 10.dp),
                 onClick = { navController.navigate(Routes.searchLocal + "/${false}") },
                 text = "+"
             ) {}

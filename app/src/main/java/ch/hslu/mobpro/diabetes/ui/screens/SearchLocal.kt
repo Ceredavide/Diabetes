@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.getProductOpenFoodFactsExample
 import ch.hslu.mobpro.diabetes.ui.components.ProductListItem
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -48,6 +50,14 @@ fun SearchLocalScreen(navController: NavController,
         verticalArrangement = Arrangement.Top
     ) {
         var text by remember { mutableStateOf(TextFieldValue("")) }
+
+        Button(
+            onClick = {
+                getProductOpenFoodFactsExample()
+            }
+        ) {
+            Text(text = "SEND REQUEST")
+        }
 
         TextField(
             value = text,

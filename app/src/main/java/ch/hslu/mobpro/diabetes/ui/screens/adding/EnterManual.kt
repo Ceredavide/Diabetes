@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.screens
+package ch.hslu.mobpro.diabetes.ui.screens.adding
 
 import android.content.Context
 import android.os.Looper

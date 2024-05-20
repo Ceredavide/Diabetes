@@ -7,6 +7,9 @@
     <string name="product_name">Product name</string>
     <string name="insulin_per_10g">Insulin per 10g carbohydrates</string>
     <string name="insulin_per_1mmol_l">Insulin per 1mmol_l glucose</string>
+    <string name="user_name">user_name</string>
+    <string name="lower_bounds_glucose_level">lower_bounds_glucose_level</string>
+    <string name="upper_bounds_glucose_level">upper_bounds_glucose_level</string>
     <string name="welcome_text">Manage your diabetes by tracking glucose levels and calculating insulin doses based on your carb intake. Enter your insulin-to-carb ratio and sensitivity factor. Find nutritional info or add items manually. Track and visualize your blood sugar levels.</string>
     <string name="welcome_steup_complete">Your personal data has been saved. Now you can search for food nutritional info, compile meals, and track your blood sugar levels!</string>
 </resources>

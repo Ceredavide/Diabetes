@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.screens
+package ch.hslu.mobpro.diabetes.ui.screens.adding
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement

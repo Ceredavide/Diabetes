@@ -17,14 +17,16 @@ import ch.hslu.mobpro.diabetes.data.database.AppDatabase
 import ch.hslu.mobpro.diabetes.data.database.ProductDAO
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
-import ch.hslu.mobpro.diabetes.ui.screens.ComposeMeal
-import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
-import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
+import ch.hslu.mobpro.diabetes.ui.screens.adding.ComposeMeal
+import ch.hslu.mobpro.diabetes.ui.screens.editing.EditProduct
+import ch.hslu.mobpro.diabetes.ui.screens.editing.EditUser
+import ch.hslu.mobpro.diabetes.ui.screens.adding.EnterManualScreen
 import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ResultScreen
 import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
+import ch.hslu.mobpro.diabetes.ui.screens.adding.AddUser
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
@@ -104,7 +106,14 @@ fun App(context: Context) {
                 navController = navController,
                 editable = true,
                 ingredientViewModel = ingredientViewModel)}
-            composable(Routes.notifications) { ProfileScreen() }
+            composable(Routes.notifications) { ProfileScreen(navController = navController, context = context) }
+            composable(Routes.editUser + "/{userindex}") {
+
+                val userIndex = it.arguments?.getString("userindex")?.toInt()
+                val userInfo = PreferenceManager.instance.getUserByIndex(userIndex!!, context)
+                EditUser(user = userInfo)
+            }
+            composable(Routes.addUser) { AddUser(navController = navController, context = context) }
         }
     }
 

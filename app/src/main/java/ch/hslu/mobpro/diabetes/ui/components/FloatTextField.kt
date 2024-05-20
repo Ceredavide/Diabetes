@@ -1,8 +1,10 @@
 package ch.hslu.mobpro.diabetes.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -19,9 +21,9 @@ fun FloatTextField(
     positiveLimit: Float? = null,
     onValueChange: (String) -> Unit,
     label: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.background(Color.Transparent)
 ) {
-    TextField(
+    OutlinedTextField(
         value = value,
         onValueChange = { newValue ->
             if (newValue.isValidNumericInput()) {
@@ -34,7 +36,7 @@ fun FloatTextField(
                     if (positiveLimit != null && floatValue != null) {
                         if (floatValue > positiveLimit) {
 
-                            return@TextField
+                            return@OutlinedTextField
                         }
                     }
                     onValueChange(newValue)
@@ -49,7 +51,7 @@ fun FloatTextField(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         visualTransformation = VisualTransformation.None,
         textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
-        modifier = modifier.wrapContentWidth()
+        modifier = modifier.wrapContentWidth().background(Color.Transparent)
     )
 }
 

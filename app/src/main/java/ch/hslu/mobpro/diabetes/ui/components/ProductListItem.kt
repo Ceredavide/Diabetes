@@ -46,6 +46,8 @@ fun ProductListItem(navController: NavController,
                     editable: Boolean,
                     ingredientViewModel: IngredientViewModel?) {
 
+    val context = LocalContext.current
+
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -75,41 +77,11 @@ fun ProductListItem(navController: NavController,
         )
 
         if (editable) {
-            EditDeleteIcons(
-                navController = navController,
-                product = product,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-    }
-}
 
-@Composable
-private fun EditDeleteIcons(navController: NavController,
-                            product: Product,
-                            modifier: Modifier = Modifier) {
-
-    val context = LocalContext.current
-
-    Row(modifier = modifier) {
-        IconButton(
-            modifier = Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .background(Color.LightGray)
-                .padding(4.dp),
-            onClick = { navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}") }
-        ) {
-            Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
-        }
-
-        Spacer(modifier = Modifier.padding(3.dp))
-
-        IconButton(
-            modifier = Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .background(Color.Red)
-                .padding(4.dp),
-                onClick =  {
+            EditDeleteButtons(
+                modifier = Modifier.padding(8.dp),
+                onEdit = { navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}") },
+                onDelete = {
 
                     CoroutineScope(Dispatchers.IO).launch {
 
@@ -119,12 +91,13 @@ private fun EditDeleteIcons(navController: NavController,
                         .makeText(context, "DELETED PRODUCT ${product.name}", Toast.LENGTH_LONG)
                         .show()
                     navController.navigate(Routes.searchLocal)
-                }
-        ) {
-           Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+                },
+                deletable = true
+            )
         }
     }
 }
+
 
 @Preview
 @Composable

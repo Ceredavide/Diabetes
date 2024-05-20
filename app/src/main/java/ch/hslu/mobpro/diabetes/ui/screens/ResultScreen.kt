@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.math.calculateInsulinDoseAndTotalCarbs
@@ -37,15 +38,15 @@ fun ResultScreen(navController: NavController, ingredientViewModel: IngredientVi
     Column {
         // temporary values for testing
         val glucoseLevel = 5.0f
-        val lowerBoundGlucoseLevel = sharedPreferences.getString("email", "4.0f")?.toFloat()
-        val upperBoundGlucoseLevel = sharedPreferences.getString("age", "8.0f")?.toFloat()
-        val insulinPer10gCarbs = 1.2f
-        val insulinPer1mmol_L = 0.5f
-        val userName = sharedPreferences.getString("name", "Unknown")
+        val lowerBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.lower_bounds_glucose_level), "4.0f")?.toFloat()
+        val upperBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.upper_bounds_glucose_level), "8.0f")?.toFloat()
+        val insulinPer10gCarbs = sharedPreferences.getString(context.getString(R.string.insulin_per_10g), "0.0f")?.toFloat()
+        val insulinPer1mmol_L = sharedPreferences.getString(context.getString(R.string.insulin_per_1mmol_l), "0.0f")?.toFloat()
+        val userName = sharedPreferences.getString(context.getString(R.string.user_name), "Unknown")
 
         val (insulinDose, totalCarbs) = calculateInsulinDoseAndTotalCarbs(
-            insulinPer10gCarbs = insulinPer10gCarbs,
-            insulinPer1mmol_L = insulinPer1mmol_L,
+            insulinPer10gCarbs = insulinPer10gCarbs!!,
+            insulinPer1mmol_L = insulinPer1mmol_L!!,
             lowerBoundGlucoseLevel = lowerBoundGlucoseLevel!!,
             upperBoundGlucoseLevel = upperBoundGlucoseLevel!!,
             glucoseLevel = glucoseLevel,

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun FloatTextField(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxWidth(),
     value: String,
     positiveLimit: Float? = null,
     onValueChange: (String) -> Unit,

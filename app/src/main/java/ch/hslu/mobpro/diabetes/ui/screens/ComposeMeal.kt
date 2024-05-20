@@ -41,63 +41,65 @@ fun ComposeMeal(navController: NavController, ingredientViewModel: IngredientVie
     var check by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
+    Column {
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Button(
-            onClick = {
-                if (validateIngredients(ingredients)) {
-
-                    navController.navigate(Routes.resultScreen)
-                } else if (ingredients.isEmpty()) {
-
-                    Toast.makeText(context, "PLEASE ADD PRODUCTS TO THIS MEAL", Toast.LENGTH_LONG)
-                        .show()
-                } else {
-
-                    Toast.makeText(context, "PLEASE ENTER MISSING VALUES", Toast.LENGTH_LONG).show()
-                    check = true
-                }
-            },
-            modifier = Modifier.padding(top = 10.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "CALCULATE", color = Color.White)
-        }
 
-        Button(
-            onClick = { ingredientViewModel.clearIngredients() },
-            modifier = Modifier.padding(top = 10.dp)
-        ) {
-            Text(text = "CLEAR", color = Color.White)
-        }
+            Button(
+                onClick = {
+                    if (validateIngredients(ingredients)) {
 
-        FloatingActionButton(
-            modifier = Modifier.padding(top = 10.dp),
-            onClick = { navController.navigate(Routes.searchLocal + "/${false}") },
-        ) {
-            Text(text = "+", style = TextStyle(fontSize = 48.sp))
-        }
-    }
+                        navController.navigate(Routes.resultScreen)
+                    }
+                    else if (ingredients.isEmpty()) {
 
-    Spacer(modifier = Modifier.padding(top = 16.dp))
+                        Toast.makeText(context, "PLEASE ADD PRODUCTS TO THIS MEAL", Toast.LENGTH_LONG).show()
+                    }
+                    else {
 
-    LazyColumn {
-        items(ingredients.size) { index ->
-            Box(
-                modifier = Modifier.fillMaxWidth()
+                        Toast.makeText(context, "PLEASE ENTER MISSING VALUES", Toast.LENGTH_LONG).show()
+                        check = true
+                    }
+                          },
+                modifier = Modifier.padding(top = 10.dp)
             ) {
+                Text(text = "CALCULATE", color = Color.White)
+            }
 
-                IngredientListItem(
-                    ingredient = ingredients[index],
-                    ingredientViewModel = ingredientViewModel,
-                    check = check
-                )
-                Spacer(modifier = Modifier.padding(top = 60.dp))
+            Button(
+                onClick = { ingredientViewModel.clearIngredients() },
+                modifier = Modifier.padding(top = 10.dp)
+            ) {
+                Text(text = "CLEAR", color = Color.White)
+            }
+
+            FloatingActionButton(
+                modifier = Modifier.padding(top = 10.dp),
+                onClick = { navController.navigate(Routes.searchLocal + "/${false}") },
+            ) {
+                Text(text = "+", style = TextStyle(fontSize = 48.sp))
+            }
+        }
+
+        Spacer(modifier = Modifier.padding(top = 16.dp))
+
+        LazyColumn {
+            items(ingredients.size) { index ->
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+
+                    IngredientListItem(ingredient = ingredients[index],
+                        ingredientViewModel = ingredientViewModel,
+                        check = check
+                        )
+                    Spacer(modifier = Modifier.padding(top = 60.dp))
+                }
             }
         }
     }

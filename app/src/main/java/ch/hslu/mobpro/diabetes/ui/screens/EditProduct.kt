@@ -92,7 +92,6 @@ fun EditProduct(productName: String, productCarbs: Float) {
             },
             label = stringResource(id = R.string.carbs_per_100g),
             positiveLimit = 100.0f,
-            modifier = Modifier
         )
 
         Spacer(modifier = Modifier.height(15.dp))

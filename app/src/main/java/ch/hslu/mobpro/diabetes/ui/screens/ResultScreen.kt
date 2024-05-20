@@ -35,7 +35,10 @@ fun ResultScreen(navController: NavController, ingredientViewModel: IngredientVi
     val ingredients = ingredientViewModel.ingredients
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
 
-    Column {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+    ) {
         // temporary values for testing
         val glucoseLevel = 5.0f
         val lowerBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.lower_bounds_glucose_level), "4.0f")?.toFloat()

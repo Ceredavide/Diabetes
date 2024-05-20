@@ -3,18 +3,21 @@ package ch.hslu.mobpro.diabetes.ui.screens
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
@@ -28,10 +31,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,8 +46,6 @@ fun EditProduct(productName: String, productCarbs: Float) {
     Column(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.Top
     ) {
 
         var nameImput by remember { mutableStateOf(TextFieldValue(productName)) }
@@ -55,16 +56,17 @@ fun EditProduct(productName: String, productCarbs: Float) {
         OutlinedTextField(
             value = nameImput,
             onValueChange = {
-                changeDetected = hasChanged(productName, it.text, productCarbs, carbsInput.toFloatOrNull())
+                changeDetected =
+                    hasChanged(productName, it.text, productCarbs, carbsInput.toFloatOrNull())
                 if (changeDetected) {
 
                     color = Color.Green
-                }
-                else {
+                } else {
 
                     color = Color.LightGray
                 }
-                nameImput  = it },
+                nameImput = it
+            },
             label = { Text(stringResource(id = R.string.product_name)) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -77,50 +79,71 @@ fun EditProduct(productName: String, productCarbs: Float) {
             onValueChange = {
 
                 val newCarbs = it.toFloatOrNull()
-                changeDetected = hasChanged(productName, nameImput.text, productCarbs, it.toFloatOrNull())
+                changeDetected =
+                    hasChanged(productName, nameImput.text, productCarbs, it.toFloatOrNull())
                 if (changeDetected && newCarbs != null) {
 
                     color = Color.Green
-                }
-                else {
+                } else {
 
                     color = Color.LightGray
                 }
                 carbsInput = it
-                            },
+            },
             label = stringResource(id = R.string.carbs_per_100g),
-            positiveLimit = 100.0f
+            positiveLimit = 100.0f,
+            modifier = Modifier
         )
 
         Spacer(modifier = Modifier.height(15.dp))
 
         val context = LocalContext.current
-        IconButton(
-            modifier = Modifier
-                .clip(RoundedCornerShape(4.dp))
-                .background(color),
-            onClick = {
 
-                if (changeDetected && onSave(productName, nameImput.text, carbsInput.toFloatOrNull(), context)) {
+        Column {
 
-                    Toast.makeText(context, "SAVED CHANGES", Toast.LENGTH_LONG).show()
+            IconButton(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(color),
+                onClick = {
+
+                    if (changeDetected && onSave(
+                            productName,
+                            nameImput.text,
+                            carbsInput.toFloatOrNull(),
+                            context
+                        )
+                    ) {
+
+                        Toast.makeText(context, "SAVED CHANGES", Toast.LENGTH_LONG).show()
+                    } else {
+
+                        Toast.makeText(context, "FAILED TO SAVE CHANGES", Toast.LENGTH_LONG)
+                            .show()
+                    }
                 }
-                else {
-
-                    Toast.makeText(context, "FAILED TO SAVE CHANGES", Toast.LENGTH_LONG).show()
-                }
+            ) {
+                Text(
+                    text = "SAVE",
+                    modifier = Modifier
+                        .padding(top = 50.dp)
+                )
+                Icon(
+                    Icons.Default.Save,
+                    contentDescription = "Save",
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
             }
-        ) {
-
-            Icon(Icons.Default.Save, contentDescription = "Save" )
         }
     }
 }
 
-fun hasChanged(originalName: String,
-               newName: String,
-               originalCarbs: Float,
-               newCarbs: Float?): Boolean {
+fun hasChanged(
+    originalName: String,
+    newName: String,
+    originalCarbs: Float,
+    newCarbs: Float?
+): Boolean {
 
     return originalName != newName || originalCarbs != newCarbs
 }
@@ -142,5 +165,11 @@ fun onSave(originalName: String, productName: String, carbs: Float?, context: Co
     }
 
     return false
+}
 
+@Preview
+@Composable
+fun EditProductPreview() {
+
+    EditProduct(productName = "Banane", productCarbs = 20.0f)
 }

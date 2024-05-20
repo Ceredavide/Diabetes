@@ -8,9 +8,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -22,10 +26,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
@@ -37,6 +45,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import java.util.logging.Handler
 
+@Preview
 @Composable
 fun EnterManualScreen() {
 
@@ -46,8 +55,7 @@ fun EnterManualScreen() {
 
     Column(
         modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
+            .padding(16.dp),
         verticalArrangement = Arrangement.Top
     ) {
 
@@ -65,40 +73,42 @@ fun EnterManualScreen() {
             value = carbs,
             onValueChange = { carbs = it },
             label = stringResource(id = R.string.carbs_per_100g),
-            positiveLimit = 100.0f
+            positiveLimit = 100.0f,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        RoundButton(
+        FloatingActionButton(
             onClick = {
 
-                    val productName = text.text
-                    val carbsFloat = carbs.toFloatOrNull()
+                val productName = text.text
+                val carbsFloat = carbs.toFloatOrNull()
 
-                    onAdd(
-                        productName = productName,
-                        carbs = carbsFloat,
-                        context = context,
-                        onSuccess  = {
+                onAdd(
+                    productName = productName,
+                    carbs = carbsFloat,
+                    context = context,
+                    onSuccess  = {
 
-                            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-                            text = TextFieldValue()
-                            carbs = ""
-                        },
-                        onFailure = {
+                        Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                        text = TextFieldValue()
+                        carbs = ""
+                    },
+                    onFailure = {
 
-                            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-                        })
+                        Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                    })
+            }
+        ) {
+            Text(text = "+", style = TextStyle(fontSize = 48.sp))
 
-            },
-            text = "+"
-        ) {}
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // For easy way to delete all products for now
-        RoundButton(
+        FloatingActionButton(
             onClick = {
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -110,9 +120,10 @@ fun EnterManualScreen() {
                     }
                     Toast.makeText(context, "DELETED ALL PRODUCTS", Toast.LENGTH_LONG).show()
                 }
-            },
-            text = "-"
-        ) {}
+            }
+        ) {
+            Text(text = "-", style = TextStyle(fontSize = 48.sp))
+        }
     }
 }
 

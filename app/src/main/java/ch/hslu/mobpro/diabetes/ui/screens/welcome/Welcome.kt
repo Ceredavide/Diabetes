@@ -106,13 +106,13 @@ fun UserInfoForm(userProfileState: UserPreferences) {
         FloatTextField(
             value = carbsInput,
             onValueChange = { carbsInput = it},
-            label = stringResource(id = R.string.carbs_per_100g)
+            label = stringResource(id = R.string.carbs_per_100g),
         )
         var correctionInput by remember { mutableStateOf("") }
         FloatTextField(
             value = correctionInput,
             onValueChange = { correctionInput = it },
-            label = stringResource(id = R.string.insulin_per_1mmol_l)
+            label = stringResource(id = R.string.insulin_per_1mmol_l),
         )
         OutlinedTextField(
             value = userProfileState.upperBoundGlucoseLevel.value.toString(),

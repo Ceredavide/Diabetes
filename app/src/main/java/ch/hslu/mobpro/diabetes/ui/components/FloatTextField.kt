@@ -13,15 +13,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
 @Composable
 fun FloatTextField(
+    modifier: Modifier = Modifier,
     value: String,
     positiveLimit: Float? = null,
     onValueChange: (String) -> Unit,
-    label: String,
-    modifier: Modifier = Modifier.background(Color.Transparent)
+    label: String
 ) {
     OutlinedTextField(
         value = value,
@@ -51,10 +52,23 @@ fun FloatTextField(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         visualTransformation = VisualTransformation.None,
         textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
-        modifier = modifier.wrapContentWidth().background(Color.Transparent)
+        modifier = modifier
     )
 }
 
 fun String.isValidNumericInput(): Boolean {
     return matches("\\d*\\.?\\d*".toRegex())
+}
+
+@Preview
+@Composable
+fun FloatTextFieldPreview() {
+
+    val temo = ""
+    FloatTextField(
+        value = temo,
+        onValueChange = {},
+        label = "label",
+        modifier = Modifier
+    )
 }

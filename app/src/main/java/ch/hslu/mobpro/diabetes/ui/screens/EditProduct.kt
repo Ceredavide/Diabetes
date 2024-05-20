@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
@@ -51,7 +52,7 @@ fun EditProduct(productName: String, productCarbs: Float) {
         var color by remember { mutableStateOf(Color.LightGray) }
         var changeDetected by remember { mutableStateOf(false) }
 
-        TextField(
+        OutlinedTextField(
             value = nameImput,
             onValueChange = {
                 changeDetected = hasChanged(productName, it.text, productCarbs, carbsInput.toFloatOrNull())
@@ -65,7 +66,8 @@ fun EditProduct(productName: String, productCarbs: Float) {
                 }
                 nameImput  = it },
             label = { Text(stringResource(id = R.string.product_name)) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(15.dp))

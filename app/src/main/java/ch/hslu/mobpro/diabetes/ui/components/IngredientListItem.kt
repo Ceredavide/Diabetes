@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -28,8 +29,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.BrushPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,7 +59,7 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
 
         val amount = if (ingredient.weightAmount == 0.0f) "" else ingredient.weightAmount.toString()
         var carbsInput by remember { mutableStateOf(amount) }
-        var color by remember { mutableStateOf(Color.LightGray) }
+        var color by remember { mutableStateOf(Color.Transparent) }
 
         Column() {
 
@@ -66,7 +69,6 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
                 modifier = Modifier
                     .wrapContentWidth()
                     .padding(10.dp)
-                    .clickable { }
             )
 
             FloatTextField(
@@ -75,8 +77,8 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
                     carbsInput = it
                     ingredient.weightAmount = carbsInput.toFloatOrNull()
                 },
-                label = "ENTER ${stringResource(id = R.string.carbs_per_100g)}",
-                modifier = Modifier.background(color),
+                label = "Weight Amount in g/ml",
+                modifier = Modifier.background(color)
             ) .also {
 
                 if (check) {
@@ -85,35 +87,32 @@ fun IngredientListItem(ingredient: Ingredient, ingredientViewModel: IngredientVi
                         color = Color.Red
                     } else {
 
-                        color = Color.LightGray
+                        color = Color.Transparent
                     }
                 }
                 else {
 
-                    color = Color.LightGray
+                    color = Color.Transparent
                 }
             }
-
-
-
         }
 
 
-        Icon(
-            imageVector = Icons.Default.Delete,
-            contentDescription = "Delete",
+        IconButton(
+            onClick = { ingredientViewModel.removeIngredient(ingredient) },
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(4.dp))
+                .padding(16.dp)
                 .background(Color.Transparent)
-                .padding(4.dp)
-                .clickable {
+        ){
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = "Delete",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.0f)
 
-                    ingredientViewModel.removeIngredient(ingredient)
-                }
-        )
+            )
+        }
 
     }
 }

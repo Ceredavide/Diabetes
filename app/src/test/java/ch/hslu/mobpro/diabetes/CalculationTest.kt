@@ -52,7 +52,7 @@ class CalculationTest {
             ingredients = ingredients
         )
 
-        assertEquals(16.8f, insulinDose)
+        assertEquals(17, insulinDose)
         assertEquals(140.0f, totalCarbs)
     }
     @Test

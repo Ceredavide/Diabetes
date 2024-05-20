@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
             DiabeticsTheme {
                 if (preferenceManager.isFirstTime()) {
                     WelcomeScreen(onCompleted = {
-                        preferenceManager.setUserinfo(it)
+                        preferenceManager.setUserinfo(it, this)
                         preferenceManager.setFirstTime(false)
                         setContent { App(this) }
                     })

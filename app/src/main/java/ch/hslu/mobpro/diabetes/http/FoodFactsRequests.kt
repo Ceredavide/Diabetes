@@ -47,11 +47,13 @@ suspend fun fetchProduct(barCode: String) : Pair<String, Float>? {
         val response: Response = client.newCall(request).execute()
         if (response.isSuccessful) {
 
-            return parseProductInfo(response.body?.string()!!)
+            parseProductInfo(response.body?.string()!!)
         } else {
+
             null
         }
     } catch (e: Exception) {
+
         e.printStackTrace()
         null
     }
@@ -73,11 +75,14 @@ suspend fun searchProduct(productName: String) : Pair<String, Float>? {
     return try {
         val response: Response = client.newCall(request).execute()
         if (response.isSuccessful) {
+
             parseProductInfo(response.body?.string()!!)
         } else {
+
             null
         }
     } catch (e: Exception) {
+
         e.printStackTrace()
         null
     }
@@ -92,11 +97,11 @@ fun parseProductInfo(jsonString: String): Pair<String, Float>? {
 
         i = jsonString.indexOf("carbohydrates")
         i = jsonString.indexOf(":", i + 1) + 1
-        val carbs = jsonString.substring(i, i + 10)
-            .takeWhile { it.isDigit() || it == '.' }.toFloat()
+        val carbs = jsonString.substring(i, jsonString.indexOf(",", i + 1)).toFloat()
 
-        return Pair(name, carbs)
+        Pair(name, carbs)
     } catch (e: Exception) {
+
         e.printStackTrace()
         null
     }

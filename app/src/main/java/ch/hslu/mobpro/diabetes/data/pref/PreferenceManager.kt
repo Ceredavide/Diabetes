@@ -20,6 +20,7 @@ class PreferenceManager(context: Context) {
     init {
 
         userUid = sharedPreferences.getString(context.getString(R.string.userUid), "0")?.toUInt() ?: 0u
+        activeUser = sharedPreferences.getString(context.getString(R.string.active_user), "0")?.toUInt() ?: 0u
 
         for (i in 0..userUid.toInt()) {
 

@@ -2,7 +2,9 @@ package ch.hslu.mobpro.diabetes.data.pref
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.UserPreferences
 
@@ -61,7 +63,7 @@ class PreferenceManager(context: Context) {
             val lowerBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.lower_bounds_glucose_level) + "$i", "4.0f")?.toFloat()
             val upperBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.upper_bounds_glucose_level) + "$i", "8.0f")?.toFloat()
             userInfo += UserPreferences(
-                name = mutableStateOf(userName!!),
+                name = mutableStateOf(userName),
                 insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
                 inslinePer1mmol_L = mutableStateOf(insulinPer1mmol_L!!),
                 lowerBoundGlucoseLevel = mutableStateOf(lowerBoundGlucoseLevel!!),
@@ -72,10 +74,10 @@ class PreferenceManager(context: Context) {
         return userInfo
     }
 
-    fun getActiveUserInfo(context: Context, userMap: Map<String, UInt>, activeUser: UInt): UserPreferences? {
+    fun getActiveUserInfo(context: Context): MutableState<UserPreferences?> {
 
         val userName = userMap.entries.find { it.value == activeUser }?.key
-        return if (userName != null) getUserInfo(userName, context) else null
+        return if (userName != null) mutableStateOf(getUserInfo(userName, context)) else mutableStateOf(null)
     }
 
     fun getUserInfo(userName: String, context: Context) : UserPreferences {
@@ -148,9 +150,17 @@ class PreferenceManager(context: Context) {
         return activeUser
     }
 
-    fun setActiveUserIndex(user: UInt) {
+    fun setActiveUserIndex(user: UInt, context: Context) {
 
         activeUser = user
+        MainActivity.activeUserInfo = getActiveUserInfo(context)
+        sharedPreferences.edit().putString(context.getString(R.string.active_user), activeUser.toString()).apply()
+    }
+
+    fun switchToActiveUser(context: Context) {
+
+        val index = sharedPreferences.getString(context.getString(R.string.active_user), null)?.toUIntOrNull() ?: return
+        setActiveUserIndex(index, context)
     }
 
 }

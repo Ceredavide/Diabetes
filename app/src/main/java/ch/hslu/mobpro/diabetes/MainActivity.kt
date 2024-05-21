@@ -7,6 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,6 +31,7 @@ import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
 import ch.hslu.mobpro.diabetes.ui.screens.ResultScreen
 import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
 import ch.hslu.mobpro.diabetes.ui.screens.adding.AddUser
+import ch.hslu.mobpro.diabetes.ui.screens.welcome.UserPreferences
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
@@ -38,6 +42,7 @@ class MainActivity : ComponentActivity() {
         lateinit var db: AppDatabase
         lateinit var productDao: ProductDAO
         lateinit var glucoseReadingDao: GlucoseReadingDAO
+        var activeUserInfo: MutableState<UserPreferences?> = mutableStateOf(null)
     }
     private lateinit var preferenceManager: PreferenceManager
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +64,11 @@ class MainActivity : ComponentActivity() {
                     WelcomeScreen(onCompleted = {
                         preferenceManager.addUser(it, this)
                         preferenceManager.setFirstTime(false)
+                        preferenceManager.setActiveUserIndex(0u, this)
                         setContent { App(this) }
                     })
                 } else {
+                    preferenceManager.switchToActiveUser(this)
                     App(this)
                 }
             }

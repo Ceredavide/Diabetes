@@ -1,9 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ch.hslu.mobpro.diabetes.math.Ingredient
 
@@ -22,5 +19,10 @@ class IngredientViewModel: ViewModel() {
     fun clearIngredients() {
 
         ingredients.clear()
+    }
+
+    fun contains(productName: String): Boolean {
+
+        return ingredients.any { it.product.name == productName }
     }
 }

@@ -7,7 +7,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt") // Add this line
 
-    kotlin("plugin.serialization") version "1.5.21" // Use the appropriate version
+    kotlin("plugin.serialization") version "1.5.21"
 
 }
 
@@ -77,6 +77,8 @@ dependencies {
 
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+
     //RoomDB
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")

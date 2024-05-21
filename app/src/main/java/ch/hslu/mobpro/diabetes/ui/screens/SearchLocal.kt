@@ -83,15 +83,6 @@ fun SearchLocalScreen(navController: NavController,
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            Toast
-                                .makeText(
-                                    currentContext,
-                                    "Clicked: ${productsState.value[index].name}",
-                                    Toast.LENGTH_LONG
-                                )
-                                .show()
-                        },
                 ) {
 
                     ProductListItem(

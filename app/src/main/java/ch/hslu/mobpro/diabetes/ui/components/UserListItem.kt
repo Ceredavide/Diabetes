@@ -54,10 +54,12 @@ fun UserListItem(navController: NavController,
 
             EditDeleteButtons(
                 modifier = modifier,
-                onEdit = { navController.navigate(Routes.editUser + "/$userIndex") },
+                onEdit = { navController.navigate(Routes.editUser + "/$userName") },
                 onDelete = {
-                           PreferenceManager.instance.deleteUser(index = userIndex, context = context)
-                },
+
+                    PreferenceManager.instance.deleteUser(userName = userName, context = context)
+                    navController.navigate(Routes.notifications)
+                           },
                 deletable = deletable
             )
         }

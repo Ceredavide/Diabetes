@@ -28,13 +28,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
+import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.UserPreferences
 
 @Composable
-fun EditUser(user: UserPreferences) {
+fun EditUser(navController: NavController, user: UserPreferences, context: Context) {
 
     val originalUserName = user.name.value
     var userName by remember { mutableStateOf(TextFieldValue(originalUserName)) }
@@ -71,7 +74,7 @@ fun EditUser(user: UserPreferences) {
                 changeDetected = hasChanged(user.insulinPer10gCarbs.value.toString(), it);
                 insulinPer10gCarbsString = it
             },
-            label = stringResource(id = R.string.user_name)
+            label = stringResource(id = R.string.insulin_per_10g)
         )
 
         Spacer(modifier = Modifier.padding(16.dp))
@@ -107,7 +110,6 @@ fun EditUser(user: UserPreferences) {
             label = stringResource(id = R.string.upper_bounds_glucose_level)
         )
 
-        val context = LocalContext.current
         if (changeDetected) {
 
             color = Color.Green
@@ -128,19 +130,28 @@ fun EditUser(user: UserPreferences) {
                     val upperBoundGlucoseLevel =
                         if (upperBoundGlucoseLevelString.toFloatOrNull() == null) 4.0f else upperBoundGlucoseLevelString.toFloat()
                     if (changeDetected && onSave(
-                            userName = userName.toString(),
+                            userName = userName.text,
                             insulinPer10gCarbs = insulinPer10gCarbsString.toFloatOrNull(),
                             insulinPer1mmol_L = insulinPer1mmol_LString.toFloatOrNull(),
                             loweBoundGlucoseLevel = loweBoundGlucoseLevel,
                             upperBoundGlucoseLevel = upperBoundGlucoseLevel,
-                            context = context
+                            context = context)) {
+
+                        val userInfo = UserPreferences(
+                            name = mutableStateOf(userName.text),
+                            insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbsString.toFloat()),
+                            inslinePer1mmol_L = mutableStateOf(insulinPer1mmol_LString.toFloat()),
+                            lowerBoundGlucoseLevel = mutableStateOf(loweBoundGlucoseLevel),
+                            upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevel)
                         )
-                    ) {
 
-                        Toast.makeText(context, "SAVED CHANGES", Toast.LENGTH_LONG).show()
-                    } else {
+                        PreferenceManager.instance.editUser(userInfo, context)
+                        Toast.makeText(context, "Saved changes", Toast.LENGTH_LONG).show()
+                        navController.navigate(Routes.notifications)
+                    }
+                    else {
 
-                        Toast.makeText(context, "FAILED TO SAVE CHANGES", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "Failed to save changes", Toast.LENGTH_LONG)
                             .show()
                     }
                 }
@@ -224,6 +235,8 @@ private fun validate(
 @Composable
 fun EditUserPreview() {
 
+    val navController = rememberNavController()
+
     val name = remember { mutableStateOf("User") }
     val insulinPer10gCarbs = remember { mutableStateOf(1.2f) }
     val inslinePer1mmol_L = remember { mutableStateOf(0.5f) }
@@ -238,5 +251,5 @@ fun EditUserPreview() {
         upperBoundGlucoseLevel = upperBoundGlucoseLevel
     )
     
-    EditUser(user = user)
+    EditUser(navController, user, LocalContext.current)
 }

@@ -114,7 +114,6 @@ fun AddUser(navController: NavController, context: Context) {
                         insulinPer1mmol_L = insulinPer1mmol_LInput.toFloatOrNull())
                 ) {
 
-                    Toast.makeText(context, "Saved user ${userNameInput}", Toast.LENGTH_LONG).show()
 
                     val userInfo = UserPreferences(
                         name = mutableStateOf(userNameInput.text),
@@ -124,8 +123,15 @@ fun AddUser(navController: NavController, context: Context) {
                         upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevelInput.toFloat())
                     )
 
-                    PreferenceManager.instance.addUser(userInfo, context)
-                    navController.navigate(Routes.notifications)
+                    if (PreferenceManager.instance.addUser(userInfo, context)) {
+
+                        Toast.makeText(context, "Saved user ${userNameInput}", Toast.LENGTH_LONG).show()
+                        navController.navigate(Routes.notifications)
+                    }
+                    else {
+
+                        Toast.makeText(context, "A user with the name ${userNameInput} already exists!", Toast.LENGTH_LONG).show()
+                    }
                 } else {
 
                     Toast.makeText(context, "Please make sure you entered values for all mandatory field", Toast.LENGTH_LONG)

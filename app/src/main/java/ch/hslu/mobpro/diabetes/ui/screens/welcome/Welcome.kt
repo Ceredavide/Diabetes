@@ -105,13 +105,18 @@ fun UserInfoForm(userProfileState: UserPreferences) {
         var carbsInput by remember { mutableStateOf("") }
         FloatTextField(
             value = carbsInput,
-            onValueChange = { carbsInput = it},
+            onValueChange = {
+                carbsInput = it
+                            userProfileState.insulinPer10gCarbs = mutableStateOf(carbsInput.toFloat())
+                            },
             label = stringResource(id = R.string.carbs_per_100g),
         )
         var correctionInput by remember { mutableStateOf("") }
         FloatTextField(
             value = correctionInput,
-            onValueChange = { correctionInput = it },
+            onValueChange = {
+                correctionInput = it
+                            userProfileState.inslinePer1mmol_L = mutableStateOf(correctionInput.toFloat())},
             label = stringResource(id = R.string.insulin_per_1mmol_l),
         )
         OutlinedTextField(

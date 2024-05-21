@@ -61,7 +61,7 @@ fun UserListItem(navController: NavController,
                         .clip(RoundedCornerShape(4.dp))
                         .background(Color.LightGray)
                         .padding(4.dp),
-                    onClick = { PreferenceManager.instance.setActiveUserIndex(userIndex) }
+                    onClick = { PreferenceManager.instance.setActiveUserIndex(userIndex, context) }
             ) {
                 Icon(imageVector = Icons.Default.SwitchAccount, contentDescription = "Switch user")
             }

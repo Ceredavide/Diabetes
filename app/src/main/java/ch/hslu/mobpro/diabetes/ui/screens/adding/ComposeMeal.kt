@@ -1,6 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.screens.adding
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,9 @@ import androidx.compose.material.Button
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,11 +49,17 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
-fun ComposeMeal(navController: NavController, ingredientViewModel: IngredientViewModel) {
+fun ComposeMeal(
+        navController: NavController,
+        ingredientViewModel: IngredientViewModel,
+        glucoseLevel: MutableState<Float>
+) {
 
     val ingredients = ingredientViewModel.ingredients
     var check by remember { mutableStateOf(false) }
-    var glucoseLevel by remember { mutableStateOf("") }
+    var glucoseLevelString by remember { mutableStateOf(glucoseLevel.value.toString()) }
+    var color by remember { mutableStateOf(Color.Transparent) }
+
     val context = LocalContext.current
 
     Column(
@@ -60,58 +69,68 @@ fun ComposeMeal(navController: NavController, ingredientViewModel: IngredientVie
         ActiveUserIndicator()
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
         ) {
 
             Button(
-                onClick = {
-                    if (validateIngredients(ingredients) && validateGlucoseLevel(glucoseLevel.toFloatOrNull())) {
-
-                        CoroutineScope(Dispatchers.IO).launch {
-
-                            val currentTime = Date()
-                            val glucoseReading = GlucoseReading(
-                                userIndex = PreferenceManager.instance.getActiveUserIndex().toInt(),
-                                glucoseLevel = glucoseLevel.toFloat(),
-                                time = currentTime
+                    onClick = {
+                        if (validateIngredients(ingredients) && validateGlucoseLevel(
+                                    glucoseLevelString.toFloatOrNull()
                             )
+                        ) {
 
-                            MainActivity.glucoseReadingDao.insertGlucoseReading(glucoseReading)
+                            CoroutineScope(Dispatchers.IO).launch {
+
+                                val currentTime = Date()
+                                val glucoseReading = GlucoseReading(
+                                        userIndex = PreferenceManager.instance.getActiveUserIndex()
+                                            .toInt(),
+                                        glucoseLevel = glucoseLevel.value,
+                                        time = currentTime
+                                )
+
+                                MainActivity.glucoseReadingDao.insertGlucoseReading(glucoseReading)
+                            }
+
+                            navController.navigate(Routes.resultScreen)
                         }
+                        else if (ingredients.isEmpty()) {
 
-                        navController.navigate(Routes.resultScreen)
-                    } else if (ingredients.isEmpty()) {
+                            Toast.makeText(
+                                    context,
+                                    "PLEASE ADD PRODUCTS TO THIS MEAL",
+                                    Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        else {
 
-                        Toast.makeText(
-                            context,
-                            "PLEASE ADD PRODUCTS TO THIS MEAL",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-
-                        Toast.makeText(context, "PLEASE ENTER MISSING VALUES", Toast.LENGTH_LONG)
-                            .show()
-                        check = true
-                    }
-                },
-                modifier = Modifier.padding(top = 10.dp)
+                            Toast.makeText(
+                                    context,
+                                    "PLEASE ENTER MISSING VALUES",
+                                    Toast.LENGTH_LONG
+                            )
+                                .show()
+                            check = true
+                        }
+                    },
+                    modifier = Modifier.padding(top = 10.dp)
             ) {
                 Text(text = "CALCULATE", color = Color.White)
             }
 
             Button(
-                onClick = { ingredientViewModel.clearIngredients() },
-                modifier = Modifier.padding(top = 10.dp)
+                    onClick = { ingredientViewModel.clearIngredients() },
+                    modifier = Modifier.padding(top = 10.dp)
             ) {
                 Text(text = "CLEAR", color = Color.White)
             }
 
             FloatingActionButton(
-                modifier = Modifier.padding(top = 10.dp),
-                onClick = { navController.navigate(Routes.searchLocal + "/${false}") },
+                    modifier = Modifier.padding(top = 10.dp),
+                    onClick = { navController.navigate(Routes.searchLocal + "/${false}") },
             ) {
                 Text(text = "+", style = TextStyle(fontSize = 48.sp))
             }
@@ -120,23 +139,39 @@ fun ComposeMeal(navController: NavController, ingredientViewModel: IngredientVie
         Spacer(modifier = Modifier.padding(top = 16.dp))
 
         FloatTextField(
-            value = glucoseLevel,
-            onValueChange = { glucoseLevel = it },
-            label = stringResource(id = R.string.glucose_level)
-        )
+                value = glucoseLevelString,
+                onValueChange = {
+                    glucoseLevelString = it
+                    if (glucoseLevelString.isNotEmpty() && glucoseLevelString.toFloatOrNull() != null) {
+                        glucoseLevel.value = glucoseLevelString.toFloat()
+                    }
+                },
+                label = stringResource(id = R.string.glucose_level),
+                modifier = Modifier.background(color).fillMaxWidth()
+        ).also {
+            val glucoseLevel = glucoseLevelString.toFloatOrNull()
+            if (glucoseLevelString.isEmpty() || glucoseLevel == null || glucoseLevel == 0.0f) {
+
+                color = Color.Red
+            }
+            else {
+
+                color = Color.Transparent
+            }
+        }
 
         Spacer(modifier = Modifier.padding(top = 16.dp))
 
         LazyColumn {
             items(ingredients.size) { index ->
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                 ) {
 
                     IngredientListItem(
-                        ingredient = ingredients[index],
-                        ingredientViewModel = ingredientViewModel,
-                        check = check
+                            ingredient = ingredients[index],
+                            ingredientViewModel = ingredientViewModel,
+                            check = check
                     )
                     Spacer(modifier = Modifier.padding(top = 60.dp))
                 }
@@ -171,6 +206,11 @@ fun ComposeMealPreview() {
 
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
+    val glucoseLevel = remember { mutableStateOf(0.0f) }
 
-    ComposeMeal(navController = navController, ingredientViewModel = ingredientViewModel)
+    ComposeMeal(
+            navController = navController,
+            ingredientViewModel = ingredientViewModel,
+            glucoseLevel = glucoseLevel
+    )
 }

@@ -8,12 +8,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
@@ -82,6 +86,7 @@ class MainActivity : ComponentActivity() {
 fun App(context: Context) {
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
+    val glucoseLevel = remember { mutableStateOf(0.0f) }
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
@@ -107,16 +112,25 @@ fun App(context: Context) {
             }
             composable(Routes.composeMeal) {
 
-                ComposeMeal(navController = navController, ingredientViewModel = ingredientViewModel)
+                ComposeMeal(
+                        navController = navController,
+                        ingredientViewModel = ingredientViewModel,
+                        glucoseLevel = glucoseLevel)
             }
-            composable(Routes.resultScreen) {
+            composable(Routes.resultScreen){
 
-                ResultScreen(navController = navController, ingredientViewModel = ingredientViewModel, context = context)
+                ResultScreen(
+                        navController = navController,
+                        ingredientViewModel = ingredientViewModel,
+                        glucoseLevel = glucoseLevel.value,
+                        context = context)
             }
-            composable(Routes.searchLocal) { SearchLocalScreen(
-                navController = navController,
-                editable = true,
-                ingredientViewModel = ingredientViewModel)}
+            composable(Routes.searchLocal) {
+                SearchLocalScreen(
+                    navController = navController,
+                    editable = true,
+                    ingredientViewModel = ingredientViewModel)
+            }
             composable(Routes.notifications) { ProfileScreen(navController = navController, context = context) }
             composable(Routes.editUser + "/{username}") {
 

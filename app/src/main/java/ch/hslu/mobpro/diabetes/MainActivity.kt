@@ -3,6 +3,7 @@ package ch.hslu.mobpro.diabetes
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
@@ -14,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
+import ch.hslu.mobpro.diabetes.data.database.GlucoseReadingDAO
 import ch.hslu.mobpro.diabetes.data.database.ProductDAO
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
     companion object {
         lateinit var db: AppDatabase
         lateinit var productDao: ProductDAO
+        lateinit var glucoseReadingDao: GlucoseReadingDAO
     }
     private lateinit var preferenceManager: PreferenceManager
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,12 +52,13 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         productDao = db.productDao()
+        glucoseReadingDao = db.glucoseReadingDao()
 
         setContent {
             DiabeticsTheme {
                 if (preferenceManager.isFirstTime()) {
                     WelcomeScreen(onCompleted = {
-                        preferenceManager.setUserinfo(it, this)
+                        preferenceManager.addUser(it, this)
                         preferenceManager.setFirstTime(false)
                         setContent { App(this) }
                     })
@@ -81,6 +85,7 @@ fun App(context: Context) {
             composable(Routes.dashboard) { ProductsScreen() }
             composable(Routes.enterManually) { EnterManualScreen() }
             composable(Routes.editProduct + "/{name}/{carbs}") {
+
                 val productName = it.arguments?.getString("name")
                 val productCarbs = it.arguments?.getString("carbs")?.toFloat()
                 EditProduct(productName = productName!!, productCarbs = productCarbs!!)
@@ -107,11 +112,12 @@ fun App(context: Context) {
                 editable = true,
                 ingredientViewModel = ingredientViewModel)}
             composable(Routes.notifications) { ProfileScreen(navController = navController, context = context) }
-            composable(Routes.editUser + "/{userindex}") {
+            composable(Routes.editUser + "/{username}") {
 
-                val userIndex = it.arguments?.getString("userindex")?.toInt()
-                val userInfo = PreferenceManager.instance.getUserByIndex(userIndex!!, context)
-                EditUser(user = userInfo)
+                val userName = it.arguments?.getString("username")
+                val userInfo = PreferenceManager.instance.getUserInfo(userName!!, context)
+                Log.d("Mine", "Looking for $userName")
+                EditUser(navController = navController, user = userInfo, context = context)
             }
             composable(Routes.addUser) { AddUser(navController = navController, context = context) }
         }

@@ -43,53 +43,55 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SearchLocalScreen(navController: NavController,
-                      editable: Boolean,
-                      ingredientViewModel: IngredientViewModel?) {
+fun SearchLocalScreen(
+        navController: NavController,
+        editable: Boolean,
+        ingredientViewModel: IngredientViewModel?
+) {
 
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
+    var text by remember { mutableStateOf(TextFieldValue("")) }
+    onTextInputChange(text.text, productsState)
 
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
     ) {
-        var text by remember { mutableStateOf(TextFieldValue("")) }
 
         Button(
-            onClick = {
-                getProductOpenFoodFactsExample()
-            }
+                onClick = {
+                    getProductOpenFoodFactsExample()
+                }
         ) {
             Text(text = "SEND REQUEST")
         }
 
         OutlinedTextField(
-            value = text,
-            onValueChange = {
-                text = it
-                onTextInputChange(it.text, productsState)
-            },
-            label = { Text(stringResource(id = R.string.product_name)) },
-            modifier = Modifier
-                .fillMaxWidth()
+                value = text,
+                onValueChange = {
+                    text = it
+                    onTextInputChange(text.text, productsState)
+                },
+                label = { Text(stringResource(id = R.string.product_name)) },
+                modifier = Modifier
+                    .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        val currentContext = LocalContext.current
         LazyColumn {
             items(productsState.value.size) { index ->
                 Box(
-                    Modifier
-                        .fillMaxWidth()
+                        Modifier
+                            .fillMaxWidth()
                 ) {
 
                     ProductListItem(
-                        navController = navController,
-                        product = productsState.value[index],
-                        editable = editable,
-                        ingredientViewModel = ingredientViewModel
+                            navController = navController,
+                            product = productsState.value[index],
+                            editable = editable,
+                            ingredientViewModel = ingredientViewModel
                     )
                     Spacer(modifier = Modifier.height(60.dp))
                 }
@@ -97,8 +99,8 @@ fun SearchLocalScreen(navController: NavController,
         }
     }
 }
-fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
 
+fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
 
     CoroutineScope(Dispatchers.IO).launch {
 
@@ -109,10 +111,13 @@ fun onTextInputChange(productName: String, productsState: MutableState<List<Prod
 
                 productsState.value = foundProducts
             }
-        } else {
+        }
+        else {
 
+            val allProducts = MainActivity.productDao.getAllOrdered()
             withContext(Dispatchers.Main) {
-                productsState.value = emptyList()
+
+                productsState.value = allProducts
             }
         }
     }
@@ -124,5 +129,9 @@ fun SearchLocalPreview() {
 
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
-    SearchLocalScreen(navController = navController, editable = true, ingredientViewModel = ingredientViewModel)
+    SearchLocalScreen(
+            navController = navController,
+            editable = true,
+            ingredientViewModel = ingredientViewModel
+    )
 }

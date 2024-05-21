@@ -72,22 +72,10 @@ class PreferenceManager(context: Context) {
         return userInfo
     }
 
-    fun getActiveUserInfo(context: Context): UserPreferences {
+    fun getActiveUserInfo(context: Context, userMap: Map<String, UInt>, activeUser: UInt): UserPreferences? {
 
-        val userName = sharedPreferences.getString(context.getString(R.string.user_name) + "$activeUser", "Unknown")
-        val insulinPer10gCarbs = sharedPreferences.getString(context.getString(R.string.insulin_per_10g) + "$activeUser", "0.0f")?.toFloat()
-        val insulinPer1mmol_L = sharedPreferences.getString(context.getString(R.string.insulin_per_1mmol_l) + "$activeUser", "0.0f")?.toFloat()
-        val lowerBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.lower_bounds_glucose_level) + "$activeUser", "4.0f")?.toFloat()
-        val upperBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.upper_bounds_glucose_level) + "$activeUser", "8.0f")?.toFloat()
-        val userInfo = UserPreferences(
-            name = mutableStateOf(userName!!),
-            insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
-            inslinePer1mmol_L = mutableStateOf(insulinPer1mmol_L!!),
-            lowerBoundGlucoseLevel = mutableStateOf(lowerBoundGlucoseLevel!!),
-            upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevel!!)
-        )
-
-        return userInfo
+        val userName = userMap.entries.find { it.value == activeUser }?.key
+        return if (userName != null) getUserInfo(userName, context) else null
     }
 
     fun getUserInfo(userName: String, context: Context) : UserPreferences {
@@ -158,6 +146,11 @@ class PreferenceManager(context: Context) {
     fun getActiveUserIndex(): UInt {
 
         return activeUser
+    }
+
+    fun setActiveUserIndex(user: UInt) {
+
+        activeUser = user
     }
 
 }

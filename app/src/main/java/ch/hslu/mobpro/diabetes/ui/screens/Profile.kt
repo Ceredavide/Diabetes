@@ -38,7 +38,7 @@ fun ProfileScreen(navController: NavController,  context: Context) {
                 UserListItem(
                     navController = navController,
                     userName = users[index].name.value,
-                    userIndex = index,
+                    userIndex = index.toUInt(),
                     deletable = users.size > 1,
                     context
                 )

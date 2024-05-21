@@ -1,7 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.components
 
 import android.content.Context
-import android.graphics.drawable.Icon
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,11 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.SwitchAccount
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,7 +33,7 @@ import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 @Composable
 fun UserListItem(navController: NavController,
                  userName: String,
-                 userIndex: Int,
+                 userIndex: UInt,
                  deletable: Boolean,
                  context: Context) {
 
@@ -52,6 +56,16 @@ fun UserListItem(navController: NavController,
                 style = TextStyle(fontSize = 32.sp)
             )
 
+            IconButton(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(Color.LightGray)
+                        .padding(4.dp),
+                    onClick = { PreferenceManager.instance.setActiveUserIndex(userIndex) }
+            ) {
+                Icon(imageVector = Icons.Default.SwitchAccount, contentDescription = "Switch user")
+            }
+
             EditDeleteButtons(
                 modifier = modifier,
                 onEdit = { navController.navigate(Routes.editUser + "/$userName") },
@@ -72,5 +86,5 @@ fun UserListItemPreview() {
 
     val navController = rememberNavController()
 
-    UserListItem(navController = navController, userName = "User", userIndex = 1, deletable = true, LocalContext.current)
+    UserListItem(navController = navController, userName = "User", userIndex = 1u, deletable = true, LocalContext.current)
 }

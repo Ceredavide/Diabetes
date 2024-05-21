@@ -72,7 +72,7 @@ fun ResultScreen(
 
         val textDecoration: TextDecoration
         val color: Color
-        if (glucoseLevel!! < lowerBoundGlucoseLevel!! || glucoseLevel > upperBoundGlucoseLevel!!) {
+        if (glucoseLevel < lowerBoundGlucoseLevel!! || glucoseLevel > upperBoundGlucoseLevel!!) {
 
             textDecoration = TextDecoration.Underline
             color = Color.Red
@@ -86,7 +86,7 @@ fun ResultScreen(
         val (insulinDose, totalCarbs) = calculateInsulinDoseAndTotalCarbs(
                 insulinPer10gCarbs = insulinPer10gCarbs!!,
                 insulinPer1mmol_L = insulinPer1mmol_L!!,
-                lowerBoundGlucoseLevel = lowerBoundGlucoseLevel!!,
+                lowerBoundGlucoseLevel = lowerBoundGlucoseLevel,
                 upperBoundGlucoseLevel = upperBoundGlucoseLevel!!,
                 glucoseLevel = glucoseLevel,
                 ingredients = ingredientViewModel.ingredients
@@ -108,7 +108,7 @@ fun ResultScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
-            Text(text = "glucose level", fontSize = 32.sp)
+            Text(text = "Glucose level", fontSize = 32.sp)
             Text(text = "$glucoseLevel",
                     style = TextStyle(
                             textDecoration = TextDecoration.Underline,
@@ -139,7 +139,7 @@ fun ResultScreen(
             Text(text = "Units insulin", fontSize = 32.sp)
 
             Text(
-                    text = "${insulinDose}",
+                    text = "$insulinDose",
                     style = TextStyle(
                             textDecoration = textDecoration,
                             color = color,

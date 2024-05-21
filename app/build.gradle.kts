@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "ch.hslu.mobpro.diabetes"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -90,14 +90,12 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
 
+    //YChart
+    implementation("co.yml:ycharts:2.1.0")
+
     // Http
-    //implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    //implementation("io.ktor:ktor-client-core:1.6.7")
-    //implementation("io.ktor:ktor-client-cio:1.6.7")
-    //implementation("io.ktor:ktor-client-content-negotiation:1.6.7")
-    //implementation("io.ktor:ktor-serialization-kotlinx-json:1.6.7")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0") // Use the appropriate version
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation("com.google.code.gson:gson:2.8.8")
 
 

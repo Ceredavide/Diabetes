@@ -57,12 +57,18 @@ fun ProductListItem(navController: NavController,
             .clickable {
 
                 if (!editable) {
-                    ingredientViewModel?.addIngredient(
-                        Ingredient(
-                            product = product,
-                            weightAmount = 0f
+                    if (ingredientViewModel?.contains(product.name!!)!!) {
+
+                        Toast.makeText(context, "Product already in ingredient list", Toast.LENGTH_LONG).show()
+                    }
+                    else {
+                        ingredientViewModel.addIngredient(
+                                Ingredient(
+                                        product = product,
+                                        weightAmount = 0f
+                                )
                         )
-                    )
+                    }
                     navController.navigate(Routes.composeMeal)
                 }
             },

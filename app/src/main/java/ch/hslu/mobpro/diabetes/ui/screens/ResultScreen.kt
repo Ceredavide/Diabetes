@@ -26,6 +26,7 @@ import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.math.calculateInsulinDoseAndTotalCarbs
+import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 
@@ -39,6 +40,7 @@ fun ResultScreen(navController: NavController, ingredientViewModel: IngredientVi
         modifier = Modifier
             .padding(16.dp)
     ) {
+        ActiveUserIndicator()
         // temporary values for testing
         val glucoseLevel = 5.0f
         val lowerBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.lower_bounds_glucose_level), "4.0f")?.toFloat()

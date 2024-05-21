@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
+import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.ui.components.UserListItem
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.UserPreferences
@@ -29,6 +30,9 @@ fun ProfileScreen(navController: NavController,  context: Context) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
+
+        ActiveUserIndicator()
+
         LazyColumn(
             modifier = Modifier
                 .padding(16.dp)

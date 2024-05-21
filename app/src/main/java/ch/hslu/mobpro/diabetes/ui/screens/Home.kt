@@ -2,6 +2,7 @@ package ch.hslu.mobpro.diabetes.ui.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.material.Text
+import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
 
 @Composable
 fun HomeScreen() {
@@ -10,4 +11,6 @@ fun HomeScreen() {
 
     // Displaying the text in a Text composable
     Text(text = text)
+
+    ActiveUserIndicator()
 }

@@ -36,6 +36,7 @@ import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.ui.components.IngredientListItem
 import ch.hslu.mobpro.diabetes.math.Ingredient
+import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
@@ -52,7 +53,11 @@ fun ComposeMeal(navController: NavController, ingredientViewModel: IngredientVie
     var glucoseLevel by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    Column {
+    Column(
+            modifier = Modifier.padding(16.dp)
+    ) {
+
+        ActiveUserIndicator()
 
         Row(
             modifier = Modifier

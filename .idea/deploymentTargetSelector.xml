@@ -13,21 +13,13 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="testInsertingDuplicate()">
+      <SelectionState runConfigName="testInsertGlucoseReading()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testGetOrdered()">
+      <SelectionState runConfigName="textGetAllFromUser()">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-05-19T00:07:26.628750200Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\marcf\.android\avd\Pixel_6_Pro_API_33.avd" />
-            </handle>
-          </Target>
-        </DropdownSelection>
-        <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="testFindProductsFuzzyOrdered()">
+      <SelectionState runConfigName="testGetAllGlucoseReadings()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

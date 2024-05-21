@@ -3,7 +3,6 @@ package ch.hslu.mobpro.diabetes
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.*
@@ -116,7 +115,6 @@ fun App(context: Context) {
 
                 val userName = it.arguments?.getString("username")
                 val userInfo = PreferenceManager.instance.getUserInfo(userName!!, context)
-                Log.d("Mine", "Looking for $userName")
                 EditUser(navController = navController, user = userInfo, context = context)
             }
             composable(Routes.addUser) { AddUser(navController = navController, context = context) }

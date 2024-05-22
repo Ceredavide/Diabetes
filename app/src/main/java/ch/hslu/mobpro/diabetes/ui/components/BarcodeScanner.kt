@@ -8,24 +8,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ch.hslu.mobpro.diabetes.data.network.client.RetrofitClient
+import ch.hslu.mobpro.diabetes.data.network.model.ProductResponse
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @Composable
 fun BarcodeScanner() {
     var scannedCode by remember { mutableStateOf("") }
+    var productName by remember { mutableStateOf("") }
+    var carbohydrates by remember { mutableStateOf<Float?>(null) }
     val scanLauncher = rememberLauncherForActivityResult(
         contract = ScanContract()
     ) { result ->
         result.contents?.let {
             scannedCode = it
+            fetchProductDetails(scannedCode, onProductFetched = { name, carbs ->
+                productName = name
+                carbohydrates = carbs
+            })
         } ?: run {
             scannedCode = "Scan cancelled or failed"
         }
@@ -41,6 +48,10 @@ fun BarcodeScanner() {
                 Text("Scan Barcode")
             }
             Text("Scanned Code: $scannedCode")
+            if (productName.isNotEmpty()) {
+                Text("Product Name: $productName")
+                Text("Carbohydrates (per 100g): ${carbohydrates ?: "Not available"}")
+            }
         }
     }
 }
@@ -53,4 +64,23 @@ private fun startBarcodeScanner(scanLauncher: ActivityResultLauncher<ScanOptions
     options.setBeepEnabled(true)
     options.setBarcodeImageEnabled(true)
     scanLauncher.launch(options)
+}
+
+private fun fetchProductDetails(barcode: String, onProductFetched: (String, Float?) -> Unit) {
+    val call = RetrofitClient.apiService.getProductByBarcode(barcode)
+    call.enqueue(object : Callback<ProductResponse> {
+        override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
+            if (response.isSuccessful) {
+                response.body()?.product?.let { product ->
+                    onProductFetched(product.product_name, product.nutriments.carbohydrates_100g)
+                }
+            } else {
+                onProductFetched("Product not found", null)
+            }
+        }
+
+        override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
+            onProductFetched("Error: ${t.message}", null)
+        }
+    })
 }

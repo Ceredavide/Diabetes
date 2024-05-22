@@ -13,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
@@ -26,7 +28,8 @@ import java.util.Date
 import kotlin.random.Random
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
+
 
     val readings = remember { mutableStateOf<List<GlucoseReading>>(emptyList()) }
     getGlucoseReadings(readings)
@@ -35,15 +38,14 @@ fun HomeScreen() {
             verticalArrangement = Arrangement.Top
     ) {
 
-        ActiveUserIndicator()
+        ActiveUserIndicator(navController = navController)
 
         Graph(
                 readings = readings,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
+                height = 500.dp
         )
 
+        /*
         Button(
                 modifier = Modifier,
                 onClick = {
@@ -51,6 +53,8 @@ fun HomeScreen() {
         ) {
             Text("Generate Data")
         }
+
+         */
     }
 }
 
@@ -65,9 +69,11 @@ private fun getGlucoseReadings(readings: MutableState<List<GlucoseReading>>) {
 
             foundReadings = listOf(GlucoseReading(0, 0f, Date()), foundReadings[0])
         }
-        withContext(Dispatchers.Main) {
+        else {
+            withContext(Dispatchers.Main) {
 
-            readings.value = foundReadings
+                readings.value = foundReadings
+            }
         }
     }
 
@@ -87,5 +93,6 @@ fun generateData(readings: MutableState<List<GlucoseReading>>) {
 @Composable
 fun HomePreview() {
 
-    HomeScreen()
+    val navController = rememberNavController()
+    HomeScreen(navController = navController)
 }

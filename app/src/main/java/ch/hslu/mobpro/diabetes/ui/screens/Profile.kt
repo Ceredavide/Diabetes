@@ -14,42 +14,50 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.ui.components.UserListItem
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController,  context: Context) {
+fun ProfileScreen(
+        navController: NavController,
+        glucoseReadingsViewModel: GlucoseReadingsViewModel,
+        context: Context
+) {
 
     val users = remember { PreferenceManager.instance.getAllUserInfo(context) }
 
     Column(
-        modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp)
     ) {
 
         ActiveUserIndicator(navController = navController)
 
         LazyColumn(
-            modifier = Modifier
-                .padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
         ) {
 
             items(users.size) { index ->
+
                 UserListItem(
-                    navController = navController,
-                    userName = users[index].name.value,
-                    userIndex = index.toUInt(),
-                    deletable = users.size > 1,
-                    context
+                        navController = navController,
+                        glucoseReadingsViewModel = glucoseReadingsViewModel,
+                        userName = users[index].name.value,
+                        userIndex = index.toUInt(),
+                        deletable = users.size > 1,
+                        context
                 )
             }
         }
 
         FloatingActionButton(
-            onClick = { navController.navigate(Routes.addUser) }
+                onClick = { navController.navigate(Routes.addUser) }
         ) {
             Text(text = "+", style = TextStyle(fontSize = 48.sp))
 
@@ -57,11 +65,11 @@ fun ProfileScreen(navController: NavController,  context: Context) {
     }
 }
 
-
 @Preview
 @Composable
 fun ProfileScreenPreview() {
 
     val navController = rememberNavController()
-    ProfileScreen(navController, LocalContext.current)
+    val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
+    ProfileScreen(navController, glucoseReadingsViewModel,LocalContext.current)
 }

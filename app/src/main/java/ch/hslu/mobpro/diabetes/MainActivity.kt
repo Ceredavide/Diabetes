@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -24,6 +25,7 @@ import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReadingDAO
 import ch.hslu.mobpro.diabetes.data.database.ProductDAO
+import ch.hslu.mobpro.diabetes.data.database.deleteOldReadings
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.screens.adding.ComposeMeal
@@ -63,6 +65,7 @@ class MainActivity : ComponentActivity() {
 
         productDao = db.productDao()
         glucoseReadingDao = db.glucoseReadingDao()
+        deleteOldReadings()
 
         setContent {
             DiabeticsTheme {
@@ -94,7 +97,7 @@ fun App(context: Context) {
         bottomBar = { BottomNavigationBar(navController) }
     ) {
         NavHost(navController, startDestination = Routes.home) {
-            composable(Routes.home) { HomeScreen() }
+            composable(Routes.home) { HomeScreen(navController) }
             composable(Routes.dashboard) { ProductsScreen() }
             composable(Routes.enterManually) { EnterManualScreen() }
             composable(Routes.editProduct + "/{name}/{carbs}") {

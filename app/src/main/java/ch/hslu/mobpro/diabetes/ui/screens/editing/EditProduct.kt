@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -24,7 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,54 +43,69 @@ import kotlinx.coroutines.launch
 fun EditProduct(productName: String, productCarbs: Float) {
 
     Column(
-        modifier = Modifier
-            .padding(16.dp)
+            modifier = Modifier
+                .padding(16.dp)
     ) {
 
         var nameImput by remember { mutableStateOf(TextFieldValue(productName)) }
         var carbsInput by remember { mutableStateOf((productCarbs.toString())) }
         var color by remember { mutableStateOf(Color.LightGray) }
         var changeDetected by remember { mutableStateOf(false) }
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         OutlinedTextField(
-            value = nameImput,
-            onValueChange = {
-                changeDetected =
-                    hasChanged(productName, it.text, productCarbs, carbsInput.toFloatOrNull())
-                if (changeDetected) {
+                value = nameImput,
+                onValueChange = {
+                    changeDetected =
+                            hasChanged(
+                                    productName,
+                                    it.text,
+                                    productCarbs,
+                                    carbsInput.toFloatOrNull()
+                            )
+                    if (changeDetected) {
 
-                    color = Color.Green
-                } else {
+                        color = Color.Green
+                    }
+                    else {
 
-                    color = Color.LightGray
-                }
-                nameImput = it
-            },
-            label = { Text(stringResource(id = R.string.product_name)) },
-            modifier = Modifier
-                .fillMaxWidth()
+                        color = Color.LightGray
+                    }
+                    nameImput = it
+                },
+                label = { Text(stringResource(id = R.string.product_name)) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+                modifier = Modifier
+                    .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(15.dp))
 
         FloatTextField(
-            value = carbsInput,
-            onValueChange = {
+                value = carbsInput,
+                onValueChange = {
 
-                val newCarbs = it.toFloatOrNull()
-                changeDetected =
-                    hasChanged(productName, nameImput.text, productCarbs, it.toFloatOrNull())
-                if (changeDetected && newCarbs != null) {
+                    val newCarbs = it.toFloatOrNull()
+                    changeDetected =
+                            hasChanged(
+                                    productName,
+                                    nameImput.text,
+                                    productCarbs,
+                                    it.toFloatOrNull()
+                            )
+                    if (changeDetected && newCarbs != null) {
 
-                    color = Color.Green
-                } else {
+                        color = Color.Green
+                    }
+                    else {
 
-                    color = Color.LightGray
-                }
-                carbsInput = it
-            },
-            label = stringResource(id = R.string.carbs_per_100g),
-            positiveLimit = 100.0f,
+                        color = Color.LightGray
+                    }
+                    carbsInput = it
+                },
+                label = stringResource(id = R.string.carbs_per_100g),
+                positiveLimit = 100.0f,
         )
 
         Spacer(modifier = Modifier.height(15.dp))
@@ -96,36 +115,37 @@ fun EditProduct(productName: String, productCarbs: Float) {
         Column {
 
             IconButton(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(color),
-                onClick = {
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(color),
+                    onClick = {
 
-                    if (changeDetected && onSave(
-                            productName,
-                            nameImput.text,
-                            carbsInput.toFloatOrNull(),
-                            context
-                        )
-                    ) {
+                        if (changeDetected && onSave(
+                                    productName,
+                                    nameImput.text,
+                                    carbsInput.toFloatOrNull(),
+                                    context
+                            )
+                        ) {
 
-                        Toast.makeText(context, "SAVED CHANGES", Toast.LENGTH_LONG).show()
-                    } else {
+                            Toast.makeText(context, "SAVED CHANGES", Toast.LENGTH_LONG).show()
+                        }
+                        else {
 
-                        Toast.makeText(context, "FAILED TO SAVE CHANGES", Toast.LENGTH_LONG)
-                            .show()
+                            Toast.makeText(context, "FAILED TO SAVE CHANGES", Toast.LENGTH_LONG)
+                                .show()
+                        }
                     }
-                }
             ) {
                 Text(
-                    text = "SAVE",
-                    modifier = Modifier
-                        .padding(top = 50.dp)
+                        text = "SAVE",
+                        modifier = Modifier
+                            .padding(top = 50.dp)
                 )
                 Icon(
-                    Icons.Default.Save,
-                    contentDescription = "Save",
-                    modifier = Modifier.padding(bottom = 4.dp)
+                        Icons.Default.Save,
+                        contentDescription = "Save",
+                        modifier = Modifier.padding(bottom = 4.dp)
                 )
             }
         }
@@ -133,16 +153,21 @@ fun EditProduct(productName: String, productCarbs: Float) {
 }
 
 private fun hasChanged(
-    originalName: String,
-    newName: String,
-    originalCarbs: Float,
-    newCarbs: Float?
+        originalName: String,
+        newName: String,
+        originalCarbs: Float,
+        newCarbs: Float?
 ): Boolean {
 
     return originalName != newName || originalCarbs != newCarbs
 }
 
-private fun onSave(originalName: String, productName: String, carbs: Float?, context: Context): Boolean {
+private fun onSave(
+        originalName: String,
+        productName: String,
+        carbs: Float?,
+        context: Context
+): Boolean {
 
     if (ch.hslu.mobpro.diabetes.ui.screens.adding.validate(productName, carbs, context)) {
 

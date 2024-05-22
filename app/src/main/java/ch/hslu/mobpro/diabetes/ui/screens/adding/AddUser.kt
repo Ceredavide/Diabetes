@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -23,7 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,6 +48,7 @@ fun AddUser(navController: NavController, context: Context) {
     var lowerBoundGlucoseLevelInput by remember { mutableStateOf("4.0") }
     var upperBoundGlucoseLevelInput by remember { mutableStateOf("8.0") }
     var color by remember { mutableStateOf(Color.LightGray) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier.padding(16.dp)
@@ -53,6 +58,8 @@ fun AddUser(navController: NavController, context: Context) {
             value = userNameInput,
             onValueChange = { userNameInput = it },
             label = { Text(stringResource(id = R.string.user_name)) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
             modifier = Modifier.fillMaxWidth()
         )
 

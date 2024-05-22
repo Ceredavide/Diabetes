@@ -9,24 +9,17 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReadingDAO
 import ch.hslu.mobpro.diabetes.data.database.ProductDAO
-import ch.hslu.mobpro.diabetes.data.database.deleteOldReadings
 import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 import ch.hslu.mobpro.diabetes.ui.screens.adding.ComposeMeal
@@ -50,7 +43,6 @@ class MainActivity : ComponentActivity() {
     companion object {
         lateinit var db: AppDatabase
         lateinit var productDao: ProductDAO
-        lateinit var glucoseReadingDao: GlucoseReadingDAO
         var activeUserInfo: MutableState<UserPreferences?> = mutableStateOf(null)
     }
     private lateinit var preferenceManager: PreferenceManager
@@ -66,7 +58,6 @@ class MainActivity : ComponentActivity() {
         ).build()
 
         productDao = db.productDao()
-        glucoseReadingDao = db.glucoseReadingDao()
 
         setContent {
             DiabeticsTheme {

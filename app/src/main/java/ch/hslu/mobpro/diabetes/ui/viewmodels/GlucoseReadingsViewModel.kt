@@ -1,11 +1,9 @@
 package ch.hslu.mobpro.diabetes.ui.viewmodels
 
-import androidx.collection.mutableIntListOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
+import ch.hslu.mobpro.diabetes.data.database.GlucoseReadingDAO
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,9 +16,10 @@ import java.util.Date
 class GlucoseReadingsViewModel : ViewModel() {
 
     private var readings = emptyList<GlucoseReading>()
-
+     var glucoseReadingDao: GlucoseReadingDAO
     init {
 
+        glucoseReadingDao = MainActivity.db.glucoseReadingDao()
         deleteOldGlucoseReadings()
         getGlucoseReadingsOfActiveUser()
     }
@@ -28,8 +27,8 @@ class GlucoseReadingsViewModel : ViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            MainActivity.glucoseReadingDao.insertGlucoseReading(reading)
-            readings = MainActivity.glucoseReadingDao.getAllFromUserByUserIndex(
+            glucoseReadingDao.insertGlucoseReading(reading)
+            readings = glucoseReadingDao.getAllFromUserByUserIndex(
                     PreferenceManager.instance.getActiveUserIndex().toInt()
             )
         }
@@ -43,7 +42,7 @@ class GlucoseReadingsViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
 
             val acitveUser = PreferenceManager.instance.getActiveUserIndex().toInt()
-            MainActivity.glucoseReadingDao
+            glucoseReadingDao
                 .getAllFromUserByUserIndex(acitveUser).filter {
 
                 val date =
@@ -52,10 +51,10 @@ class GlucoseReadingsViewModel : ViewModel() {
                 daysPassed > maxDays
             }.forEach {
 
-                MainActivity.glucoseReadingDao.deleteGlucoseReading(it)
+                glucoseReadingDao.deleteGlucoseReading(it)
             }
 
-            readings = MainActivity.glucoseReadingDao.getAllFromUserByUserIndex(acitveUser)
+            readings = glucoseReadingDao.getAllFromUserByUserIndex(acitveUser)
         }
     }
 
@@ -68,7 +67,7 @@ class GlucoseReadingsViewModel : ViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            readings = MainActivity.glucoseReadingDao
+            readings = glucoseReadingDao
                 .getAllFromUserByUserIndex(
                         PreferenceManager.instance.getActiveUserIndex().toInt()
                 )

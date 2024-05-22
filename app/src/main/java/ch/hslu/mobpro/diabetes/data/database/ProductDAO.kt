@@ -12,17 +12,24 @@ interface ProductDAO {
 
     @Query("SELECT * FROM product")
     fun getAll(): List<Product>
-    @Query("SELECT * FROM product WHERE uid IN (:productIds)")
-    fun loadAllById(productIds: IntArray): List<Product>
+    //@Query("SELECT * FROM product WHERE uid IN (:productIds)")
+    //fun loadAllById(productIds: IntArray): List<Product>
 
-    @Query("SELECT * FROM product WHERE uid IN (:names)")
-    fun loadAllByName(names: List<String>): List<Product>
+    //@Query("SELECT * FROM product WHERE uid IN (:names)")
+    //fun loadAllByName(names: List<String>): List<Product>
 
     @Query("SELECT * FROM product WHERE product_name = :name")
     fun getProductByName(name: String): Product?
 
     @Query("SELECT * FROM product WHERE product_name LIKE '%' || :productName || '%'")
     fun findProductsFuzzy(productName: String): List<Product>
+
+    @Query("SELECT * FROM product ORDER BY product_name ASC")
+    fun getAllOrdered(): List<Product>
+
+    @Query("SELECT * FROM product WHERE product_name LIKE :productName || '%' ORDER BY product_name ASC")
+    fun findProductsFuzzyOrdered(productName: String): List<Product>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(vararg product: Product)

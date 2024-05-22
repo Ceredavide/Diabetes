@@ -17,12 +17,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.R
+import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 import ch.hslu.mobpro.diabetes.ui.theme.Typography
 
 data class Step(val number: Int, val title: String, val content: @Composable () -> Unit)
 
 data class UserPreferences(
-    var name: MutableState<String>, var upperBoundGlucoseLevel: MutableState<Float>, var lowerBoundsGlucoseLevel: MutableState<Float>
+    var name: MutableState<String>, var insulinPer10gCarbs: MutableState<Float>, var inslinePer1mmol_L: MutableState<Float>, var upperBoundGlucoseLevel: MutableState<Float>, var lowerBoundGlucoseLevel: MutableState<Float>
 )
 
 
@@ -33,8 +34,10 @@ fun WelcomeScreen(onCompleted: (userInfo : UserPreferences) -> Unit) {
         mutableStateOf(
             UserPreferences(
                 name = mutableStateOf(""),
+                insulinPer10gCarbs = mutableStateOf(0.0f),
+                inslinePer1mmol_L = mutableStateOf(0.0f),
                 upperBoundGlucoseLevel = mutableStateOf(8.0f),
-                lowerBoundsGlucoseLevel = mutableStateOf(4.0f)
+                lowerBoundGlucoseLevel = mutableStateOf(4.0f)
             )
         )
     }
@@ -99,6 +102,23 @@ fun UserInfoForm(userProfileState: UserPreferences) {
                 keyboardController?.hide()
             })
         )
+        var carbsInput by remember { mutableStateOf("") }
+        FloatTextField(
+            value = carbsInput,
+            onValueChange = {
+                carbsInput = it
+                            userProfileState.insulinPer10gCarbs = mutableStateOf(carbsInput.toFloat())
+                            },
+            label = stringResource(id = R.string.carbs_per_100g),
+        )
+        var correctionInput by remember { mutableStateOf("") }
+        FloatTextField(
+            value = correctionInput,
+            onValueChange = {
+                correctionInput = it
+                            userProfileState.inslinePer1mmol_L = mutableStateOf(correctionInput.toFloat())},
+            label = stringResource(id = R.string.insulin_per_1mmol_l),
+        )
         OutlinedTextField(
             value = userProfileState.upperBoundGlucoseLevel.value.toString(),
             onValueChange = { userProfileState.upperBoundGlucoseLevel.value = it.toFloat() },
@@ -110,8 +130,8 @@ fun UserInfoForm(userProfileState: UserPreferences) {
             })
         )
         OutlinedTextField(
-            value = userProfileState.lowerBoundsGlucoseLevel.value.toString(),
-            onValueChange = { userProfileState.lowerBoundsGlucoseLevel.value = it.toFloat() },
+            value = userProfileState.lowerBoundGlucoseLevel.value.toString(),
+            onValueChange = { userProfileState.lowerBoundGlucoseLevel.value = it.toFloat() },
             label = { Text("Minimum Glucose Level") },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),

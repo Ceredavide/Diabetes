@@ -26,9 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import ch.hslu.mobpro.diabetes.MainActivity
+import ch.hslu.mobpro.diabetes.ui.navigation.Routes
 
 @Composable
-fun ActiveUserIndicator() {
+fun ActiveUserIndicator(navController: NavController) {
 
     val userName = MainActivity.activeUserInfo.value?.name?.value ?: return
 
@@ -40,7 +41,7 @@ fun ActiveUserIndicator() {
     ) {
 
         FloatingActionButton(
-                onClick = {},
+                onClick = { navController.navigate(Routes.notifications)},
                 modifier = Modifier
                     .wrapContentSize()
                     .background(Color(red = 0, green = 205, blue = 255)),

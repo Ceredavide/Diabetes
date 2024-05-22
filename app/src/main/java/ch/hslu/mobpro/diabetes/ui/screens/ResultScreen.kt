@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.math.calculateInsulinDoseAndTotalCarbs
 import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
@@ -54,25 +55,17 @@ fun ResultScreen(
 
         ActiveUserIndicator(navController = navController)
 
-        val lowerBoundGlucoseLevel = sharedPreferences.getString(
-                context.getString(R.string.lower_bounds_glucose_level),
-                "4.0f"
-        )?.toFloat()
-        val upperBoundGlucoseLevel = sharedPreferences.getString(
-                context.getString(R.string.upper_bounds_glucose_level),
-                "8.0f"
-        )?.toFloat()
-        val insulinPer10gCarbs =
-                sharedPreferences.getString(context.getString(R.string.insulin_per_10g), "0.0f")
-                    ?.toFloat()
-        val insulinPer1mmol_L =
-                sharedPreferences.getString(context.getString(R.string.insulin_per_1mmol_l), "0.0f")
-                    ?.toFloat()
-        val userName = sharedPreferences.getString(context.getString(R.string.user_name), "Unknown")
+        val userInfo = PreferenceManager.instance.getActiveUserInfo(context)
+        val userName = userInfo.value!!.name.value
+        val insulinPer10gCarbs = userInfo.value!!.insulinPer10gCarbs.value
+        val insulinPer1mmol_L = userInfo.value!!.insulinPer10gCarbs.value
+        val lowerBoundGlucoseLevel = userInfo.value!!.lowerBoundGlucoseLevel.value
+        val upperBoundGlucoseLevel = userInfo.value!!.upperBoundGlucoseLevel.value
+
 
         val textDecoration: TextDecoration
         val color: Color
-        if (glucoseLevel < lowerBoundGlucoseLevel!! || glucoseLevel > upperBoundGlucoseLevel!!) {
+        if (glucoseLevel < lowerBoundGlucoseLevel || glucoseLevel > upperBoundGlucoseLevel) {
 
             textDecoration = TextDecoration.Underline
             color = Color.Red
@@ -84,10 +77,10 @@ fun ResultScreen(
         }
 
         val (insulinDose, totalCarbs) = calculateInsulinDoseAndTotalCarbs(
-                insulinPer10gCarbs = insulinPer10gCarbs!!,
-                insulinPer1mmol_L = insulinPer1mmol_L!!,
+                insulinPer10gCarbs = insulinPer10gCarbs,
+                insulinPer1mmol_L = insulinPer1mmol_L,
                 lowerBoundGlucoseLevel = lowerBoundGlucoseLevel,
-                upperBoundGlucoseLevel = upperBoundGlucoseLevel!!,
+                upperBoundGlucoseLevel = upperBoundGlucoseLevel,
                 glucoseLevel = glucoseLevel,
                 ingredients = ingredientViewModel.ingredients
         )

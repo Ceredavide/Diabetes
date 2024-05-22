@@ -83,6 +83,7 @@ fun ComposeMeal(
                             )
                         ) {
 
+                            glucoseLevel.value = glucoseLevelString.toFloat()
                             persistGlucoseReading(glucoseLevel =  glucoseLevel.value, glucoseReadingsViewModel = glucoseReadingsViewModel)
 
                             navController.navigate(Routes.resultScreen)
@@ -174,7 +175,6 @@ fun ComposeMeal(
 
 fun persistGlucoseReading(glucoseLevel: Float, glucoseReadingsViewModel: GlucoseReadingsViewModel) {
 
-    CoroutineScope(Dispatchers.IO).launch {
         val currentTime = Date()
         val glucoseReading = GlucoseReading(
                 userIndex = PreferenceManager.instance.getActiveUserIndex()
@@ -184,7 +184,6 @@ fun persistGlucoseReading(glucoseLevel: Float, glucoseReadingsViewModel: Glucose
         )
 
         glucoseReadingsViewModel.addGlucoseReading(glucoseReading)
-    }
 }
 private fun validateGlucoseLevel(glucoseLevel: Float?): Boolean {
 

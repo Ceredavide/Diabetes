@@ -1,7 +1,6 @@
 package ch.hslu.mobpro.diabetes.ui.screens.editing
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -58,7 +57,6 @@ fun EditUser(navController: NavController, user: UserPreferences, context: Conte
             value = userName,
             onValueChange = {
                 changeDetected = hasChanged(originalUserName, it.text)
-                Log.d("Mine", "org: $originalUserName\tnew: ${it.text}")
                 userName = it
             },
             label = { Text(text = stringResource(id = R.string.user_name)) },

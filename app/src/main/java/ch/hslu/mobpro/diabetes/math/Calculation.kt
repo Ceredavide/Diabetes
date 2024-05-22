@@ -45,7 +45,7 @@ fun calculateInsulinDoseAndTotalCarbs(insulinPer10gCarbs: Float,
         )
     }
 
-    return Pair(insulinDose.truncate(1).roundToInt(), totalCarbs)
+    return Pair(insulinDose.truncate(1).toInt(), totalCarbs)
 }
 
 fun calculateNormal(insulinPer10gCarbs: Float, carbs: Float): Float {

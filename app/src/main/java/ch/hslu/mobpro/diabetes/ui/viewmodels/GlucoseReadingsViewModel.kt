@@ -63,4 +63,15 @@ class GlucoseReadingsViewModel : ViewModel() {
 
         return readings
     }
+
+    fun updateActiveUser() {
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            readings = MainActivity.glucoseReadingDao
+                .getAllFromUserByUserIndex(
+                        PreferenceManager.instance.getActiveUserIndex().toInt()
+                )
+        }
+    }
 }

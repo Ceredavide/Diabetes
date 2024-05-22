@@ -1,9 +1,7 @@
 package ch.hslu.mobpro.diabetes.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,17 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastMapIndexed
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
-import ch.hslu.mobpro.diabetes.ui.screens.generateData
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
@@ -37,19 +33,18 @@ import co.yml.charts.ui.linechart.model.LineType
 import co.yml.charts.ui.linechart.model.SelectionHighlightPoint
 import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
-import okhttp3.internal.wait
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.util.Date
 
 @Composable
-fun Graph(readings: MutableState<List<GlucoseReading>>, modifier: Modifier) {
+fun Graph(readings: MutableState<List<GlucoseReading>>, height: Dp) {
 
-    val points = remember { mutableStateOf<List<Point>>(emptyList()) }
+    val points = remember { mutableStateOf<List<Point>>(emptyList())}
     val dates = remember { mutableStateOf<List<String>>(emptyList()) }
-    convertReadings(readings, points, dates)
+    val (lowestReading, highestReading) = convertReadings(readings, points, dates)
+    val steps = 5
+
     if (points.value.isEmpty()) {
 
         Column(
@@ -76,12 +71,13 @@ fun Graph(readings: MutableState<List<GlucoseReading>>, modifier: Modifier) {
         .build()
 
     val yAxisData = AxisData.Builder()
-        .steps(5)
+        //.steps(range.size - 1)
+        .steps(steps)
         .backgroundColor(Color.White)
         .labelAndAxisLinePadding(20.dp)
+        .shouldDrawAxisLineTillEnd(true)
         .labelData {
-            val yScale = 25 / 5
-            (it * yScale).toString()
+            (lowestReading + it / steps.toFloat() * (highestReading - lowestReading)).toString()
         }
         .axisLineColor(MaterialTheme.colors.secondary)
         .axisLabelColor(Color.Black)
@@ -99,7 +95,7 @@ fun Graph(readings: MutableState<List<GlucoseReading>>, modifier: Modifier) {
                                     IntersectionPoint(
                                             color = MaterialTheme.colors.secondary
                                     ),
-                                    SelectionHighlightPoint(color = MaterialTheme.colors.secondary),
+                                    SelectionHighlightPoint(color = MaterialTheme.colors.primary),
                                     ShadowUnderLine(
                                             color = MaterialTheme.colors.primary,
                                             alpha = 0.5f,
@@ -121,40 +117,73 @@ fun Graph(readings: MutableState<List<GlucoseReading>>, modifier: Modifier) {
             isZoomAllowed = true,
     )
 
-    LineChart(
-            modifier = modifier,
+    Column(
+            verticalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        Text(text = "mmol/L", modifier = Modifier.padding(16.dp))
+        LineChart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height),
             lineChartData = lineChartData
     )
+    }
 }
 
 private fun convertReadings(
         readings: MutableState<List<GlucoseReading>>,
         outPoints: MutableState<List<Point>>,
-        outDates: MutableState<List<String>>
-) {
+        outDates: MutableState<List<String>>): Pair<Float, Float> {
 
-    outPoints.value = readings.value.fastMapIndexed { i, r ->
-        Point(i.toFloat(), r.glucoseLevel)
+    var highestReading = 0.0f
+    var lowestReading = Float.MAX_VALUE
+
+    outPoints.value = readings.value.fastMapIndexed { i, reading ->
+
+        if (reading.glucoseLevel > highestReading) {
+
+            highestReading = reading.glucoseLevel
+        }
+        else if (reading.glucoseLevel < lowestReading) {
+
+            lowestReading = reading.glucoseLevel
+        }
+        Point(i .toFloat(), reading.glucoseLevel)
     }
+
+    if (lowestReading == highestReading) {
+
+        lowestReading = 0.0f
+    }
+
     readings.value.forEach() {
         val localTime = Instant.ofEpochMilli(it.time.time)
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime()
 
-        outDates.value += "${localTime.hour}:${localTime.minute}:${localTime.second}"
+        outDates.value += "${localTime.hour}:${localTime.minute}"
     }
+
+    return Pair(lowestReading, highestReading)
 }
+
 
 @Preview
 @Composable
 fun GraphPreview() {
 
-    val readings = remember { mutableStateOf<List<GlucoseReading>>(emptyList()) }
-    generateData(readings)
+    val g = listOf(
+            GlucoseReading(0, 25.0f, Date()),
+            GlucoseReading(0, 20.0f, Date()),
+            GlucoseReading(0, 12.4f, Date()),
+            GlucoseReading(0, 15.0f, Date()),
+            GlucoseReading(0, 10.0f, Date()),
+            GlucoseReading(0, 5.0f, Date()),
+    )
+    val readings = remember { mutableStateOf(g) }
     Graph(
             readings = readings,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
+            height = 300.dp
     )
 }

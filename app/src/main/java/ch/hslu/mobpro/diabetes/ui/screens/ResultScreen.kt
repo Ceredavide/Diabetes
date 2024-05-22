@@ -52,7 +52,7 @@ fun ResultScreen(
                 .padding(14.dp),
     ) {
 
-        ActiveUserIndicator()
+        ActiveUserIndicator(navController = navController)
 
         val lowerBoundGlucoseLevel = sharedPreferences.getString(
                 context.getString(R.string.lower_bounds_glucose_level),

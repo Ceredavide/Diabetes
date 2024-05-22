@@ -20,7 +20,6 @@ import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.ui.components.UserListItem
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
-import ch.hslu.mobpro.diabetes.ui.screens.welcome.UserPreferences
 
 @Composable
 fun ProfileScreen(navController: NavController,  context: Context) {
@@ -31,7 +30,7 @@ fun ProfileScreen(navController: NavController,  context: Context) {
         modifier = Modifier.padding(16.dp)
     ) {
 
-        ActiveUserIndicator()
+        ActiveUserIndicator(navController = navController)
 
         LazyColumn(
             modifier = Modifier

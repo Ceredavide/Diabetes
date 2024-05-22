@@ -66,7 +66,7 @@ fun ComposeMeal(
             modifier = Modifier.padding(16.dp)
     ) {
 
-        ActiveUserIndicator()
+        ActiveUserIndicator(navController = navController)
 
         Row(
                 modifier = Modifier
@@ -147,7 +147,9 @@ fun ComposeMeal(
                     }
                 },
                 label = stringResource(id = R.string.glucose_level),
-                modifier = Modifier.background(color).fillMaxWidth()
+                modifier = Modifier
+                    .background(color)
+                    .fillMaxWidth()
         ).also {
             val glucoseLevel = glucoseLevelString.toFloatOrNull()
             if (glucoseLevelString.isEmpty() || glucoseLevel == null || glucoseLevel == 0.0f) {

@@ -1,16 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-
-    //RoomDB
-    //id("com.google.devtools.ksp")
     id("kotlin-android")
-    id("kotlin-kapt") // Add this line
-
+    id("kotlin-kapt")
     kotlin("plugin.serialization") version "1.5.21"
-
 }
-
 
 android {
     namespace = "ch.hslu.mobpro.diabetes"
@@ -22,7 +16,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,20 +45,26 @@ android {
 }
 
 dependencies {
-
-
+    // Core Android libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
+
+    // Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.compose)
-    //implementation(libs.core.ktx)
-    //implementation(libs.androidx.junit.ktx)
+
+    // Camera
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,23 +73,13 @@ dependencies {
     val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
-
-    val nav_version = "2.7.7"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-
-
-    //RoomDB
-    val roomVersion = "2.6.1"
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    //annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    //ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.compose.ui:ui")
 
     // ViewModel
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
 
-    //YChart
+    // YChart
     implementation("co.yml:ycharts:2.1.0")
 
     // Http
@@ -98,41 +87,34 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation("com.google.code.gson:gson:2.8.8")
 
-
-    // Choose one of the following:
-    // Material Design 3
-    implementation("androidx.compose.material3:material3")
-    // or Material Design 2
+    // Material Design
     implementation("androidx.compose.material:material")
-    // or skip Material Design and build directly on top of foundational components
+    implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.foundation:foundation")
-    // or only import the main APIs for the underlying toolkit systems,
-    // such as input and measurement/layout
-    implementation("androidx.compose.ui:ui")
-
-    // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
-
-    // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
-    // Optional - Included automatically by material, only add when you need
-    // the icons but not the material library (e.g. when using Material3 or a
-    // custom design system based on Foundation)
     implementation("androidx.compose.material:material-icons-core")
-    // Optional - Add full set of material icons
     implementation("androidx.compose.material:material-icons-extended")
-    // Optional - Add window size utils
     implementation("androidx.compose.material3:material3-window-size-class")
-
-    // Optional - Integration with activities
-    implementation("androidx.activity:activity-compose:1.9.0")
-    // Optional - Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    // Optional - Integration with LiveData
     implementation("androidx.compose.runtime:runtime-livedata")
-    // Optional - Integration with RxJava
     implementation("androidx.compose.runtime:runtime-rxjava2")
+
+    // Navigation Compose
+    val nav_version = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    // Barcode Scanner
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.zxing:core:3.4.1")
+
+    // Room Database
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }

@@ -22,6 +22,9 @@
       <SelectionState runConfigName="testGetAllGlucoseReadings()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="CustomCaptureActivity">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

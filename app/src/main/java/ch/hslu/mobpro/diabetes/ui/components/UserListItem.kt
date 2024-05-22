@@ -25,13 +25,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.ui.navigation.Routes
+import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
 
 @Composable
 fun UserListItem(navController: NavController,
+                glucoseReadingsViewModel: GlucoseReadingsViewModel,
                  userName: String,
                  userIndex: UInt,
                  deletable: Boolean,
@@ -64,6 +67,7 @@ fun UserListItem(navController: NavController,
                     onClick = {
 
                         PreferenceManager.instance.setActiveUserIndex(userIndex, context)
+                        glucoseReadingsViewModel.updateActiveUser()
                         navController.navigate(Routes.home)
                     }
             ) {
@@ -89,6 +93,12 @@ fun UserListItem(navController: NavController,
 fun UserListItemPreview() {
 
     val navController = rememberNavController()
+    val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
 
-    UserListItem(navController = navController, userName = "User", userIndex = 1u, deletable = true, LocalContext.current)
+    UserListItem(navController = navController,
+            glucoseReadingsViewModel = glucoseReadingsViewModel,
+            userName = "User",
+            userIndex = 1u,
+            deletable = true,
+            LocalContext.current)
 }

@@ -133,12 +133,18 @@ fun App(context: Context) {
                         context = context)
             }
             composable(Routes.searchLocal) {
+
                 SearchLocalScreen(
                     navController = navController,
                     editable = true,
                     ingredientViewModel = ingredientViewModel)
             }
-            composable(Routes.notifications) { ProfileScreen(navController = navController, context = context) }
+            composable(Routes.notifications) {
+
+                ProfileScreen(navController = navController,
+                        glucoseReadingsViewModel = glucoseReadingsViewModel,
+                        context = context)
+            }
             composable(Routes.editUser + "/{username}") {
 
                 val userName = it.arguments?.getString("username")

@@ -2,24 +2,31 @@ package ch.hslu.mobpro.diabetes.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Text
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
-import androidx.compose.material.Text
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
+import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
 import ch.hslu.mobpro.diabetes.ui.components.Graph
+import ch.hslu.mobpro.diabetes.ui.screens.adding.persistGlucoseReading
+import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
+import co.yml.charts.common.extensions.isNotNull
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,11 +35,9 @@ import java.util.Date
 import kotlin.random.Random
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, glucoseReadingsViewModel: GlucoseReadingsViewModel) {
 
-
-    val readings = remember { mutableStateOf<List<GlucoseReading>>(emptyList()) }
-    getGlucoseReadings(readings)
+    var readingInput by remember { mutableStateOf("") }
 
     Column(
             verticalArrangement = Arrangement.Top
@@ -41,9 +46,36 @@ fun HomeScreen(navController: NavController) {
         ActiveUserIndicator(navController = navController)
 
         Graph(
-                readings = readings,
+                glucoseReadingsViewModel = glucoseReadingsViewModel,
                 height = 500.dp
         )
+
+        Column(
+                modifier = Modifier
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            FloatTextField(
+                    value = readingInput,
+                    onValueChange = { readingInput = it },
+                    label = "Glucose reading(mmol/L)"
+            )
+
+            Button(
+                    onClick = {
+                        val reading = readingInput.toFloatOrNull()
+                        if (reading != null && reading > 0.0f) {
+
+                            persistGlucoseReading(glucoseLevel =  reading, glucoseReadingsViewModel = glucoseReadingsViewModel)
+                            readingInput = ""
+                        }
+                    }
+            ) {
+
+                Text(text = "ADD GLUCOSE READING")
+            }
+        }
 
         /*
         Button(
@@ -58,13 +90,15 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
-private fun getGlucoseReadings(readings: MutableState<List<GlucoseReading>>) {
+/*
+private fun getGlucoseReadings(readings: List<GlucoseReading>) {
 
     CoroutineScope(Dispatchers.IO).launch {
 
         var foundReadings =
                 MainActivity.glucoseReadingDao.getAllFromUserByUserIndex(
-                        PreferenceManager.instance.getActiveUserIndex().toInt())
+                        PreferenceManager.instance.getActiveUserIndex().toInt()
+                )
         if (foundReadings.size == 1) {
 
             foundReadings = listOf(GlucoseReading(0, 0f, Date()), foundReadings[0])
@@ -72,19 +106,21 @@ private fun getGlucoseReadings(readings: MutableState<List<GlucoseReading>>) {
         else {
             withContext(Dispatchers.Main) {
 
-                readings.value = foundReadings
+                readings = foundReadings
             }
         }
     }
 
 }
+ */
 
 fun generateData(readings: MutableState<List<GlucoseReading>>) {
 
     for (i in 1..30) {
         val randomGlucoseLevel = Random.nextFloat() * (25f - 3f) + 3f
-        val time = Date(System.currentTimeMillis() + i * 1000L) // Incrementing timestamp for demo purposes
-        readings.value += GlucoseReading(0,  glucoseLevel = randomGlucoseLevel, time = time)
+        val time =
+                Date(System.currentTimeMillis() + i * 1000L) // Incrementing timestamp for demo purposes
+        readings.value += GlucoseReading(0, glucoseLevel = randomGlucoseLevel, time = time)
     }
 
 }
@@ -94,5 +130,6 @@ fun generateData(readings: MutableState<List<GlucoseReading>>) {
 fun HomePreview() {
 
     val navController = rememberNavController()
-    HomeScreen(navController = navController)
+    val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
+    HomeScreen(navController = navController, glucoseReadingsViewModel = glucoseReadingsViewModel)
 }

@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastMapIndexed
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
+import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart
@@ -38,8 +40,9 @@ import java.time.ZoneId
 import java.util.Date
 
 @Composable
-fun Graph(readings: MutableState<List<GlucoseReading>>, height: Dp) {
+fun Graph(glucoseReadingsViewModel: GlucoseReadingsViewModel, height: Dp) {
 
+    val readings = glucoseReadingsViewModel.getGlucoseReadingsOfActiveUser()
     val points = remember { mutableStateOf<List<Point>>(emptyList())}
     val dates = remember { mutableStateOf<List<String>>(emptyList()) }
     val (lowestReading, highestReading) = convertReadings(readings, points, dates)
@@ -132,14 +135,14 @@ fun Graph(readings: MutableState<List<GlucoseReading>>, height: Dp) {
 }
 
 private fun convertReadings(
-        readings: MutableState<List<GlucoseReading>>,
+        readings: List<GlucoseReading>,
         outPoints: MutableState<List<Point>>,
         outDates: MutableState<List<String>>): Pair<Float, Float> {
 
     var highestReading = 0.0f
     var lowestReading = Float.MAX_VALUE
 
-    outPoints.value = readings.value.fastMapIndexed { i, reading ->
+    outPoints.value = readings.fastMapIndexed { i, reading ->
 
         if (reading.glucoseLevel > highestReading) {
 
@@ -157,7 +160,7 @@ private fun convertReadings(
         lowestReading = 0.0f
     }
 
-    readings.value.forEach() {
+    readings.forEach() {
         val localTime = Instant.ofEpochMilli(it.time.time)
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime()
@@ -173,7 +176,7 @@ private fun convertReadings(
 @Composable
 fun GraphPreview() {
 
-    val g = listOf(
+    val readings = listOf(
             GlucoseReading(0, 25.0f, Date()),
             GlucoseReading(0, 20.0f, Date()),
             GlucoseReading(0, 12.4f, Date()),
@@ -181,9 +184,9 @@ fun GraphPreview() {
             GlucoseReading(0, 10.0f, Date()),
             GlucoseReading(0, 5.0f, Date()),
     )
-    val readings = remember { mutableStateOf(g) }
+    val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
     Graph(
-            readings = readings,
+            glucoseReadingsViewModel = glucoseReadingsViewModel,
             height = 300.dp
     )
 }

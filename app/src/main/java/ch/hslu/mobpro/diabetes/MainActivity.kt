@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -41,6 +42,7 @@ import ch.hslu.mobpro.diabetes.ui.screens.adding.AddUser
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.UserPreferences
 import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
+import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
 import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
 
 class MainActivity : ComponentActivity() {
@@ -65,7 +67,6 @@ class MainActivity : ComponentActivity() {
 
         productDao = db.productDao()
         glucoseReadingDao = db.glucoseReadingDao()
-        deleteOldReadings()
 
         setContent {
             DiabeticsTheme {
@@ -73,7 +74,6 @@ class MainActivity : ComponentActivity() {
                     WelcomeScreen(onCompleted = {
                         preferenceManager.addUser(it, this)
                         preferenceManager.setFirstTime(false)
-                        preferenceManager.setActiveUserIndex(0u, this)
                         setContent { App(this) }
                     })
                 } else {
@@ -91,13 +91,14 @@ class MainActivity : ComponentActivity() {
 fun App(context: Context) {
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
+    val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
     val glucoseLevel = remember { mutableStateOf(0.0f) }
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
     ) {
         NavHost(navController, startDestination = Routes.home) {
-            composable(Routes.home) { HomeScreen(navController) }
+            composable(Routes.home) { HomeScreen(navController = navController, glucoseReadingsViewModel = glucoseReadingsViewModel) }
             composable(Routes.dashboard) { ProductsScreen() }
             composable(Routes.enterManually) { EnterManualScreen() }
             composable(Routes.editProduct + "/{name}/{carbs}") {
@@ -120,6 +121,7 @@ fun App(context: Context) {
                 ComposeMeal(
                         navController = navController,
                         ingredientViewModel = ingredientViewModel,
+                        glucoseReadingsViewModel = glucoseReadingsViewModel,
                         glucoseLevel = glucoseLevel)
             }
             composable(Routes.resultScreen){

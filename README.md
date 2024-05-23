@@ -31,20 +31,17 @@ User ermöglicht flexibel zu bleiben in hinsicht auf wie viele Kohelnhydrate er/
 
 # 5. Formel zur Berechnung
 Mit den angegebenen Werten ist es möglich die Insulindosis wie folgt zu berechnen:
-Insulindosis = (Insulindosis/10g Kohlenhydrate) / 10 * (Kohelnhydrate der Mahlzeit) + Korrektur
+
+$$Insulindosis = \frac{Insulindosis\frac{10g}{Kohlenhydrate}}{10} * Kohlenhydrate + Korrektur $$
 
 Wobei die Korrektur wie folgt des aktuellen Blutzuckerspiegels Brechnet werden kann:
-Diese kann wie folgt Berechnet werden:
+
 Im Falle eines zu hohen Blutzuckerspiegels:
-Korrektur = +(Insulindosis/1mmol/L) * (Blutzuckerspiegel - 5.5)
-Im Falle eines zu tiefen Blutzuckerspiegels
-Korrektur = -(Insulindosis/1mmol/L) * (5.5 - Blutzuckerspiegel)
+
+$$Korrektur = +Insulindosis\frac{1mmol}{L} * (Blutzuckerspiegel - 5.5) $$
+
+Im Falle eines zu tiefen Blutzuckerspiegels:
+
+$$Korrektur = -Insulindosis\frac{1mmol}{L} * (5.5 - Blutzuckerspiegel) $$
 
 Der Wert 5.5 wurde hier gewählt, da ein normaler Blutzuckerspiegel zwischen 4.0 und 6.0mmol/L liegt.
-
-
-Template Version 8.2 DE. (basiert auf AsciiDoc Version), Januar 2023
-
-Created, maintained and © by Dr. Peter Hruschka, Dr. Gernot Starke and
-contributors. Siehe <https://arc42.org>.
-

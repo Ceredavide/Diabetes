@@ -44,4 +44,4 @@ Im Falle eines zu tiefen Blutzuckerspiegels:
 
 $$Korrektur = -Insulindosis\frac{1mmol}{L} * (5.5 - Blutzuckerspiegel) $$
 
-Der Wert 5.5 wurde hier gewählt, da ein normaler Blutzuckerspiegel zwischen 4.0 und 6.0mmol/L liegt.
+Der Wert 5.5 wurde hier gewählt, da ein normaler Blutzuckerspiegel zwischen 4.0 und 7.0mmol/L liegt.

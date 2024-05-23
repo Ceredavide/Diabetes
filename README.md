@@ -3,10 +3,10 @@ Davide Ceresa, Marc Federspiel
 
 # 1. Einführung und Ziele
 Unsere App befasst sich damit, einer Person mit Diabetes zu helfen, die notwendige Insulindosis für eine Mahlzeit zu berechnen.
-Dazu müss der User wissen, wie viele Einheiten Insulin er/sie benötigt für 10 Gramm Kohlenhydrate und auch 1 mmol/L, um einem zu 
+Dazu muss der User wissen, wie viele Einheiten Insulin er/sie benötigt für 10 Gramm Kohlenhydrate und auch 1 mmol/L, um einem zu 
 hohen Blutzucker/tiefen Blutzuckerspiegel(Hypoglykämie) entgegen zu wirken.
-Es ist möglich mehrere Profile für mehrere Benutzer, oder auch den selben User zu hinterlegen. Der Grund dafür ist, dass eine 
-Person, welche selbst Diabetes hat, und auch ein Kind, welches zu jung ist eine solche App zu bedienen, auch ein Profil für sein
+Es ist möglich mehrere Profille mehrere User, oder auch den selben User zu hinterlegen. Der Grund dafür ist, dass eine 
+Person, welche selbst Diabetes hat, und auch ein Kind hat, welches zu jung ist eine solche App zu bedienen, auch ein Profil für sein
 Kind anlegen kann. Ebenfalls könnte ein User ein zweites Profil für sich selbst anlegen, bei dem eine andere Insulindosis berechnet
 wird, da diese abhängig davon ist wie viel körperliche Anstrengung der User in der Zeit haben wird, in der das Insulin wirkt(ca. 2h lang).
 

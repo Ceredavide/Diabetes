@@ -35,9 +35,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
+import ch.hslu.mobpro.diabetes.domain.model.User
 import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
 
 @Composable
 fun AddUser(navController: NavController, context: Context) {
@@ -122,7 +122,7 @@ fun AddUser(navController: NavController, context: Context) {
                 ) {
 
 
-                    val userInfo = UserPreferences(
+                    val userInfo = User(
                         name = mutableStateOf(userNameInput.text),
                         insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbsInput.toFloat()),
                         insulinPer1mmolL = mutableStateOf(insulinper1mmolLInput.toFloat()),

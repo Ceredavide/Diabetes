@@ -35,12 +35,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
+import ch.hslu.mobpro.diabetes.domain.model.User
 import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
 
 @Composable
-fun EditUser(navController: NavController, user: UserPreferences, context: Context) {
+fun EditUser(navController: NavController, user: User, context: Context) {
 
     val originalUserName = user.name.value
     var userName by remember { mutableStateOf(TextFieldValue(originalUserName)) }
@@ -144,7 +144,7 @@ fun EditUser(navController: NavController, user: UserPreferences, context: Conte
                         )
                     ) {
 
-                        val userInfo = UserPreferences(
+                        val userInfo = User(
                             name = mutableStateOf(userName.text),
                             insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbsString.toFloat()),
                             insulinPer1mmolL = mutableStateOf(insulinPer1mmol_LString.toFloat()),
@@ -200,7 +200,7 @@ private fun onSave(
         )
     ) {
 
-        val userPreferences = UserPreferences(
+        val userPreferences = User(
             name = mutableStateOf(userName),
             insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
             insulinPer1mmolL = mutableStateOf(insulinPer1mmol_L!!),
@@ -249,7 +249,7 @@ fun EditUserPreview() {
     val lowerBoundGlucoseLevel = remember { mutableStateOf(4.0f) }
     val upperBoundGlucoseLevel = remember { mutableStateOf(8.0f) }
 
-    val user = UserPreferences(
+    val user = User(
         name = name,
         insulinPer10gCarbs = insulinPer10gCarbs,
         insulinPer1mmolL = inslinePer1mmol_L,

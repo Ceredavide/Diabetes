@@ -6,7 +6,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
+import ch.hslu.mobpro.diabetes.domain.model.User
+
 
 class PreferenceManager(context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
@@ -42,7 +43,7 @@ class PreferenceManager(context: Context) {
         sharedPreferences.edit().putBoolean("isFirstTime", isFirstTime).apply()
     }
 
-    fun setUserinfo(userInfo: UserPreferences, context: Context) {
+    fun setUserinfo(userInfo: User, context: Context) {
         //sharedPreferences.edit().putString(context.getString(R.string.user_name) + "$userCount", userInfo.name.value).apply()
         //sharedPreferences.edit().putString(context.getString(R.string.insulin_per_10g) + "$userCount", userInfo.insulinPer10gCarbs.value.toString()).apply()
         //sharedPreferences.edit().putString(context.getString(R.string.insulin_per_1mmol_l) + "$userCount", userInfo.inslinePer1mmol_L.value.toString()).apply()
@@ -52,9 +53,9 @@ class PreferenceManager(context: Context) {
         addUser(userInfo, context)
     }
 
-    fun getAllUserInfo(context: Context): MutableList<UserPreferences> {
+    fun getAllUserInfo(context: Context): MutableList<User> {
 
-        val userInfo = mutableListOf<UserPreferences>()
+        val userInfo = mutableListOf<User>()
         for (i in 0..userUid.toInt()) {
 
             val userName = sharedPreferences.getString(context.getString(R.string.user_name) + "$i", null) ?: continue
@@ -63,7 +64,7 @@ class PreferenceManager(context: Context) {
             val insulinPer1mmol_L = sharedPreferences.getString(context.getString(R.string.insulin_per_1mmol_l) + "$i", "0.0f")?.toFloat()
             val lowerBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.lower_bounds_glucose_level) + "$i", "4.0f")?.toFloat()
             val upperBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.upper_bounds_glucose_level) + "$i", "8.0f")?.toFloat()
-            userInfo += UserPreferences(
+            userInfo += User(
                 name = mutableStateOf(userName),
                 insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
                 insulinPer1mmolL = mutableStateOf(insulinPer1mmol_L!!),
@@ -75,13 +76,13 @@ class PreferenceManager(context: Context) {
         return userInfo
     }
 
-    fun getActiveUserInfo(context: Context): MutableState<UserPreferences?> {
+    fun getActiveUserInfo(context: Context): MutableState<User?> {
 
         val userName = userMap.entries.find { it.value == activeUser }?.key
         return if (userName != null) mutableStateOf(getUserInfo(userName, context)) else mutableStateOf(null)
     }
 
-    fun getUserInfo(userName: String, context: Context) : UserPreferences {
+    fun getUserInfo(userName: String, context: Context) : User {
 
         val index = userMap[userName]
 
@@ -90,7 +91,7 @@ class PreferenceManager(context: Context) {
         val insulinPer1mmol_L = sharedPreferences.getString(context.getString(R.string.insulin_per_1mmol_l) + "$index", "0.0f")?.toFloat()
         val lowerBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.lower_bounds_glucose_level) + "$index", "4.0f")?.toFloat()
         val upperBoundGlucoseLevel = sharedPreferences.getString(context.getString(R.string.upper_bounds_glucose_level) + "$index", "8.0f")?.toFloat()
-        val userInfo = UserPreferences(
+        val userInfo = User(
             name = mutableStateOf(name!!),
             insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
             insulinPer1mmolL = mutableStateOf(insulinPer1mmol_L!!),
@@ -101,7 +102,7 @@ class PreferenceManager(context: Context) {
         return userInfo
     }
 
-    fun addUser(userInfo: UserPreferences, context: Context): Boolean {
+    fun addUser(userInfo: User, context: Context): Boolean {
 
         if (userMap[userInfo.name.value] != null) {
 
@@ -115,13 +116,13 @@ class PreferenceManager(context: Context) {
         return true
     }
 
-    fun editUser(userInfo: UserPreferences, context: Context) {
+    fun editUser(userInfo: User, context: Context) {
 
         val userUid = userMap[userInfo.name.value]
         persistUser(userInfo, userUid!!, context)
     }
 
-    private fun persistUser(userInfo: UserPreferences, userUid: UInt, context: Context) {
+    private fun persistUser(userInfo: User, userUid: UInt, context: Context) {
 
         val editor = sharedPreferences.edit()
         editor.putString(context.getString(R.string.user_name) + "$userUid", userInfo.name.value)

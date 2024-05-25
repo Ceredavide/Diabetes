@@ -11,7 +11,7 @@ import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
 import ch.hslu.mobpro.diabetes.data.database.ProductDAO
-import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
+import ch.hslu.mobpro.diabetes.domain.model.User
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.presentation.theme.DiabeticsTheme
 import ch.hslu.mobpro.diabetes.presentation.ui.app.AppScreen
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
     companion object {
         lateinit var db: AppDatabase
         lateinit var productDao: ProductDAO
-        var activeUserInfo: MutableState<UserPreferences?> = mutableStateOf(null)
+        var activeUserInfo: MutableState<User?> = mutableStateOf(null)
     }
 
     private lateinit var preferenceManager: PreferenceManager

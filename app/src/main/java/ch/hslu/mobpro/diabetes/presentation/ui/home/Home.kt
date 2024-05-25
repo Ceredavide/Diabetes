@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui
+package ch.hslu.mobpro.diabetes.presentation.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -31,7 +31,6 @@ import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.http.getProductOpenFoodFactsExample
 import ch.hslu.mobpro.diabetes.presentation.common.ProductListItem
 import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -55,15 +54,6 @@ fun SearchLocalScreen(
                 .padding(16.dp)
                 .fillMaxWidth(),
     ) {
-
-        Button(
-                onClick = {
-                    getProductOpenFoodFactsExample()
-                }
-        ) {
-            Text(text = "SEND REQUEST")
-        }
-
         val keyboardController = LocalSoftwareKeyboardController.current
         OutlinedTextField(
                 value = text,

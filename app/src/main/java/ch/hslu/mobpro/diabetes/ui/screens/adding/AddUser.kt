@@ -14,8 +14,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,7 +44,7 @@ fun AddUser(navController: NavController, context: Context) {
 
     var userNameInput by remember { mutableStateOf(TextFieldValue("")) }
     var insulinPer10gCarbsInput by remember { mutableStateOf("") }
-    var insulinPer1mmol_LInput by remember { mutableStateOf("") }
+    var insulinper1mmolLInput by remember { mutableStateOf("") }
     var lowerBoundGlucoseLevelInput by remember { mutableStateOf("4.0") }
     var upperBoundGlucoseLevelInput by remember { mutableStateOf("8.0") }
     var color by remember { mutableStateOf(Color.LightGray) }
@@ -74,8 +74,8 @@ fun AddUser(navController: NavController, context: Context) {
         Spacer(modifier = Modifier.padding(16.dp))
 
         FloatTextField(
-            value = insulinPer1mmol_LInput,
-            onValueChange = { insulinPer1mmol_LInput = it },
+            value = insulinper1mmolLInput,
+            onValueChange = { insulinper1mmolLInput = it },
             label = stringResource(id = R.string.insulin_per_1mmol_l)
         )
 
@@ -99,7 +99,7 @@ fun AddUser(navController: NavController, context: Context) {
 
         if (validate(userName = userNameInput.toString(),
                     insulinPer10gCarbs = insulinPer10gCarbsInput.toFloatOrNull(),
-                    insulinPer1mmol_L = insulinPer1mmol_LInput.toFloatOrNull()
+                    insulinPer1mmol_L = insulinper1mmolLInput.toFloatOrNull()
             )) {
 
             color = Color.Green
@@ -118,14 +118,14 @@ fun AddUser(navController: NavController, context: Context) {
                 if (onSave(
                         userName = userNameInput.toString(),
                         insulinPer10gCarbs = insulinPer10gCarbsInput.toFloatOrNull(),
-                        insulinPer1mmol_L = insulinPer1mmol_LInput.toFloatOrNull())
+                        insulinPer1mmol_L = insulinper1mmolLInput.toFloatOrNull())
                 ) {
 
 
                     val userInfo = UserPreferences(
                         name = mutableStateOf(userNameInput.text),
                         insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbsInput.toFloat()),
-                        inslinePer1mmol_L = mutableStateOf(insulinPer1mmol_LInput.toFloat()),
+                        insulinper1mmolL = mutableStateOf(insulinper1mmolLInput.toFloat()),
                         lowerBoundGlucoseLevel = mutableStateOf(lowerBoundGlucoseLevelInput.toFloat()),
                         upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevelInput.toFloat())
                     )

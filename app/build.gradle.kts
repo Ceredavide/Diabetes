@@ -89,7 +89,6 @@ dependencies {
 
     // Material Design
     implementation("androidx.compose.material:material")
-    implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
@@ -102,8 +101,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-rxjava2")
 
     // Navigation Compose
-    val nav_version = "2.7.7"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    val navVersion = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$navVersion")
 
     // Barcode Scanner
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")

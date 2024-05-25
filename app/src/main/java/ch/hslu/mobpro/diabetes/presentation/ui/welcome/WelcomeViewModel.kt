@@ -1,113 +1,50 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.welcome
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.hslu.mobpro.diabetes.domain.model.User
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.UserForm
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.UserFormViewModel
 import kotlinx.coroutines.launch
 
-data class UserPreferences(
-    var name: MutableState<String> = mutableStateOf(""),
-    var insulinPer10gCarbs: MutableState<Float> = mutableFloatStateOf(0.0f),
-    var insulinPer1mmolL: MutableState<Float> = mutableFloatStateOf(0.0f),
-    var upperBoundGlucoseLevel: MutableState<Float> = mutableFloatStateOf(8.0f),
-    var lowerBoundGlucoseLevel: MutableState<Float> = mutableFloatStateOf(4.0f)
-)
+data class Step(val number: Int, val title: String, val content: @Composable () -> Unit)
 
 class WelcomeViewModel : ViewModel() {
-    val userProfileState = mutableStateOf(UserPreferences())
 
-    // Validation errors
-    val nameError = mutableStateOf<String?>(null)
-    val insulinPer10gCarbsError = mutableStateOf<String?>(null)
-    val insulinPer1mmolLError = mutableStateOf<String?>(null)
-    val upperBoundGlucoseLevelError = mutableStateOf<String?>(null)
-    val lowerBoundGlucoseLevelError = mutableStateOf<String?>(null)
+    private val userFormViewModel = UserFormViewModel()
 
-    fun updateUserName(newName: String) {
-        userProfileState.value.name.value = newName
-        validateUserName()
-    }
+    val steps: List<Step> = listOf(
+        Step(0, "Welcome to Diabetes") { Text("Welcome to the Diabetes app") },
+        Step(1, "Istruzioni sull'uso dell'app") { UserForm(userFormViewModel) },
+        Step(2, "You're done!") { Text("Setup complete!") }
+    )
 
-    fun updateInsulinPer10gCarbs(newValue: Float) {
-        userProfileState.value.insulinPer10gCarbs.value = newValue
-        validateInsulinPer10gCarbs()
-    }
+    var currentStep by mutableStateOf(steps.first())
+        private set
 
-    fun updateInsulinPer1mmolL(newValue: Float) {
-        userProfileState.value.insulinPer1mmolL.value = newValue
-        validateInsulinPer1mmolL()
-    }
-
-    fun updateUpperBoundGlucoseLevel(newValue: Float) {
-        userProfileState.value.upperBoundGlucoseLevel.value = newValue
-        validateUpperBoundGlucoseLevel()
-    }
-
-    fun updateLowerBoundGlucoseLevel(newValue: Float) {
-        userProfileState.value.lowerBoundGlucoseLevel.value = newValue
-        validateLowerBoundGlucoseLevel()
-    }
-
-    private fun validateUserName() {
-        nameError.value = if (userProfileState.value.name.value.isBlank()) {
-            "Name cannot be empty"
-        } else {
-            null
-        }
-    }
-
-    private fun validateInsulinPer10gCarbs() {
-        insulinPer10gCarbsError.value = if (userProfileState.value.insulinPer10gCarbs.value <= 0) {
-            "Value must be greater than 0"
-        } else {
-            null
-        }
-    }
-
-    private fun validateInsulinPer1mmolL() {
-        insulinPer1mmolLError.value = if (userProfileState.value.insulinPer1mmolL.value <= 0) {
-            "Value must be greater than 0"
-        } else {
-            null
-        }
-    }
-
-    private fun validateUpperBoundGlucoseLevel() {
-        upperBoundGlucoseLevelError.value = if (userProfileState.value.upperBoundGlucoseLevel.value <= 0) {
-            "Value must be greater than 0"
-        } else {
-            null
-        }
-    }
-
-    private fun validateLowerBoundGlucoseLevel() {
-        lowerBoundGlucoseLevelError.value = if (userProfileState.value.lowerBoundGlucoseLevel.value <= 0) {
-            "Value must be greater than 0"
-        } else {
-            null
-        }
-    }
-
-    fun validateAll(): Boolean {
-        validateUserName()
-        validateInsulinPer10gCarbs()
-        validateInsulinPer1mmolL()
-        validateUpperBoundGlucoseLevel()
-        validateLowerBoundGlucoseLevel()
-        return nameError.value == null &&
-                insulinPer10gCarbsError.value == null &&
-                insulinPer1mmolLError.value == null &&
-                upperBoundGlucoseLevelError.value == null &&
-                lowerBoundGlucoseLevelError.value == null
-    }
-
-    fun saveUserPreferences(onCompleted: (UserPreferences) -> Unit) {
-        if (validateAll()) {
-            viewModelScope.launch {
-                onCompleted(userProfileState.value)
+    fun goToNextStep(onCompleted: (User) -> Unit) {
+        when (currentStep.number) {
+            0 -> currentStep = steps[1]
+            1 -> {
+                if (userFormViewModel.validateAll()) {
+                    currentStep = steps[2]
+                }
             }
+            2 -> saveUserPreferences(userFormViewModel.userProfileState.value, onCompleted)
+        }
+    }
+
+    fun goToPreviousStep() {
+        if (currentStep.number > 0) {
+            currentStep = steps[currentStep.number - 1]
+        }
+    }
+
+    private fun saveUserPreferences(user: User, onCompleted: (User) -> Unit) {
+        viewModelScope.launch {
+            onCompleted(user)
         }
     }
 }

@@ -169,7 +169,12 @@ private fun onSave(
         context: Context
 ): Boolean {
 
-    if (ch.hslu.mobpro.diabetes.presentation.ui.adding.validate(productName, carbs, context)) {
+    if (ch.hslu.mobpro.diabetes.presentation.ui.addProduct.validateInput(
+            productName,
+            carbs,
+            context
+        )
+    ) {
 
         CoroutineScope(Dispatchers.IO).launch {
 

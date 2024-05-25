@@ -25,7 +25,7 @@ import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.ui.*
 import ch.hslu.mobpro.diabetes.presentation.ui.adding.AddUser
 import ch.hslu.mobpro.diabetes.presentation.ui.adding.ComposeMeal
-import ch.hslu.mobpro.diabetes.presentation.ui.adding.EnterManualScreen
+import ch.hslu.mobpro.diabetes.presentation.ui.addProduct.AddProductScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.editing.EditProduct
 import ch.hslu.mobpro.diabetes.presentation.ui.editing.EditUser
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
@@ -87,7 +87,7 @@ fun App(context: Context) {
                 ProductsScreen()
             }
             composable(Routes.enterManually) {
-                EnterManualScreen()
+                AddProductScreen()
             }
             composable(Routes.editProduct + "/{name}/{carbs}") { backStackEntry ->
                 val productName = backStackEntry.arguments?.getString("name")

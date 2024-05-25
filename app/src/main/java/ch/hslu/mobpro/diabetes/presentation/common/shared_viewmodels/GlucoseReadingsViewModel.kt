@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.viewmodels
+package ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels
 
 import androidx.lifecycle.ViewModel
 import ch.hslu.mobpro.diabetes.MainActivity

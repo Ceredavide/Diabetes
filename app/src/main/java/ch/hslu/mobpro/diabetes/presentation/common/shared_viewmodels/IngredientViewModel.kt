@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.viewmodels
+package ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel

@@ -6,21 +6,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
-import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.UserFormViewModel
 
 @Composable
-fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeViewModel) {
+fun UserForm(
+    viewModel: UserFormViewModel,
+) {
     Column {
         TextField(
-            value = userProfileState.name.value,
-            onValueChange = { viewModel.updateUserName(it) },
+            value = viewModel.userProfileState.value.name.value,
+            onValueChange = {
+                viewModel.updateUserName(it)
+            },
             label = "User Name",
             error = viewModel.nameError.value
         )
 
         TextField(
-            value = userProfileState.insulinPer10gCarbs.value.toString(),
+            value = viewModel.userProfileState.value.insulinPer10gCarbs.value.toString(),
             onValueChange = {
                 val newValue = it.toFloatOrNull() ?: 0.0f
                 viewModel.updateInsulinPer10gCarbs(newValue)
@@ -31,7 +34,7 @@ fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeViewModel)
         )
 
         TextField(
-            value = userProfileState.insulinPer1mmolL.value.toString(),
+            value = viewModel.userProfileState.value.insulinPer1mmolL.value.toString(),
             onValueChange = {
                 val newValue = it.toFloatOrNull() ?: 0.0f
                 viewModel.updateInsulinPer1mmolL(newValue)
@@ -42,7 +45,7 @@ fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeViewModel)
         )
 
         TextField(
-            value = userProfileState.upperBoundGlucoseLevel.value.toString(),
+            value = viewModel.userProfileState.value.upperBoundGlucoseLevel.value.toString(),
             onValueChange = {
                 val newValue = it.toFloatOrNull() ?: 0.0f
                 viewModel.updateUpperBoundGlucoseLevel(newValue)
@@ -53,7 +56,7 @@ fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeViewModel)
         )
 
         TextField(
-            value = userProfileState.lowerBoundGlucoseLevel.value.toString(),
+            value = viewModel.userProfileState.value.lowerBoundGlucoseLevel.value.toString(),
             onValueChange = {
                 val newValue = it.toFloatOrNull() ?: 0.0f
                 viewModel.updateLowerBoundGlucoseLevel(newValue)
@@ -65,9 +68,10 @@ fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeViewModel)
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewUserInfoForm() {
-    val viewModel = WelcomeViewModel()
-    UserInfoForm(viewModel.userProfileState.value, viewModel)
+    val viewModel = UserFormViewModel()
+    UserForm(viewModel)
 }

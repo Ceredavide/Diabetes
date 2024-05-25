@@ -101,24 +101,6 @@ fun EnterManualScreen() {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        // For easy way to delete all products for now
-        FloatingActionButton(
-                onClick = {
-
-                    CoroutineScope(Dispatchers.IO).launch {
-
-                        val products = MainActivity.productDao.getAll()
-                        for (product in products) {
-
-                            MainActivity.productDao.deleteProduct(product)
-                        }
-                        Toast.makeText(context, "DELETED ALL PRODUCTS", Toast.LENGTH_LONG).show()
-                    }
-                }
-        ) {
-            Text(text = "-", style = TextStyle(fontSize = 48.sp))
-        }
     }
 }
 

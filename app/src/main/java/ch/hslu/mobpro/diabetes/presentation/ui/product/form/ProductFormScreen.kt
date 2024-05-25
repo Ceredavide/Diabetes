@@ -40,6 +40,11 @@ fun ProductFormScreen(
         modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.Top
     ) {
 
+        Text(
+            text = if (viewModel.isEditMode) "Edit Product" else "Add Product",
+            color = androidx.compose.ui.graphics.Color.Black,
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
@@ -70,7 +75,7 @@ fun ProductFormScreen(
                 viewModel.updateFetchedProduct(name, carbohydrates)
             })
             Button(onClick = {
-                viewModel.onAdd(onSuccess = {
+                viewModel.onSave(onSuccess = {
                     Toast.makeText(context, it, Toast.LENGTH_LONG).show()
                     viewModel.updateProductName("")
                     viewModel.updateCarbs(0.0f)

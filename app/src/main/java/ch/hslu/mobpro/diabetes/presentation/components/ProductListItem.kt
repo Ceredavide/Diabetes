@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.components
+package ch.hslu.mobpro.diabetes.presentation.components
 
 import android.widget.Toast
 import androidx.compose.foundation.border
@@ -24,8 +24,8 @@ import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.math.Ingredient
-import ch.hslu.mobpro.diabetes.ui.navigation.Routes
-import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
+import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
+import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

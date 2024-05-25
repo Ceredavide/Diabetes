@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.components
+package ch.hslu.mobpro.diabetes.presentation.components
 
 import android.content.Context
 import androidx.compose.foundation.background
@@ -29,8 +29,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
-import ch.hslu.mobpro.diabetes.ui.navigation.Routes
-import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
+import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
 
 @Composable
 fun UserListItem(navController: NavController,

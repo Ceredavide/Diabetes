@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.components
+package ch.hslu.mobpro.diabetes.presentation.components
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher

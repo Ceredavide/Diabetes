@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.navigation
+package ch.hslu.mobpro.diabetes.presentation.navigation
 
 object Routes {
 

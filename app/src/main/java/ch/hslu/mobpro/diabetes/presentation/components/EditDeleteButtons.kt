@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.components
+package ch.hslu.mobpro.diabetes.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -16,8 +16,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun EditDeleteButtons(modifier: Modifier,

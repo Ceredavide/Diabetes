@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.screens.adding
+package ch.hslu.mobpro.diabetes.presentation.screens.adding
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -35,13 +35,13 @@ import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
-import ch.hslu.mobpro.diabetes.ui.components.IngredientListItem
+import ch.hslu.mobpro.diabetes.presentation.components.IngredientListItem
 import ch.hslu.mobpro.diabetes.math.Ingredient
-import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
-import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
-import ch.hslu.mobpro.diabetes.ui.navigation.Routes
-import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
-import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
+import ch.hslu.mobpro.diabetes.presentation.components.ActiveUserIndicator
+import ch.hslu.mobpro.diabetes.presentation.components.FloatTextField
+import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
+import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
 import java.util.Date
 
 @Composable

@@ -1,7 +1,6 @@
-package ch.hslu.mobpro.diabetes.ui.components
+package ch.hslu.mobpro.diabetes.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField

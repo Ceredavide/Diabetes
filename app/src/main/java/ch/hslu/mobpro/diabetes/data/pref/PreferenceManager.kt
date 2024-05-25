@@ -6,7 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.ui.screens.welcome.UserPreferences
+import ch.hslu.mobpro.diabetes.presentation.screens.welcome.UserPreferences
 
 class PreferenceManager(context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)

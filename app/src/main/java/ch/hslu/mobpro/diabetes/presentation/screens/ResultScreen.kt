@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.screens
+package ch.hslu.mobpro.diabetes.presentation.screens
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
-import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,15 +26,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.math.calculateInsulinDoseAndTotalCarbs
-import ch.hslu.mobpro.diabetes.ui.components.ActiveUserIndicator
-import ch.hslu.mobpro.diabetes.ui.navigation.Routes
-import ch.hslu.mobpro.diabetes.ui.viewmodels.IngredientViewModel
-import org.w3c.dom.Text
+import ch.hslu.mobpro.diabetes.presentation.components.ActiveUserIndicator
+import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
+import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
 
 @Composable
 fun ResultScreen(

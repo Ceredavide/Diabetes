@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.screens.editing
+package ch.hslu.mobpro.diabetes.presentation.screens.editing
 
 import android.content.Context
 import android.widget.Toast
@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.ui.components.FloatTextField
+import ch.hslu.mobpro.diabetes.presentation.components.FloatTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -169,7 +169,7 @@ private fun onSave(
         context: Context
 ): Boolean {
 
-    if (ch.hslu.mobpro.diabetes.ui.screens.adding.validate(productName, carbs, context)) {
+    if (ch.hslu.mobpro.diabetes.presentation.screens.adding.validate(productName, carbs, context)) {
 
         CoroutineScope(Dispatchers.IO).launch {
 

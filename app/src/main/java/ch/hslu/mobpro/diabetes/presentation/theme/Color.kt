@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.theme
+package ch.hslu.mobpro.diabetes.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 

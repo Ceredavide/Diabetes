@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.components
+package ch.hslu.mobpro.diabetes.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastMapIndexed
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
-import ch.hslu.mobpro.diabetes.ui.viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
 import co.yml.charts.ui.linechart.LineChart

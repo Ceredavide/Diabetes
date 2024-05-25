@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.ui.theme
+package ch.hslu.mobpro.diabetes.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

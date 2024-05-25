@@ -23,63 +23,70 @@ class ProductFormViewModel : ViewModel() {
     var carbs by mutableFloatStateOf(0.0f)
         private set
 
+    // Validation errors
+    val productNameError = mutableStateOf<String?>(null)
+    val carbsError = mutableStateOf<String?>(null)
+
     fun updateProductName(name: String) {
         productName = name
+        validateProductName()
     }
 
     fun updateCarbs(carbsValue: Float) {
         carbs = carbsValue
+        validateCarbs()
     }
 
     fun updateFetchedProduct(name: String?, carbsValue: Float?) {
         productName = name ?: ""
         carbs = carbsValue ?: 0.0f
+        validateProductName()
+        validateCarbs()
     }
 
-    fun setInitialValues(name: String, carbs: Float) {
+    fun setInitialValues(name: String, carbsValue: Float) {
         productName = name
-        this.carbs = carbs
+        carbs = carbsValue
     }
 
-    fun onAdd(context: Context, onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
-        if (validateInput(productName, carbs, context)) {
+    fun onAdd(onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
+        if (validateAll()) {
             val product = Product(productName, carbs)
             viewModelScope.launch(Dispatchers.IO) {
                 if (!productExistsCheck(productName)) {
                     MainActivity.productDao.insertProduct(product)
                     withContext(Dispatchers.Main) {
-                        onSuccess("$productName SAVED")
+                        onSuccess("$productName saved successfully!")
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        onFailure("$productName ALREADY EXISTS\nPLEASE MODIFY EXISTING ONE")
+                        onFailure("$productName Already Exists")
                     }
                 }
             }
         }
     }
 
-    private fun validateInput(productName: String, carbs: Float, context: Context): Boolean {
-        val productNameEmpty = productName.isEmpty()
-        val carbsIsNull = carbs == 0.0f
-
-        when {
-            productNameEmpty && carbsIsNull -> {
-                showToast(context, context.getString(R.string.product_name), context.getString(R.string.carbs_per_100g))
-            }
-            productNameEmpty -> {
-                showToast(context, context.getString(R.string.product_name))
-            }
-            carbsIsNull -> {
-                showToast(context, context.getString(R.string.carbs_per_100g))
-            }
+    private fun validateProductName() {
+        productNameError.value = if (productName.isBlank()) {
+            "Product name cannot be empty"
+        } else {
+            null
         }
-
-        return !productNameEmpty && !carbsIsNull
     }
 
-    private fun showToast(context: Context, vararg messages: String) {
-        Toast.makeText(context, "PLEASE ENTER A VALUE FOR ${messages.joinToString(" and ")}", Toast.LENGTH_LONG).show()
+    private fun validateCarbs() {
+        carbsError.value = if (carbs <= 0.0f) {
+            "Carbs must be greater than 0"
+        } else {
+            null
+        }
+    }
+
+    private fun validateAll(): Boolean {
+        validateProductName()
+        validateCarbs()
+        return productNameError.value == null && carbsError.value == null
     }
 
     private fun productExistsCheck(productName: String): Boolean {

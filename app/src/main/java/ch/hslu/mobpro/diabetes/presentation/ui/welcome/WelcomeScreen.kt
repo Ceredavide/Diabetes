@@ -11,15 +11,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.components.*
 
-
 data class Step(val number: Int, val title: String, val content: @Composable () -> Unit)
+
 @Composable
-fun WelcomeScreen(onCompleted: (userInfo: UserPreferences) -> Unit, viewModel: WelcomeScreenViewModel = viewModel()) {
+fun WelcomeScreen(
+    onCompleted: (userInfo: UserPreferences) -> Unit,
+    viewModel: WelcomeScreenViewModel = viewModel()
+) {
     val userProfileState = viewModel.userProfileState
 
     val steps: List<Step> = listOf(
         Step(0, "Welcome to Diabetes") { Text(stringResource(R.string.welcome_text)) },
-        Step(1, "Istruzioni sull'uso dell'app") { UserInfoForm(userProfileState.value) },
+        Step(1, "Istruzioni sull'uso dell'app") { UserInfoForm(userProfileState.value, viewModel) },
         Step(2, "You're done!") { Text(stringResource(R.string.welcome_steup_complete)) }
     )
 
@@ -43,7 +46,11 @@ fun WelcomeScreen(onCompleted: (userInfo: UserPreferences) -> Unit, viewModel: W
             onNext = {
                 when (currentStep.number) {
                     0 -> currentStep = steps[1]
-                    1 -> currentStep = steps[2]
+                    1 -> {
+                        if (viewModel.validateAll()) {
+                            currentStep = steps[2]
+                        }
+                    }
                     2 -> viewModel.saveUserPreferences(onCompleted)
                 }
             },

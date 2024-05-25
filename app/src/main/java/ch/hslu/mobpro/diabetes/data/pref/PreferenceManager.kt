@@ -66,7 +66,7 @@ class PreferenceManager(context: Context) {
             userInfo += UserPreferences(
                 name = mutableStateOf(userName),
                 insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
-                inslinePer1mmol_L = mutableStateOf(insulinPer1mmol_L!!),
+                insulinper1mmolL = mutableStateOf(insulinPer1mmol_L!!),
                 lowerBoundGlucoseLevel = mutableStateOf(lowerBoundGlucoseLevel!!),
                 upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevel!!)
             )
@@ -93,7 +93,7 @@ class PreferenceManager(context: Context) {
         val userInfo = UserPreferences(
             name = mutableStateOf(name!!),
             insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
-            inslinePer1mmol_L = mutableStateOf(insulinPer1mmol_L!!),
+            insulinper1mmolL = mutableStateOf(insulinPer1mmol_L!!),
             lowerBoundGlucoseLevel = mutableStateOf(lowerBoundGlucoseLevel!!),
             upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevel!!)
         )
@@ -126,7 +126,7 @@ class PreferenceManager(context: Context) {
         val editor = sharedPreferences.edit()
         editor.putString(context.getString(R.string.user_name) + "$userUid", userInfo.name.value)
         editor.putString(context.getString(R.string.insulin_per_10g) + "$userUid", userInfo.insulinPer10gCarbs.value.toString())
-        editor.putString(context.getString(R.string.insulin_per_1mmol_l) + "$userUid", userInfo.inslinePer1mmol_L.value.toString())
+        editor.putString(context.getString(R.string.insulin_per_1mmol_l) + "$userUid", userInfo.insulinper1mmolL.value.toString())
         editor.putString(context.getString(R.string.lower_bounds_glucose_level) + "$userUid", userInfo.lowerBoundGlucoseLevel.value.toString())
         editor.putString(context.getString(R.string.upper_bounds_glucose_level) + "$userUid", userInfo.upperBoundGlucoseLevel.value.toString())
         editor.apply()

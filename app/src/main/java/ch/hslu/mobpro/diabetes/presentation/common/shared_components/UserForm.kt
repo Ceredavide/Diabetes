@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.welcome.components
+package ch.hslu.mobpro.diabetes.presentation.common.shared_components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.*
@@ -8,7 +8,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeViewModel
-import ch.hslu.mobpro.diabetes.presentation.common.shared_components.TextField
 
 @Composable
 fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeViewModel) {

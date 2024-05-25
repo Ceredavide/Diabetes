@@ -15,7 +15,7 @@ import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseRead
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 import ch.hslu.mobpro.diabetes.presentation.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.ui.ProfileScreen
+import ch.hslu.mobpro.diabetes.presentation.ui.user.profile.ProfileScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.ResultScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.adding.AddUser
 import ch.hslu.mobpro.diabetes.presentation.ui.adding.ComposeMeal

@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.hslu.mobpro.diabetes.R
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.UserInfoForm
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.components.*
 
 data class Step(val number: Int, val title: String, val content: @Composable () -> Unit)

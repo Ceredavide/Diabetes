@@ -25,7 +25,7 @@ import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

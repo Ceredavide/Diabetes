@@ -21,13 +21,13 @@ import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.UserListItem
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 
 @Composable
 fun ProfileScreen(
-        navController: NavController,
-        glucoseReadingsViewModel: GlucoseReadingsViewModel,
-        context: Context
+    navController: NavController,
+    glucoseReadingsViewModel: GlucoseReadingsViewModel,
+    context: Context
 ) {
 
     val users = remember { PreferenceManager.instance.getAllUserInfo(context) }

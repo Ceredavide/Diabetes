@@ -30,11 +30,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 
 @Composable
 fun UserListItem(navController: NavController,
-                glucoseReadingsViewModel: GlucoseReadingsViewModel,
+                 glucoseReadingsViewModel: GlucoseReadingsViewModel,
                  userName: String,
                  userIndex: UInt,
                  deletable: Boolean,

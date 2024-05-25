@@ -23,7 +23,7 @@ import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.common.Graph
 import ch.hslu.mobpro.diabetes.presentation.ui.adding.persistGlucoseReading
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 import java.util.Date
 import kotlin.random.Random
 

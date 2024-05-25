@@ -40,16 +40,16 @@ import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 import java.util.Date
 
 @Composable
 fun ComposeMeal(
-        navController: NavController,
-        ingredientViewModel: IngredientViewModel,
-        glucoseReadingsViewModel: GlucoseReadingsViewModel,
-        glucoseLevel: MutableState<Float>
+    navController: NavController,
+    ingredientViewModel: IngredientViewModel,
+    glucoseReadingsViewModel: GlucoseReadingsViewModel,
+    glucoseLevel: MutableState<Float>
 ) {
 
     val ingredients = ingredientViewModel.ingredients

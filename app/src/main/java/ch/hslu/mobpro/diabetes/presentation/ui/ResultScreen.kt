@@ -32,14 +32,14 @@ import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.math.calculateInsulinDoseAndTotalCarbs
 import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 
 @Composable
 fun ResultScreen(
-        navController: NavController,
-        ingredientViewModel: IngredientViewModel,
-        glucoseLevel: Float,
-        context: Context) {
+    navController: NavController,
+    ingredientViewModel: IngredientViewModel,
+    glucoseLevel: Float,
+    context: Context) {
 
     val ingredients = ingredientViewModel.ingredients
     val sharedPreferences: SharedPreferences =

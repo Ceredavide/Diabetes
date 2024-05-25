@@ -31,8 +31,8 @@ import ch.hslu.mobpro.diabetes.presentation.ui.editing.EditUser
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.presentation.theme.DiabeticsTheme
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
-import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 
 class MainActivity : ComponentActivity() {
 

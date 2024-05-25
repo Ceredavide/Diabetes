@@ -1,16 +1,10 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.addProduct.components
+package ch.hslu.mobpro.diabetes.presentation.ui.product.form.components
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.data.network.client.RetrofitClient
 import ch.hslu.mobpro.diabetes.data.network.model.ProductResponse
 import com.journeyapps.barcodescanner.ScanContract
@@ -20,7 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun BarcodeScanner() {
+fun BarcodeScanner(onProductScanned: (String, Float?) -> Unit) {
     var scannedCode by remember { mutableStateOf("") }
     var productName by remember { mutableStateOf("") }
     var carbohydrates by remember { mutableStateOf<Float?>(null) }
@@ -32,34 +26,24 @@ fun BarcodeScanner() {
             fetchProductDetails(scannedCode, onProductFetched = { name, carbs ->
                 productName = name
                 carbohydrates = carbs
+                onProductScanned(name, carbs)
             })
         } ?: run {
             scannedCode = "Scan cancelled or failed"
         }
     }
-
-    MaterialTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Button(onClick = { startBarcodeScanner(scanLauncher) }) {
-                Text("Scan Barcode")
-            }
-            Text("Scanned Code: $scannedCode")
-            if (productName.isNotEmpty()) {
-                Text("Product Name: $productName")
-                Text("Carbohydrates (per 100g): ${carbohydrates ?: "Not available"}")
-            }
-        }
+    Button(onClick = { startBarcodeScanner(scanLauncher) }) {
+        Text("Scan Barcode")
     }
 }
 
 private fun startBarcodeScanner(scanLauncher: ActivityResultLauncher<ScanOptions>) {
     val options = ScanOptions()
-    options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES)
-    options.setPrompt("Scan a barcode")
+    options.setDesiredBarcodeFormats(ScanOptions.PRODUCT_CODE_TYPES)
+    options.setPrompt("Scan a barcode, you have 15 seconds.")
+    // no method available to interrupt scan operation
+    // so i set a timeout of 10 seconds
+    options.setTimeout(10000)
     options.setCameraId(1)
     options.setBeepEnabled(true)
     options.setBarcodeImageEnabled(true)

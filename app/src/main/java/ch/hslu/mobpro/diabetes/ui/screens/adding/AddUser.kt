@@ -125,7 +125,7 @@ fun AddUser(navController: NavController, context: Context) {
                     val userInfo = UserPreferences(
                         name = mutableStateOf(userNameInput.text),
                         insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbsInput.toFloat()),
-                        insulinper1mmolL = mutableStateOf(insulinper1mmolLInput.toFloat()),
+                        insulinPer1mmolL = mutableStateOf(insulinper1mmolLInput.toFloat()),
                         lowerBoundGlucoseLevel = mutableStateOf(lowerBoundGlucoseLevelInput.toFloat()),
                         upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevelInput.toFloat())
                     )

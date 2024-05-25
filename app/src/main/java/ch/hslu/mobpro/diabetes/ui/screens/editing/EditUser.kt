@@ -45,7 +45,7 @@ fun EditUser(navController: NavController, user: UserPreferences, context: Conte
     val originalUserName = user.name.value
     var userName by remember { mutableStateOf(TextFieldValue(originalUserName)) }
     var insulinPer10gCarbsString by remember { mutableStateOf(user.insulinPer10gCarbs.value.toString()) }
-    var insulinPer1mmol_LString by remember { mutableStateOf(user.insulinper1mmolL.value.toString()) }
+    var insulinPer1mmol_LString by remember { mutableStateOf(user.insulinPer1mmolL.value.toString()) }
     var lowerBoundGlucoseLevelString by remember { mutableStateOf(user.lowerBoundGlucoseLevel.value.toString()) }
     var upperBoundGlucoseLevelString by remember { mutableStateOf(user.upperBoundGlucoseLevel.value.toString()) }
     var color by remember { mutableStateOf(Color.LightGray) }
@@ -87,7 +87,7 @@ fun EditUser(navController: NavController, user: UserPreferences, context: Conte
         FloatTextField(
             value = insulinPer1mmol_LString,
             onValueChange = {
-                changeDetected = hasChanged(user.insulinper1mmolL.value.toString(), it);
+                changeDetected = hasChanged(user.insulinPer1mmolL.value.toString(), it);
                 insulinPer1mmol_LString = it
             },
             label = stringResource(id = R.string.insulin_per_1mmol_l)
@@ -147,7 +147,7 @@ fun EditUser(navController: NavController, user: UserPreferences, context: Conte
                         val userInfo = UserPreferences(
                             name = mutableStateOf(userName.text),
                             insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbsString.toFloat()),
-                            insulinper1mmolL = mutableStateOf(insulinPer1mmol_LString.toFloat()),
+                            insulinPer1mmolL = mutableStateOf(insulinPer1mmol_LString.toFloat()),
                             lowerBoundGlucoseLevel = mutableStateOf(loweBoundGlucoseLevel),
                             upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevel)
                         )
@@ -203,7 +203,7 @@ private fun onSave(
         val userPreferences = UserPreferences(
             name = mutableStateOf(userName),
             insulinPer10gCarbs = mutableStateOf(insulinPer10gCarbs!!),
-            insulinper1mmolL = mutableStateOf(insulinPer1mmol_L!!),
+            insulinPer1mmolL = mutableStateOf(insulinPer1mmol_L!!),
             lowerBoundGlucoseLevel = mutableStateOf(loweBoundGlucoseLevel),
             upperBoundGlucoseLevel = mutableStateOf(upperBoundGlucoseLevel)
         )
@@ -252,7 +252,7 @@ fun EditUserPreview() {
     val user = UserPreferences(
         name = name,
         insulinPer10gCarbs = insulinPer10gCarbs,
-        insulinper1mmolL = inslinePer1mmol_L,
+        insulinPer1mmolL = inslinePer1mmol_L,
         lowerBoundGlucoseLevel = lowerBoundGlucoseLevel,
         upperBoundGlucoseLevel = upperBoundGlucoseLevel
     )

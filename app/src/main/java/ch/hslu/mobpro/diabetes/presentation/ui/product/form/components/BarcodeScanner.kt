@@ -1,10 +1,13 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.product.form.components
 
+import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import ch.hslu.mobpro.diabetes.data.network.client.RetrofitClient
 import ch.hslu.mobpro.diabetes.data.network.model.ProductResponse
 import com.journeyapps.barcodescanner.ScanContract
@@ -14,22 +17,22 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun BarcodeScanner(onProductScanned: (String, Float?) -> Unit) {
+fun BarcodeScanner(onProductScanned: (String?, Float?) -> Unit) {
+
+    val context = LocalContext.current
+
     var scannedCode by remember { mutableStateOf("") }
-    var productName by remember { mutableStateOf("") }
-    var carbohydrates by remember { mutableStateOf<Float?>(null) }
     val scanLauncher = rememberLauncherForActivityResult(
         contract = ScanContract()
     ) { result ->
         result.contents?.let {
             scannedCode = it
             fetchProductDetails(scannedCode, onProductFetched = { name, carbs ->
-                productName = name
-                carbohydrates = carbs
                 onProductScanned(name, carbs)
-            })
+            }, context)
         } ?: run {
-            scannedCode = "Scan cancelled or failed"
+            Toast.makeText(context, "Scan cancelled or failed", Toast.LENGTH_SHORT).show()
+            onProductScanned(null, null)
         }
     }
     Button(onClick = { startBarcodeScanner(scanLauncher) }) {
@@ -50,7 +53,7 @@ private fun startBarcodeScanner(scanLauncher: ActivityResultLauncher<ScanOptions
     scanLauncher.launch(options)
 }
 
-private fun fetchProductDetails(barcode: String, onProductFetched: (String, Float?) -> Unit) {
+private fun fetchProductDetails(barcode: String, onProductFetched: (String?, Float?) -> Unit, context : Context) {
     val call = RetrofitClient.apiService.getProductByBarcode(barcode)
     call.enqueue(object : Callback<ProductResponse> {
         override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
@@ -59,12 +62,14 @@ private fun fetchProductDetails(barcode: String, onProductFetched: (String, Floa
                     onProductFetched(product.product_name, product.nutriments.carbohydrates_100g)
                 }
             } else {
-                onProductFetched("Product not found", null)
+                Toast.makeText(context, "Product not found", Toast.LENGTH_SHORT).show()
+                onProductFetched(null, null)
             }
         }
 
         override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
-            onProductFetched("Error: ${t.message}", null)
+            Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
+            onProductFetched(null, null)
         }
     })
 }

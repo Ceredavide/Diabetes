@@ -15,7 +15,7 @@ data class UserPreferences(
     var lowerBoundGlucoseLevel: MutableState<Float> = mutableFloatStateOf(4.0f)
 )
 
-class WelcomeScreenViewModel : ViewModel() {
+class WelcomeViewModel : ViewModel() {
     val userProfileState = mutableStateOf(UserPreferences())
 
     // Validation errors

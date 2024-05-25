@@ -16,7 +16,7 @@ data class Step(val number: Int, val title: String, val content: @Composable () 
 @Composable
 fun WelcomeScreen(
     onCompleted: (userInfo: UserPreferences) -> Unit,
-    viewModel: WelcomeScreenViewModel = viewModel()
+    viewModel: WelcomeViewModel = viewModel()
 ) {
     val userProfileState = viewModel.userProfileState
 

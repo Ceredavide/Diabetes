@@ -46,7 +46,7 @@ fun ProductFormScreen(
             value = viewModel.productName,
             onValueChange = { viewModel.updateProductName(it) },
             label = stringResource(id = R.string.product_name),
-            keyboardType = KeyboardType.Text,
+            error = viewModel.productNameError.value,
             imeAction = ImeAction.Done
         )
 
@@ -59,17 +59,18 @@ fun ProductFormScreen(
                 viewModel.updateCarbs(newValue)
             },
             label = stringResource(id = R.string.carbs_per_100g),
+            error = viewModel.carbsError.value,
+            keyboardType = KeyboardType.Number,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Row {
             BarcodeScanner(onProductScanned = { name, carbohydrates ->
-                viewModel.updateProductName(name)
-                viewModel.updateCarbs(carbohydrates ?: 0.0f)
+                viewModel.updateFetchedProduct(name, carbohydrates)
             })
             Button(onClick = {
-                viewModel.onAdd(context = context, onSuccess = {
+                viewModel.onAdd(onSuccess = {
                     Toast.makeText(context, it, Toast.LENGTH_LONG).show()
                     viewModel.updateProductName("")
                     viewModel.updateCarbs(0.0f)
@@ -77,7 +78,7 @@ fun ProductFormScreen(
                     Toast.makeText(context, it, Toast.LENGTH_LONG).show()
                 })
             }) {
-                Text(text = "Add Product")
+                Text(text = "Save Product")
             }
         }
 

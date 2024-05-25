@@ -17,6 +17,12 @@ import kotlinx.coroutines.withContext
 
 class ProductFormViewModel : ViewModel() {
 
+    var isEditMode by mutableStateOf(false)
+        private set
+
+    var originalName by mutableStateOf("")
+        private set
+
     var productName by mutableStateOf("")
         private set
 
@@ -45,22 +51,40 @@ class ProductFormViewModel : ViewModel() {
     }
 
     fun setInitialValues(name: String, carbsValue: Float) {
+        isEditMode = name.isNotBlank() && carbsValue != 0.0f
+        originalName = name
         productName = name
         carbs = carbsValue
     }
 
-    fun onAdd(onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
+    fun onSave(onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
         if (validateAll()) {
-            val product = Product(productName, carbs)
             viewModelScope.launch(Dispatchers.IO) {
-                if (!productExistsCheck(productName)) {
-                    MainActivity.productDao.insertProduct(product)
-                    withContext(Dispatchers.Main) {
-                        onSuccess("$productName saved successfully!")
+                if (isEditMode) {
+                    val product = MainActivity.productDao.getProductByName(originalName)
+                    if (product != null) {
+                        product.name = productName
+                        product.carbs = carbs
+                        MainActivity.productDao.updateProduct(product)
+                        withContext(Dispatchers.Main) {
+                            onSuccess("$productName updated successfully!")
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            onFailure("Product with name $originalName not found")
+                        }
                     }
                 } else {
-                    withContext(Dispatchers.Main) {
-                        onFailure("$productName Already Exists")
+                    val product = Product(productName, carbs)
+                    if (!productExistsCheck(productName)) {
+                        MainActivity.productDao.insertProduct(product)
+                        withContext(Dispatchers.Main) {
+                            onSuccess("$productName saved successfully!")
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            onFailure("$productName already exists")
+                        }
                     }
                 }
             }

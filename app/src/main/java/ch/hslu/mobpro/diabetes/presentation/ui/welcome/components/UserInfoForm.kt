@@ -7,11 +7,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
-import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeScreenViewModel
+import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeViewModel
 import ch.hslu.mobpro.diabetes.presentation.common.shared_components.TextField
 
 @Composable
-fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeScreenViewModel) {
+fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeViewModel) {
     Column {
         TextField(
             value = userProfileState.name.value,
@@ -69,6 +69,6 @@ fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeScreenView
 @Preview(showBackground = true)
 @Composable
 fun PreviewUserInfoForm() {
-    val viewModel = WelcomeScreenViewModel()
+    val viewModel = WelcomeViewModel()
     UserInfoForm(viewModel.userProfileState.value, viewModel)
 }

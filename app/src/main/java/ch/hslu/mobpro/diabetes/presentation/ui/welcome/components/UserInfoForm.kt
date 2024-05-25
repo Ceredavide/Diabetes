@@ -1,74 +1,74 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.welcome.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
+import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeScreenViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.TextField
 
 @Composable
-fun UserInfoForm(userProfileState: UserPreferences) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-
+fun UserInfoForm(userProfileState: UserPreferences, viewModel: WelcomeScreenViewModel) {
     Column {
-        OutlinedTextField(
+        TextField(
             value = userProfileState.name.value,
-            onValueChange = { userProfileState.name.value = it },
-            label = { Text("User Name") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() })
+            onValueChange = { viewModel.updateUserName(it) },
+            label = "User Name",
+            error = viewModel.nameError.value
         )
 
-        FloatTextFieldWithState(
-            value = userProfileState.insulinPer10gCarbs,
-            label = stringResource(id = R.string.carbs_per_100g)
+        TextField(
+            value = userProfileState.insulinPer10gCarbs.value.toString(),
+            onValueChange = {
+                val newValue = it.toFloatOrNull() ?: 0.0f
+                viewModel.updateInsulinPer10gCarbs(newValue)
+            },
+            label = stringResource(id = R.string.carbs_per_100g),
+            keyboardType = KeyboardType.Number,
+            error = viewModel.insulinPer10gCarbsError.value
         )
 
-        FloatTextFieldWithState(
-            value = userProfileState.insulinPer1mmolL,
-            label = stringResource(id = R.string.insulin_per_1mmol_l)
+        TextField(
+            value = userProfileState.insulinPer1mmolL.value.toString(),
+            onValueChange = {
+                val newValue = it.toFloatOrNull() ?: 0.0f
+                viewModel.updateInsulinPer1mmolL(newValue)
+            },
+            label = stringResource(id = R.string.insulin_per_1mmol_l),
+            keyboardType = KeyboardType.Number,
+            error = viewModel.insulinPer1mmolLError.value
         )
 
-        FloatTextFieldWithState(
-            value = userProfileState.upperBoundGlucoseLevel,
+        TextField(
+            value = userProfileState.upperBoundGlucoseLevel.value.toString(),
+            onValueChange = {
+                val newValue = it.toFloatOrNull() ?: 0.0f
+                viewModel.updateUpperBoundGlucoseLevel(newValue)
+            },
             label = "Maximum Glucose Level",
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number,
+            error = viewModel.upperBoundGlucoseLevelError.value
         )
 
-        FloatTextFieldWithState(
-            value = userProfileState.lowerBoundGlucoseLevel,
+        TextField(
+            value = userProfileState.lowerBoundGlucoseLevel.value.toString(),
+            onValueChange = {
+                val newValue = it.toFloatOrNull() ?: 0.0f
+                viewModel.updateLowerBoundGlucoseLevel(newValue)
+            },
             label = "Minimum Glucose Level",
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number,
+            error = viewModel.lowerBoundGlucoseLevelError.value
         )
     }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun FloatTextFieldWithState(
-    value: MutableState<Float>,
-    label: String,
-    keyboardType: KeyboardType = KeyboardType.Text
-) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var inputValue by remember { mutableStateOf(value.value.toString()) }
-
-    OutlinedTextField(
-        value = inputValue,
-        onValueChange = {
-            inputValue = it
-            value.value = it.toFloatOrNull() ?: 0.0f
-        },
-        label = { Text(label) },
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType).copy(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() })
-    )
+fun PreviewUserInfoForm() {
+    val viewModel = WelcomeScreenViewModel()
+    UserInfoForm(viewModel.userProfileState.value, viewModel)
 }

@@ -1,13 +1,13 @@
 package ch.hslu.mobpro.diabetes
 
 import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.math.Ingredient
-import ch.hslu.mobpro.diabetes.math.calculateCorrectionTooHigh
-import ch.hslu.mobpro.diabetes.math.calculateInsulinDoseAndTotalCarbs
-import ch.hslu.mobpro.diabetes.math.calculateNormal
-import ch.hslu.mobpro.diabetes.math.calculateTooHigh
-import ch.hslu.mobpro.diabetes.math.calculateTooLow
-import ch.hslu.mobpro.diabetes.math.truncate
+import ch.hslu.mobpro.diabetes.utils.Ingredient
+import ch.hslu.mobpro.diabetes.utils.calculateCorrectionTooHigh
+import ch.hslu.mobpro.diabetes.utils.calculateInsulinDoseAndTotalCarbs
+import ch.hslu.mobpro.diabetes.utils.calculateNormal
+import ch.hslu.mobpro.diabetes.utils.calculateTooHigh
+import ch.hslu.mobpro.diabetes.utils.calculateTooLow
+import ch.hslu.mobpro.diabetes.utils.truncate
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

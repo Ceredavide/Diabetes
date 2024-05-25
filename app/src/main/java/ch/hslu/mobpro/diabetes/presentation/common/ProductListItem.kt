@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.math.Ingredient
+import ch.hslu.mobpro.diabetes.utils.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope

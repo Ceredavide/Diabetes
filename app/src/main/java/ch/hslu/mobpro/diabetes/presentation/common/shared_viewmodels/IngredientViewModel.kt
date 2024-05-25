@@ -2,7 +2,7 @@ package ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import ch.hslu.mobpro.diabetes.math.Ingredient
+import ch.hslu.mobpro.diabetes.utils.Ingredient
 
 class IngredientViewModel: ViewModel() {
 

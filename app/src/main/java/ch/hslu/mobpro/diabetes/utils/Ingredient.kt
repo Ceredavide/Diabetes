@@ -1,6 +1,5 @@
-package ch.hslu.mobpro.diabetes.math
+package ch.hslu.mobpro.diabetes.utils
 
-import androidx.compose.ui.geometry.times
 import ch.hslu.mobpro.diabetes.data.database.Product
 
 class Ingredient(val product: Product, var weightAmount: Float?) {

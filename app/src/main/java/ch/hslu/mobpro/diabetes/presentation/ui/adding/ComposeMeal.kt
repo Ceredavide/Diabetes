@@ -36,7 +36,7 @@ import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.presentation.common.IngredientListItem
-import ch.hslu.mobpro.diabetes.math.Ingredient
+import ch.hslu.mobpro.diabetes.utils.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes

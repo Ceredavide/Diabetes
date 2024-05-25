@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.components
+package ch.hslu.mobpro.diabetes.presentation.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

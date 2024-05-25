@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.components
+package ch.hslu.mobpro.diabetes.presentation.common
 
 import android.widget.Toast
 import androidx.compose.foundation.border

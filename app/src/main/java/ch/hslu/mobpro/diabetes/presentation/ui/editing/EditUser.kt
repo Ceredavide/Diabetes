@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.screens.editing
+package ch.hslu.mobpro.diabetes.presentation.ui.editing
 
 import android.content.Context
 import android.widget.Toast
@@ -35,9 +35,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
-import ch.hslu.mobpro.diabetes.presentation.components.FloatTextField
+import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
-import ch.hslu.mobpro.diabetes.presentation.screens.welcome.UserPreferences
+import ch.hslu.mobpro.diabetes.presentation.ui.welcome.UserPreferences
 
 @Composable
 fun EditUser(navController: NavController, user: UserPreferences, context: Context) {

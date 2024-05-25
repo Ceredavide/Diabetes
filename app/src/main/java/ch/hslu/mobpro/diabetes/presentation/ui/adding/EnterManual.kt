@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.screens.adding
+package ch.hslu.mobpro.diabetes.presentation.ui.adding
 
 import android.content.Context
 import android.os.Looper
@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.presentation.components.FloatTextField
+import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

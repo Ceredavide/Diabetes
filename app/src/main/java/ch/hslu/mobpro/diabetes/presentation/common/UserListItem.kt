@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.components
+package ch.hslu.mobpro.diabetes.presentation.common
 
 import android.content.Context
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.screens
+package ch.hslu.mobpro.diabetes.presentation.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +32,7 @@ import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.http.getProductOpenFoodFactsExample
-import ch.hslu.mobpro.diabetes.presentation.components.ProductListItem
+import ch.hslu.mobpro.diabetes.presentation.common.ProductListItem
 import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

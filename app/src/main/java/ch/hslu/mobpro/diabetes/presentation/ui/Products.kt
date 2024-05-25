@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.screens
+package ch.hslu.mobpro.diabetes.presentation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.material.Text

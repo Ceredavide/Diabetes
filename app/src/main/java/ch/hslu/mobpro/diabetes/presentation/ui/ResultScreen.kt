@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.screens
+package ch.hslu.mobpro.diabetes.presentation.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -30,7 +30,7 @@ import ch.hslu.mobpro.diabetes.data.database.Product
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.math.Ingredient
 import ch.hslu.mobpro.diabetes.math.calculateInsulinDoseAndTotalCarbs
-import ch.hslu.mobpro.diabetes.presentation.components.ActiveUserIndicator
+import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.viewmodels.IngredientViewModel
 

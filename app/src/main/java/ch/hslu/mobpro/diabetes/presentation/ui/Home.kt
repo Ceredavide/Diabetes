@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.screens
+package ch.hslu.mobpro.diabetes.presentation.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,10 +19,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
-import ch.hslu.mobpro.diabetes.presentation.components.ActiveUserIndicator
-import ch.hslu.mobpro.diabetes.presentation.components.FloatTextField
-import ch.hslu.mobpro.diabetes.presentation.components.Graph
-import ch.hslu.mobpro.diabetes.presentation.screens.adding.persistGlucoseReading
+import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
+import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
+import ch.hslu.mobpro.diabetes.presentation.common.Graph
+import ch.hslu.mobpro.diabetes.presentation.ui.adding.persistGlucoseReading
 import ch.hslu.mobpro.diabetes.presentation.viewmodels.GlucoseReadingsViewModel
 import java.util.Date
 import kotlin.random.Random

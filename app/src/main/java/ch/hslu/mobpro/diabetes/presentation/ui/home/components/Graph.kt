@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastMapIndexed
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
+import ch.hslu.mobpro.diabetes.data.database.entity.GlucoseReading
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 import co.yml.charts.axis.AxisData
 import co.yml.charts.common.model.Point
@@ -135,9 +135,9 @@ fun Graph(glucoseReadingsViewModel: GlucoseReadingsViewModel, height: Dp) {
 }
 
 private fun convertReadings(
-        readings: List<GlucoseReading>,
-        outPoints: MutableState<List<Point>>,
-        outDates: MutableState<List<String>>): Pair<Float, Float> {
+    readings: List<GlucoseReading>,
+    outPoints: MutableState<List<Point>>,
+    outDates: MutableState<List<String>>): Pair<Float, Float> {
 
     var highestReading = 0.0f
     var lowestReading = Float.MAX_VALUE

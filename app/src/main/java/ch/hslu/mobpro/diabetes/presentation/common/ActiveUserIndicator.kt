@@ -32,7 +32,7 @@ fun ActiveUserIndicator(navController: NavController) {
     ) {
 
         FloatingActionButton(
-                onClick = { navController.navigate(Routes.notifications)},
+                onClick = { navController.navigate(Routes.home)},
                 modifier = Modifier
                     .wrapContentSize()
                     .background(Color(red = 0, green = 205, blue = 255)),

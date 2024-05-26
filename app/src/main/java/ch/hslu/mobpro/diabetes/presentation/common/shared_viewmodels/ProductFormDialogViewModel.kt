@@ -21,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProductFormDialogViewModel : ViewModel() {
+open class ProductFormDialogViewModel : ViewModel() {
 
     var isVisible by mutableStateOf(false)
         private set

@@ -21,10 +21,10 @@ import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.presentation.common.shared_components.Header
-import ch.hslu.mobpro.diabetes.presentation.common.shared_components.ProductFormDialog
+import ch.hslu.mobpro.diabetes.presentation.ui.products.components.ProductFormDialog
 import ch.hslu.mobpro.diabetes.presentation.ui.products.components.ProductListItem
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
-import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.ProductFormDialogViewModel
+import ch.hslu.mobpro.diabetes.presentation.ui.products.components.ProductFormDialogViewModel
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

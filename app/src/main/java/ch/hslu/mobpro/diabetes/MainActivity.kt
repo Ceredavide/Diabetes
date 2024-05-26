@@ -1,85 +1,51 @@
 package ch.hslu.mobpro.diabetes
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
-import ch.hslu.mobpro.diabetes.data.database.ProductDAO
-
-import ch.hslu.mobpro.diabetes.ui.navigation.BottomNavigationBar
-import ch.hslu.mobpro.diabetes.ui.navigation.Routes
-import ch.hslu.mobpro.diabetes.ui.screens.EditProduct
-import ch.hslu.mobpro.diabetes.ui.screens.EnterManualScreen
-import ch.hslu.mobpro.diabetes.ui.screens.HomeScreen
-import ch.hslu.mobpro.diabetes.ui.screens.ProductsScreen
-import ch.hslu.mobpro.diabetes.ui.screens.ProfileScreen
-import ch.hslu.mobpro.diabetes.ui.screens.SearchLocalScreen
-import ch.hslu.mobpro.diabetes.ui.screens.welcome.WelcomeScreen
-import ch.hslu.mobpro.diabetes.ui.theme.DiabeticsTheme
+import ch.hslu.mobpro.diabetes.domain.model.User
+import ch.hslu.mobpro.diabetes.presentation.navigation.AppNavigation
+import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeScreen
+import ch.hslu.mobpro.diabetes.presentation.theme.DiabeticsTheme
 
 class MainActivity : ComponentActivity() {
 
     companion object {
-        lateinit var db: AppDatabase
-        lateinit var productDao: ProductDAO
+        lateinit var database: AppDatabase
+        var activeUserInfo: MutableState<User?> = mutableStateOf(null)
     }
+
     private lateinit var preferenceManager: PreferenceManager
+
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         preferenceManager = PreferenceManager(this)
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            AppDatabase.NAME
-        ).build()
-
-        productDao = db.productDao()
+        database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, AppDatabase.NAME).build()
 
         setContent {
             DiabeticsTheme {
                 if (preferenceManager.isFirstTime()) {
                     WelcomeScreen(onCompleted = {
-                        preferenceManager.setUserinfo(it)
+                        preferenceManager.addUser(it, context = this)
+                        preferenceManager.switchToActiveUser(context = this)
                         preferenceManager.setFirstTime(false)
-                        setContent { App() }
+                        setContent { AppNavigation(this) }
                     })
                 } else {
-                    App()
+                    preferenceManager.switchToActiveUser(context = this)
+                    AppNavigation(this)
                 }
             }
         }
     }
-}
-
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun App() {
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
-    ) {
-        NavHost(navController, startDestination = Routes.home) {
-            composable(Routes.home) { HomeScreen() }
-            composable(Routes.dashboard) { ProductsScreen() }
-            composable(Routes.enterManually) { EnterManualScreen() }
-            composable(Routes.editProduct + "/{name}/{carbs}") {
-                val productName = it.arguments?.getString("name")
-                val productCarbs = it.arguments?.getString("carbs")?.toFloat()
-                EditProduct(productName!!, productCarbs!!)
-            }
-            composable(Routes.searchLocal) { SearchLocalScreen(navController = navController)}
-            composable(Routes.notifications) { ProfileScreen() }
-        }
-    }
-
 }

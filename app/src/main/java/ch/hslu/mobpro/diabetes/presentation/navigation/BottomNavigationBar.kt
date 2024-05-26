@@ -36,10 +36,10 @@ fun BottomNavigationBar(navController: NavHostController) {
                     if (currentRoute != screen.route) {
                         navController.navigate(screen.route) {
                             popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
+                                saveState = false
                             }
-                            launchSingleTop = true
-                            restoreState = true
+                            launchSingleTop = false
+                            restoreState = false
                         }
                     }
                 }

@@ -1,28 +1,14 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.products
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
@@ -33,12 +19,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
-import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.entity.Product
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.Header
 import ch.hslu.mobpro.diabetes.presentation.common.shared_components.ProductFormDialog
 import ch.hslu.mobpro.diabetes.presentation.ui.products.components.ProductListItem
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.ProductFormDialogViewModel
+import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,104 +35,143 @@ import kotlinx.coroutines.withContext
 fun ProductsScreen(
     navController: NavController,
     editable: Boolean,
-    ingredientViewModel: IngredientViewModel?
+    ingredientViewModel: IngredientViewModel? = null
 ) {
-
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
     var text by remember { mutableStateOf(TextFieldValue("")) }
     onTextInputChange(text.text, productsState)
 
     val productFormDialogViewModel = ProductFormDialogViewModel()
-    val keyboardController = LocalSoftwareKeyboardController.current
 
+    Scaffold(
+        topBar = { Header(Routes.products) }
+    ) { paddingValues ->
+        ProductsContent(
+            navController = navController,
+            editable = editable,
+            ingredientViewModel = ingredientViewModel,
+            productsState = productsState,
+            text = text,
+            onTextChange = { newText ->
+                text = newText
+                onTextInputChange(newText.text, productsState)
+            },
+            onAddProductClick = { productFormDialogViewModel.addProduct() },
+            paddingValues = paddingValues
+        )
+    }
+}
+
+@Composable
+fun ProductsContent(
+    navController: NavController,
+    editable: Boolean,
+    ingredientViewModel: IngredientViewModel?,
+    productsState: MutableState<List<Product>>,
+    text: TextFieldValue,
+    onTextChange: (TextFieldValue) -> Unit,
+    onAddProductClick: () -> Unit,
+    paddingValues: PaddingValues
+) {
     Column(
         modifier = Modifier
+            .padding(paddingValues)
             .padding(16.dp)
             .fillMaxWidth(),
     ) {
-        ProductFormDialog(viewModel = productFormDialogViewModel)
+        ProductFormDialog(viewModel = ProductFormDialogViewModel())
 
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-                value = text,
-                onValueChange = {
-                    text = it
-                    onTextInputChange(text.text, productsState)
-                },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-                label = { Text( text = "Search Product:")  }
-            )
-            FloatingActionButton(
-                onClick = { productFormDialogViewModel.addProduct() },
-                modifier = Modifier.align(Alignment.CenterVertically)
-            ) {
-                Text(text = "+", style = TextStyle(fontSize = 24.sp))
-            }
-        }
+        SearchBar(text = text, onTextChange = onTextChange, onAddProductClick = onAddProductClick)
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn {
-            items(productsState.value.size) { index ->
-                Box(
-                    Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth()
-                ) {
+        ProductList(
+            navController = navController,
+            products = productsState.value,
+            editable = editable,
+            ingredientViewModel = ingredientViewModel,
+            onEditProduct = { product -> ProductFormDialogViewModel().editProduct(product) }
+        )
+    }
+}
 
-                    ProductListItem(
-                        navController = navController,
-                        product = productsState.value[index],
-                        editable = editable,
-                        ingredientViewModel = ingredientViewModel,
-                        onEdit = { productFormDialogViewModel.editProduct(productsState.value[index]) }
-                    )
-                    Spacer(modifier = Modifier.height(60.dp))
-                }
+@Composable
+fun SearchBar(
+    text: TextFieldValue,
+    onTextChange: (TextFieldValue) -> Unit,
+    onAddProductClick: () -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp),
+            value = text,
+            onValueChange = onTextChange,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            label = { Text(text = "Search Product:") }
+        )
+        FloatingActionButton(
+            onClick = onAddProductClick,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
+            Text(text = "+", style = TextStyle(fontSize = 24.sp))
+        }
+    }
+}
+
+@Composable
+fun ProductList(
+    navController: NavController,
+    products: List<Product>,
+    editable: Boolean,
+    ingredientViewModel: IngredientViewModel?,
+    onEditProduct: (Product) -> Unit
+) {
+    LazyColumn {
+        items(products.size) { index ->
+            Box(
+                Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            ) {
+                ProductListItem(
+                    navController = navController,
+                    product = products[index],
+                    editable = editable,
+                    ingredientViewModel = ingredientViewModel,
+                    onEdit = { onEditProduct(products[index]) }
+                )
+                Spacer(modifier = Modifier.height(60.dp))
             }
         }
     }
 }
 
 fun onTextInputChange(productName: String, productsState: MutableState<List<Product>>) {
-
     CoroutineScope(Dispatchers.IO).launch {
-
-        if (productName.isNotEmpty()) {
-
-            val foundProducts = MainActivity.database.productDao().findProductsFuzzyOrdered(productName)
-            withContext(Dispatchers.Main) {
-
-                productsState.value = foundProducts
-            }
+        val foundProducts = if (productName.isNotEmpty()) {
+            MainActivity.database.productDao().findProductsFuzzyOrdered(productName)
         } else {
-
-            val allProducts = MainActivity.database.productDao().getAllOrdered()
-            withContext(Dispatchers.Main) {
-                productsState.value = allProducts
-            }
+            MainActivity.database.productDao().getAllOrdered()
+        }
+        withContext(Dispatchers.Main) {
+            productsState.value = foundProducts
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun SearchLocalPreview() {
-
+fun ProductsScreenPreview() {
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
-    ProductsScreen(
-        navController = navController,
-        editable = true,
-        ingredientViewModel = ingredientViewModel
-    )
+    ProductsScreen(navController = navController, editable = true, ingredientViewModel = ingredientViewModel)
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -13,16 +14,17 @@ import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
 fun TextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    error: String? = null
+    error: String? = null,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column {
+    Column(modifier = modifier) {
         OutlinedTextField(
             value = if (value == "0.0") "" else value,
             onValueChange = onValueChange,

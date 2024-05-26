@@ -1,18 +1,22 @@
 package ch.hslu.mobpro.diabetes.presentation.common.shared_components
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.UserFormViewModel
 
 @Composable
 fun UserForm(
     viewModel: UserFormViewModel,
+    modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(modifier = modifier)
+    {
         TextField(
             value = viewModel.userProfileState.value.name.value,
             onValueChange = {
@@ -21,6 +25,8 @@ fun UserForm(
             label = "User Name",
             error = viewModel.nameError.value
         )
+
+        Spacer(modifier = Modifier.height(18.dp))
 
         TextField(
             value = viewModel.userProfileState.value.insulinPer10gCarbs.value.toString(),
@@ -33,6 +39,8 @@ fun UserForm(
             error = viewModel.insulinPer10gCarbsError.value
         )
 
+        Spacer(modifier = Modifier.height(18.dp))
+
         TextField(
             value = viewModel.userProfileState.value.insulinPer1mmolL.value.toString(),
             onValueChange = {
@@ -44,6 +52,8 @@ fun UserForm(
             error = viewModel.insulinPer1mmolLError.value
         )
 
+        Spacer(modifier = Modifier.height(18.dp))
+
         TextField(
             value = viewModel.userProfileState.value.upperBoundGlucoseLevel.value.toString(),
             onValueChange = {
@@ -54,6 +64,8 @@ fun UserForm(
             keyboardType = KeyboardType.Number,
             error = viewModel.upperBoundGlucoseLevelError.value
         )
+
+        Spacer(modifier = Modifier.height(18.dp))
 
         TextField(
             value = viewModel.userProfileState.value.lowerBoundGlucoseLevel.value.toString(),
@@ -67,7 +79,6 @@ fun UserForm(
         )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

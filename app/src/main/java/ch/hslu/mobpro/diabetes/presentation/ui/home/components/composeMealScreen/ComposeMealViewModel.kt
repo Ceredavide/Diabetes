@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMeal
+package ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMealScreen
 
 import android.content.Context
 import android.widget.Toast

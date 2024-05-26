@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMeal
+package ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMealScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +34,7 @@ import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseRead
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 
 @Composable
-fun ComposeMeal(
+fun ComposeMealScreen(
     navController: NavController,
     ingredientViewModel: IngredientViewModel,
     glucoseReadingsViewModel: GlucoseReadingsViewModel,
@@ -116,7 +116,7 @@ fun ComposeMealPreview() {
     val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
     val composeMealViewModel = ComposeMealViewModel()
 
-    ComposeMeal(
+    ComposeMealScreen(
         navController = navController,
         ingredientViewModel = ingredientViewModel,
         glucoseReadingsViewModel = glucoseReadingsViewModel,

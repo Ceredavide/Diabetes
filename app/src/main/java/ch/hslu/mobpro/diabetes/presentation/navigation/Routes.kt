@@ -1,15 +1,16 @@
 package ch.hslu.mobpro.diabetes.presentation.navigation
 
 object Routes {
-
-    val home = "home"
-    val dashboard = "dashboard"
-    val notifications = "dashboard"
-    val enterManually = "enter_manually"
-    val editProduct = "edit_product"
-    val searchLocal = "search_local"
-    val composeMeal = "compose_meal"
-    val resultScreen = "result_screen"
-    val editUser = "edit_user"
-    val addUser = "add_user"
+    const val home = "home"
+    const val products = "products"
+    const val uneditableProducts = "uneditableProducts"
+    const val resultScreen = "result_screen/{glucoseLevel}"
+    const val user = "user"
+    const val composeMeal = "compose_meal"
+    const val dashboard = "dashboard"
+    const val profile = "profile"
+    const val userFormCreate = "user_form"
+    const val userFormEdit = "user_form/{userName}"
+    fun userForm(userName: String) = "user_form/$userName"
+    fun resultScreen(glucoseLevel: Float) = "result_screen/$glucoseLevel"
 }

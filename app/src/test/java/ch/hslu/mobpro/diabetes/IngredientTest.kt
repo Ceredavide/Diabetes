@@ -1,6 +1,6 @@
 package ch.hslu.mobpro.diabetes
 
-import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.utils.Ingredient
 import org.junit.Assert.assertEquals
 import org.junit.Test

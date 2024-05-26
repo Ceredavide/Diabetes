@@ -1,5 +1,6 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.products.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
-import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.presentation.common.shared_components.EditDeleteButtons
 import ch.hslu.mobpro.diabetes.utils.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
@@ -42,6 +43,8 @@ fun ProductListItem(
 
     val context = LocalContext.current
 
+    Log.d("ProductListItem", "Ingredient count: ${ingredientViewModel?.ingredients?.size}")
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -51,7 +54,7 @@ fun ProductListItem(
             .clickable {
 
                 if (!editable) {
-                    if (ingredientViewModel?.contains(product.name!!)!!) {
+                    if (ingredientViewModel!!.contains(product.name!!)) {
                         Toast
                             .makeText(
                                 context,
@@ -86,15 +89,13 @@ fun ProductListItem(
                 modifier = Modifier.padding(8.dp),
                 onEdit = {onEdit(product)},
                 onDelete = {
-
                     CoroutineScope(Dispatchers.IO).launch {
-
-                        MainActivity.productDao.deleteProductByName(product.name!!)
+                        MainActivity.database.productDao().deleteProductByName(product.name!!)
                     }
                     Toast
                         .makeText(context, "DELETED PRODUCT ${product.name}", Toast.LENGTH_LONG)
                         .show()
-                    navController.navigate(Routes.searchLocal)
+                    navController.navigate(Routes.products)
                 },
                 deletable = true
             )
@@ -114,7 +115,7 @@ fun ProductListItemPreview() {
         navController = navController,
         product = product,
         editable = true,
-        ingredientViewModel = null,
+        ingredientViewModel = IngredientViewModel(),
         onEdit = {}
     )
 }

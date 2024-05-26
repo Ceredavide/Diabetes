@@ -57,7 +57,7 @@ fun ProfileScreen(
         }
 
         FloatingActionButton(
-                onClick = { navController.navigate(Routes.addUser) }
+                onClick = { navController.navigate(Routes.userFormCreate) }
         ) {
             Text(text = "+", style = TextStyle(fontSize = 48.sp))
 

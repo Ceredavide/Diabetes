@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.data.database
+package ch.hslu.mobpro.diabetes.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 
 @Dao
 interface ProductDAO {

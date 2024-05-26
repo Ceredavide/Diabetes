@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.common
+package ch.hslu.mobpro.diabetes.presentation.ui.user.profile.components
 
 import android.content.Context
 import androidx.compose.foundation.background
@@ -29,16 +29,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.EditDeleteButtons
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 
 @Composable
-fun UserListItem(navController: NavController,
-                 glucoseReadingsViewModel: GlucoseReadingsViewModel,
-                 userName: String,
-                 userIndex: UInt,
-                 deletable: Boolean,
-                 context: Context) {
+fun UserListItem(
+    navController: NavController,
+    glucoseReadingsViewModel: GlucoseReadingsViewModel,
+    userName: String,
+    userIndex: UInt,
+    deletable: Boolean,
+    context: Context
+) {
 
     val modifier = Modifier.padding(16.dp)
     Column(
@@ -60,16 +63,16 @@ fun UserListItem(navController: NavController,
             )
 
             IconButton(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Color.LightGray)
-                        .padding(4.dp),
-                    onClick = {
+                modifier = Modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(Color.LightGray)
+                    .padding(4.dp),
+                onClick = {
 
-                        PreferenceManager.instance.setActiveUserIndex(userIndex, context)
-                        glucoseReadingsViewModel.updateActiveUser()
-                        navController.navigate(Routes.home)
-                    }
+                    PreferenceManager.instance.setActiveUserIndex(userIndex, context)
+                    glucoseReadingsViewModel.updateActiveUser()
+                    navController.navigate(Routes.home)
+                }
             ) {
                 Icon(imageVector = Icons.Default.SwitchAccount, contentDescription = "Switch user")
             }
@@ -81,7 +84,7 @@ fun UserListItem(navController: NavController,
 
                     PreferenceManager.instance.deleteUser(userName = userName, context = context)
                     navController.navigate(Routes.notifications)
-                           },
+                },
                 deletable = deletable
             )
         }
@@ -95,10 +98,12 @@ fun UserListItemPreview() {
     val navController = rememberNavController()
     val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
 
-    UserListItem(navController = navController,
-            glucoseReadingsViewModel = glucoseReadingsViewModel,
-            userName = "User",
-            userIndex = 1u,
-            deletable = true,
-            LocalContext.current)
+    UserListItem(
+        navController = navController,
+        glucoseReadingsViewModel = glucoseReadingsViewModel,
+        userName = "User",
+        userIndex = 1u,
+        deletable = true,
+        LocalContext.current
+    )
 }

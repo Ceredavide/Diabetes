@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels
+package ch.hslu.mobpro.diabetes.presentation.ui.products.components
 
 import android.content.Context
 import android.widget.Toast
@@ -64,7 +64,7 @@ open class ProductFormDialogViewModel : ViewModel() {
         isVisible = true
     }
 
-    fun editProduct( product: Product) {
+    fun editProduct(product: Product) {
         isEditMode = true
         originalName = product.name ?: ""
         productName = originalName
@@ -72,7 +72,7 @@ open class ProductFormDialogViewModel : ViewModel() {
         isVisible = true
     }
 
-    fun hideDialog(){
+    fun hideDialog() {
         isVisible = false
         isEditMode = false
         productName = ""
@@ -145,34 +145,36 @@ open class ProductFormDialogViewModel : ViewModel() {
     }
 
     fun startBarcodeScanner(scanLauncher: ActivityResultLauncher<ScanOptions>) {
-        val options = ScanOptions()
-        options.setDesiredBarcodeFormats(ScanOptions.PRODUCT_CODE_TYPES)
-        options.setPrompt("Scan a barcode, you have 15 seconds.")
-        options.setTimeout(10000)
-        options.setCameraId(1)
-        options.setBeepEnabled(true)
-        options.setBarcodeImageEnabled(true)
-        scanLauncher.launch(options)
+        viewModelScope.launch(Dispatchers.IO) {
+            val options = ScanOptions()
+            options.setDesiredBarcodeFormats(ScanOptions.PRODUCT_CODE_TYPES)
+            options.setPrompt("Scan a barcode")
+            options.setBeepEnabled(true)
+            options.setBarcodeImageEnabled(true)
+            scanLauncher.launch(options)
+        }
     }
 
     fun fetchProductDetails(barcode: String, context: Context) {
-        val call = RetrofitClient.apiService.getProductByBarcode(barcode)
-        call.enqueue(object : Callback<ProductResponse> {
-            override fun onResponse(call: Call<ProductResponse>, response: Response<ProductResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.product?.let { product ->
-                        updateFetchedProduct(product.product_name, product.nutriments.carbohydrates_100g)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val response = RetrofitClient.apiService.getProductByBarcode(barcode).execute()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        response.body()?.product?.let { product ->
+                            updateFetchedProduct(product.product_name, product.nutriments.carbohydrates_100g)
+                        }
+                    } else {
+                        Toast.makeText(context, "Product not found", Toast.LENGTH_SHORT).show()
+                        updateFetchedProduct(null, null)
                     }
-                } else {
-                    Toast.makeText(context, "Product not found", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
                     updateFetchedProduct(null, null)
                 }
             }
-
-            override fun onFailure(call: Call<ProductResponse>, t: Throwable) {
-                Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
-                updateFetchedProduct(null, null)
-            }
-        })
+        }
     }
 }

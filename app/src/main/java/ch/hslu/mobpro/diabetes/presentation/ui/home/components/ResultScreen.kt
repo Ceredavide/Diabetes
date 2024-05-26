@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui
+package ch.hslu.mobpro.diabetes.presentation.ui.home.components
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.utils.Ingredient
 import ch.hslu.mobpro.diabetes.utils.calculateInsulinDoseAndTotalCarbs
@@ -42,8 +42,6 @@ fun ResultScreen(
     context: Context) {
 
     val ingredients = ingredientViewModel.ingredients
-    val sharedPreferences: SharedPreferences =
-            context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE)
 
     Column(
             modifier = Modifier
@@ -159,7 +157,7 @@ fun ResultScreen(
         Spacer(modifier = Modifier.padding(top = 60.dp))
 
         Button(
-                onClick = { navController.navigate(Routes.composeMeal) },
+                onClick = { navController.navigate(Routes.dashboard) },
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp))
         ) {

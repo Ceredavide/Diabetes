@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes
+package ch.hslu.mobpro.diabetes.utils
 
 import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.utils.Ingredient

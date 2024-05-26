@@ -3,18 +3,12 @@ package ch.hslu.mobpro.diabetes.presentation.ui.user.profile.components
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SwitchAccount
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,46 +36,48 @@ fun UserListItem(
     deletable: Boolean,
     context: Context
 ) {
-
-    val modifier = Modifier.padding(16.dp)
     Column(
-        modifier = modifier
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
+            .background(Color.White)
+            .padding(16.dp)
     ) {
-
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .border(2.dp, MaterialTheme.colors.primary, RoundedCornerShape(2.dp)),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Text(
                 text = userName,
-                Modifier.padding(start = 16.dp),
-                style = TextStyle(fontSize = 32.sp)
+                style = TextStyle(fontSize = 24.sp, color = MaterialTheme.colors.onSurface)
             )
 
             IconButton(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(Color.LightGray)
-                    .padding(4.dp),
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colors.primary)
+                    .padding(8.dp),
                 onClick = {
-
                     PreferenceManager.instance.setActiveUserIndex(userIndex, context)
                     glucoseReadingsViewModel.updateActiveUser()
                     navController.navigate(Routes.home)
                 }
             ) {
-                Icon(imageVector = Icons.Default.SwitchAccount, contentDescription = "Switch user")
+                Icon(
+                    imageVector = Icons.Default.SwitchAccount,
+                    contentDescription = "Switch user",
+                    tint = Color.White
+                )
             }
 
             EditDeleteButtons(
-                modifier = modifier,
+                modifier = Modifier.padding(start = 8.dp),
                 onEdit = { navController.navigate(Routes.userForm(userName)) },
                 onDelete = {
-
                     PreferenceManager.instance.deleteUser(userName = userName, context = context)
                     navController.navigate(Routes.composeMeal)
                 },
@@ -91,13 +87,11 @@ fun UserListItem(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun UserListItemPreview() {
-
     val navController = rememberNavController()
     val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
-
     UserListItem(
         navController = navController,
         glucoseReadingsViewModel = glucoseReadingsViewModel,

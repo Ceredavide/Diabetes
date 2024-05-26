@@ -26,9 +26,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.presentation.common.IngredientListItem
-import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
-import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
+import ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMealScreen.components.IngredientListItem
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.ActiveUserIndicator
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel

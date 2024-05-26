@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.common
+package ch.hslu.mobpro.diabetes.presentation.ui.products.components
 
 import android.widget.Toast
 import androidx.compose.foundation.border
@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.EditDeleteButtons
 import ch.hslu.mobpro.diabetes.utils.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
@@ -31,14 +32,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun ProductListItem(navController: NavController,
-                    product: Product,
-                    editable: Boolean,
-                    ingredientViewModel: IngredientViewModel?) {
+fun ProductListItem(
+    navController: NavController,
+    product: Product,
+    editable: Boolean,
+    ingredientViewModel: IngredientViewModel?,
+    onEdit: (Product) -> Unit,
+) {
 
     val context = LocalContext.current
 
-    Row (
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(4.dp))
@@ -48,15 +52,19 @@ fun ProductListItem(navController: NavController,
 
                 if (!editable) {
                     if (ingredientViewModel?.contains(product.name!!)!!) {
-
-                        Toast.makeText(context, "Product already in ingredient list", Toast.LENGTH_LONG).show()
-                    }
-                    else {
+                        Toast
+                            .makeText(
+                                context,
+                                "Product already in ingredient list",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    } else {
                         ingredientViewModel.addIngredient(
-                                Ingredient(
-                                        product = product,
-                                        weightAmount = 0f
-                                )
+                            Ingredient(
+                                product = product,
+                                weightAmount = 0f
+                            )
                         )
                     }
                     navController.navigate(Routes.composeMeal)
@@ -76,7 +84,7 @@ fun ProductListItem(navController: NavController,
 
             EditDeleteButtons(
                 modifier = Modifier.padding(8.dp),
-                onEdit = { navController.navigate(Routes.editProduct + "/${product.name}/${product.carbs}") },
+                onEdit = {onEdit(product)},
                 onDelete = {
 
                     CoroutineScope(Dispatchers.IO).launch {
@@ -105,8 +113,10 @@ fun ProductListItemPreview() {
     ProductListItem(
         navController = navController,
         product = product,
-        editable = true
-        , ingredientViewModel = null)
+        editable = true,
+        ingredientViewModel = null,
+        onEdit = {}
+    )
 }
 
 

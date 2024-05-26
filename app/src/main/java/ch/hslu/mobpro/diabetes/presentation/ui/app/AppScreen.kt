@@ -19,8 +19,8 @@ import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientV
 import ch.hslu.mobpro.diabetes.presentation.navigation.BottomNavigationBar
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.ui.home.HomeScreen
-import ch.hslu.mobpro.diabetes.presentation.ui.home.components.ResultScreen
-import ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMeal.ComposeMeal
+import ch.hslu.mobpro.diabetes.presentation.ui.home.components.resultScreen.ResultScreen
+import ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMealScreen.ComposeMealScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.products.ProductsScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.user.profile.ProfileScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.user.form.UserFormScreen
@@ -74,7 +74,7 @@ fun NavGraphBuilder.homeGraph(
             )
         }
         composable(Routes.composeMeal) {
-            ComposeMeal(
+            ComposeMealScreen(
                 navController = navController,
                 ingredientViewModel = ingredientViewModel,
                 glucoseReadingsViewModel = glucoseReadingsViewModel

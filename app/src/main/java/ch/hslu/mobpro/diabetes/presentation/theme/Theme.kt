@@ -14,6 +14,7 @@ import androidx.core.view.WindowCompat
 
 val Navy = Color(0xFF073042)
 val Blue = Color(0xFF4285F4)
+val lightGray = Color(0xFFF0F0F0)
 val LightBlue = Color(0xFFD7EFFE)
 val Chartreuse = Color(0xFFEFF7CF)
 
@@ -23,14 +24,13 @@ private val DarkColorPalette = darkColors(
     primaryVariant = Blue,
     secondary = Chartreuse,
     surface = Blue,
-    onSurface = Color.White
 )
 
 private val LightColorPalette = lightColors(
     primary = Blue,
     primaryVariant = LightBlue,
     secondary = Chartreuse,
-    surface = Blue,
+    surface = lightGray,
     onSurface = Navy,
     onPrimary = Navy
     /* Other default colors to override

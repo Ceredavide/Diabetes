@@ -5,11 +5,9 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FoodBank
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SetMeal
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -22,10 +20,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
         Screen.Home,
         Screen.Products,
-        Screen.EnterManual,
-        Screen.SearchLocal,
-        Screen.Profile,
-        Screen.ComposeMeal,
+        Screen.Profile
     )
     BottomNavigation(
         backgroundColor = Color.White,
@@ -40,8 +35,11 @@ fun BottomNavigationBar(navController: NavHostController) {
                 onClick = {
                     if (currentRoute != screen.route) {
                         navController.navigate(screen.route) {
-                            popUpTo(navController.graph.startDestinationId)
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
                             launchSingleTop = true
+                            restoreState = true
                         }
                     }
                 }
@@ -58,9 +56,6 @@ fun currentRoute(navController: NavHostController): String? {
 
 enum class Screen(val route: String, val icon: ImageVector, val title: String) {
     Home(Routes.home, Icons.Filled.Home, "Home"),
-    Products(Routes.dashboard, Icons.Filled.Restaurant, "Products"),
-    Profile(Routes.notifications, Icons.Filled.Person, "Profile"),
-    EnterManual(Routes.enterManually, Icons.Filled.FoodBank, "Enter Manual"),
-    SearchLocal(Routes.searchLocal, Icons.Filled.Search, "Search"),
-    ComposeMeal(Routes.composeMeal, Icons.Filled.SetMeal, "Compose")
+    Products(Routes.products, Icons.Filled.Restaurant, "Products"),
+    Profile(Routes.user, Icons.Filled.Person, "Profile")
 }

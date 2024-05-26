@@ -1,12 +1,17 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.home.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -39,15 +44,36 @@ fun Graph(glucoseReadingsViewModel: GlucoseReadingsViewModel, height: Dp) {
     RenderGraph(lineChartData, height)
 }
 
+
 @Composable
 fun NoDataAvailable() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "NO DATA AVAILABLE", fontSize = 36.sp)
-        Text(text = "GRAPH OF READINGS WILL APPEAR HERE", fontSize = 34.sp)
+        Icon(
+            imageVector = Icons.Default.Info,
+            contentDescription = "No Data Icon",
+            tint = Color.Gray,
+            modifier = Modifier.size(64.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "NO DATA AVAILABLE",
+            fontSize = 24.sp,
+            color = Color.Gray,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "GRAPH OF READINGS WILL APPEAR HERE",
+            fontSize = 18.sp,
+            color = Color.Gray,
+            textAlign = TextAlign.Center
+        )
     }
 }
 

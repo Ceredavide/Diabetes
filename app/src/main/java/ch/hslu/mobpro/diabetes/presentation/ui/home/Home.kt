@@ -21,8 +21,8 @@ import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
 import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
-import ch.hslu.mobpro.diabetes.presentation.common.Graph
-import ch.hslu.mobpro.diabetes.presentation.ui.adding.persistGlucoseReading
+import ch.hslu.mobpro.diabetes.presentation.ui.home.components.Graph
+import ch.hslu.mobpro.diabetes.presentation.ui.home.components.persistGlucoseReading
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 import java.util.Date
 import kotlin.random.Random

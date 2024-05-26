@@ -2,8 +2,8 @@ package ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels
 
 import androidx.lifecycle.ViewModel
 import ch.hslu.mobpro.diabetes.MainActivity
-import ch.hslu.mobpro.diabetes.data.database.GlucoseReading
-import ch.hslu.mobpro.diabetes.data.database.GlucoseReadingDAO
+import ch.hslu.mobpro.diabetes.data.database.entity.GlucoseReading
+import ch.hslu.mobpro.diabetes.data.database.dao.GlucoseReadingDAO
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +18,7 @@ class GlucoseReadingsViewModel : ViewModel() {
     private var readings = emptyList<GlucoseReading>()
      var glucoseReadingDao: GlucoseReadingDAO
     init {
-
-        glucoseReadingDao = MainActivity.db.glucoseReadingDao()
+        glucoseReadingDao = MainActivity.database.glucoseReadingDao()
         deleteOldGlucoseReadings()
         getGlucoseReadingsOfActiveUser()
     }

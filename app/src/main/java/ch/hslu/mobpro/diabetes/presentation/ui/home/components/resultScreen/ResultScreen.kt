@@ -1,6 +1,7 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.home.components.resultScreen
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -19,7 +20,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.database.entity.Product
-import ch.hslu.mobpro.diabetes.presentation.common.shared_components.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.utils.Ingredient
@@ -36,57 +36,105 @@ fun ResultScreen(
     resultScreenViewModel.loadUserInfo(context)
     resultScreenViewModel.calculateInsulinAndCarbs(glucoseLevel, ingredients)
 
-    Column(modifier = Modifier.padding(14.dp)) {
-        ActiveUserIndicator(navController = navController)
+    Column(modifier = Modifier
+        .padding(16.dp)
+        .fillMaxSize()
+        .background(Color(0xFFF0F0F0))) {
 
-        UserInfoRow(label = "User", value = resultScreenViewModel.userName.value)
-        UserInfoRow(
+        Spacer(modifier = Modifier.height(16.dp))
+
+        UserInfoCard(
+            label = "User",
+            value = resultScreenViewModel.userName.value
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        UserInfoCard(
             label = "Glucose level",
             value = "$glucoseLevel",
             textDecoration = resultScreenViewModel.textDecoration.value,
             color = resultScreenViewModel.color.value
         )
-        UserInfoRow(label = "Total carbohydrates", value = "${resultScreenViewModel.totalCarbs.value}g")
-        UserInfoRow(
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        UserInfoCard(
+            label = "Total carbohydrates",
+            value = "${resultScreenViewModel.totalCarbs.floatValue}g"
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        UserInfoCard(
             label = "Units insulin",
-            value = "${resultScreenViewModel.insulinDose.value}",
+            value = "${resultScreenViewModel.insulinDose.intValue}",
             textDecoration = resultScreenViewModel.textDecoration.value,
             color = resultScreenViewModel.color.value
         )
 
-        Divider(modifier = Modifier.fillMaxWidth(), thickness = 8.dp)
+        Divider(modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp), thickness = 1.dp, color = Color.Gray)
 
         ingredients.forEach {
-            IngredientRow(ingredient = it)
+            IngredientCard(ingredient = it)
+            Spacer(modifier = Modifier.height(8.dp))
         }
 
-        Spacer(modifier = Modifier.padding(top = 60.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         NavigationButton(navController = navController, route = Routes.dashboard)
     }
 }
 
 @Composable
-fun UserInfoRow(label: String, value: String, textDecoration: TextDecoration = TextDecoration.None, color: Color = Color.Black) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = label, fontSize = 32.sp)
-        Text(
-            text = value,
-            style = TextStyle(
-                textDecoration = textDecoration,
-                color = color,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Normal
+fun UserInfoCard(label: String, value: String, textDecoration: TextDecoration = TextDecoration.None, color: Color = Color.Black) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = label, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = value,
+                style = TextStyle(
+                    textDecoration = textDecoration,
+                    color = color,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Normal
+                )
             )
-        )
+        }
     }
 }
 
 @Composable
-fun IngredientRow(ingredient: Ingredient) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = ingredient.product.name ?: "", fontSize = 32.sp)
-        Text(text = "${ingredient.weightAmount}g", fontSize = 32.sp)
+fun IngredientCard(ingredient: Ingredient) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        elevation = 4.dp,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = ingredient.product.name ?: "", fontSize = 20.sp)
+            Text(text = "${ingredient.weightAmount}g", fontSize = 20.sp)
+        }
     }
 }
 
@@ -94,7 +142,10 @@ fun IngredientRow(ingredient: Ingredient) {
 fun NavigationButton(navController: NavController, route: String) {
     Button(
         onClick = { navController.navigate(route) },
-        modifier = Modifier.clip(RoundedCornerShape(4.dp))
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+            .clip(RoundedCornerShape(8.dp))
     ) {
         Text(text = "BACK TO COMPOSITION")
     }

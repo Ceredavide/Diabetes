@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.hslu.mobpro.diabetes.MainActivity
-import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.data.network.client.RetrofitClient
 import ch.hslu.mobpro.diabetes.data.network.model.ProductResponse
 import com.journeyapps.barcodescanner.ScanOptions
@@ -85,11 +85,11 @@ class ProductFormDialogViewModel : ViewModel() {
         if (validateAll()) {
             viewModelScope.launch(Dispatchers.IO) {
                 if (isEditMode) {
-                    val product = MainActivity.productDao.getProductByName(originalName)
+                    val product = MainActivity.database.productDao().getProductByName(originalName)
                     if (product != null) {
                         product.name = productName
                         product.carbs = carbs
-                        MainActivity.productDao.updateProduct(product)
+                        MainActivity.database.productDao().updateProduct(product)
                         withContext(Dispatchers.Main) {
                             onSuccess("$productName updated successfully!")
                         }
@@ -101,7 +101,7 @@ class ProductFormDialogViewModel : ViewModel() {
                 } else {
                     val product = Product(productName, carbs)
                     if (!productExistsCheck(productName)) {
-                        MainActivity.productDao.insertProduct(product)
+                        MainActivity.database.productDao().insertProduct(product)
                         withContext(Dispatchers.Main) {
                             onSuccess("$productName saved successfully!")
                         }
@@ -138,7 +138,7 @@ class ProductFormDialogViewModel : ViewModel() {
     }
 
     private fun productExistsCheck(productName: String): Boolean {
-        return MainActivity.productDao.getProductByName(productName) != null
+        return MainActivity.database.productDao().getProductByName(productName) != null
     }
 
     fun startBarcodeScanner(scanLauncher: ActivityResultLauncher<ScanOptions>) {

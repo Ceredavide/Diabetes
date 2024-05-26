@@ -2,21 +2,16 @@ package ch.hslu.mobpro.diabetes.presentation.common.shared_components
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.ProductFormDialogViewModel
@@ -27,8 +22,6 @@ fun ProductFormDialog(
     viewModel: ProductFormDialogViewModel,
 ) {
     val context = LocalContext.current
-
-    LaunchedEffect(Unit) {}
 
     val scanLauncher = rememberLauncherForActivityResult(
         contract = ScanContract()
@@ -41,25 +34,35 @@ fun ProductFormDialog(
             viewModel.updateFetchedProduct(null, null)
         }
     }
-    if(viewModel.isVisible){
+
+    if (viewModel.isVisible) {
         AlertDialog(
             onDismissRequest = {
                 viewModel.hideDialog()
             },
             title = {
-                Text(text = if (viewModel.isEditMode) "Edit Product" else "Add Product")
+                Text(
+                    text = if (viewModel.isEditMode) stringResource(id = R.string.edit_product) else stringResource(
+                        id = R.string.add_product
+                    )
+
+                )
             },
             text = {
                 Column(
-                    modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.Top
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Bottom
                 ) {
-
+                    Spacer(modifier = Modifier.height(8.dp))
                     TextField(
                         value = viewModel.productName,
                         onValueChange = { viewModel.updateProductName(it) },
                         label = stringResource(id = R.string.product_name),
                         error = viewModel.productNameError.value,
-                        imeAction = ImeAction.Done
+                        imeAction = ImeAction.Done,
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -73,20 +76,24 @@ fun ProductFormDialog(
                         label = stringResource(id = R.string.carbs_per_100g),
                         error = viewModel.carbsError.value,
                         keyboardType = KeyboardType.Number,
+                        modifier = Modifier.fillMaxWidth()
                     )
-
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             },
             buttons = {
-                Row {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Button(onClick = {
                         viewModel.hideDialog()
                     }) {
-                        Text(text = "Cancel")
+                        Text(text = stringResource(id = R.string.cancel))
                     }
                     Button(onClick = { viewModel.startBarcodeScanner(scanLauncher) }) {
-                        Text("Scan Barcode")
+                        Text(text = stringResource(id = R.string.scan_barcode))
                     }
                     Button(onClick = {
                         viewModel.onSave(onSuccess = {
@@ -98,10 +105,18 @@ fun ProductFormDialog(
                             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
                         })
                     }) {
-                        Text(text = "Save")
+                        Text(text = stringResource(id = R.string.save))
                     }
                 }
             },
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProductFormDialogPreview() {
+    val viewModel = object : ProductFormDialogViewModel() {}
+    viewModel.addProduct()
+    ProductFormDialog(viewModel = viewModel)
 }

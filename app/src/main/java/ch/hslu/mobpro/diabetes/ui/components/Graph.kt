@@ -140,26 +140,20 @@ private fun convertReadings(
         outDates: MutableState<List<String>>): Pair<Float, Float> {
 
     var highestReading = 0.0f
-    var lowestReading = Float.MAX_VALUE
 
-    outPoints.value = readings.fastMapIndexed { i, reading ->
+    outPoints.value = listOf(Point(0.0f,0.0f))
+    outPoints.value +=  readings.fastMapIndexed { i, reading ->
 
         if (reading.glucoseLevel > highestReading) {
 
             highestReading = reading.glucoseLevel
         }
-        else if (reading.glucoseLevel < lowestReading) {
 
-            lowestReading = reading.glucoseLevel
-        }
-        Point(i .toFloat(), reading.glucoseLevel)
+        Point((i + 1).toFloat(), reading.glucoseLevel)
     }
 
-    if (lowestReading == highestReading) {
 
-        lowestReading = 0.0f
-    }
-
+    outDates.value += ""
     readings.forEach() {
         val localTime = Instant.ofEpochMilli(it.time.time)
             .atZone(ZoneId.systemDefault())
@@ -168,7 +162,7 @@ private fun convertReadings(
         outDates.value += "${localTime.hour}:${localTime.minute}"
     }
 
-    return Pair(lowestReading, highestReading)
+    return Pair(0.0f, highestReading)
 }
 
 

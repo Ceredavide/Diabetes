@@ -30,7 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.presentation.common.shared_components.ProductFormDialog
 import ch.hslu.mobpro.diabetes.presentation.ui.products.components.ProductListItem
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
@@ -107,16 +107,15 @@ fun onTextInputChange(productName: String, productsState: MutableState<List<Prod
 
         if (productName.isNotEmpty()) {
 
-            val foundProducts = MainActivity.productDao.findProductsFuzzyOrdered(productName)
+            val foundProducts = MainActivity.database.productDao().findProductsFuzzyOrdered(productName)
             withContext(Dispatchers.Main) {
 
                 productsState.value = foundProducts
             }
         } else {
 
-            val allProducts = MainActivity.productDao.getAllOrdered()
+            val allProducts = MainActivity.database.productDao().getAllOrdered()
             withContext(Dispatchers.Main) {
-
                 productsState.value = allProducts
             }
         }

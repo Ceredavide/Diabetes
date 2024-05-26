@@ -40,7 +40,8 @@ fun Graph(glucoseReadingsViewModel: GlucoseReadingsViewModel, height: Dp) {
         return
     }
 
-    val lineChartData = createLineChartData(pointsState.value, datesState.value, lowestReading, highestReading)
+    val lineChartData =
+        createLineChartData(pointsState.value, datesState.value, lowestReading, highestReading)
     RenderGraph(lineChartData, height)
 }
 
@@ -78,7 +79,12 @@ fun NoDataAvailable() {
 }
 
 @Composable
-fun createLineChartData(points: List<Point>, dates: List<String>, lowestReading: Float, highestReading: Float): LineChartData {
+fun createLineChartData(
+    points: List<Point>,
+    dates: List<String>,
+    lowestReading: Float,
+    highestReading: Float
+): LineChartData {
     val steps = 5
 
     val xAxisData = AxisData.Builder()
@@ -159,24 +165,24 @@ private fun convertReadings(
     var highestReading = 0.0f
     var lowestReading = Float.MAX_VALUE
 
-    outPoints.value = readings.fastMapIndexed { i, reading ->
+    outPoints.value += Point(0.0f, 0.0f)
+
+    outPoints.value += readings.fastMapIndexed { i, reading ->
         highestReading = maxOf(highestReading, reading.glucoseLevel)
         lowestReading = minOf(lowestReading, reading.glucoseLevel)
-        Point(i.toFloat(), reading.glucoseLevel)
+        Point((i + 1).toFloat(), reading.glucoseLevel)
     }
 
-    if (lowestReading == highestReading) {
-        lowestReading = 0.0f
-    }
+    outDates.value += "0:00"
 
-    outDates.value = readings.map {
+    outDates.value += readings.map {
         val localTime = Instant.ofEpochMilli(it.time.time)
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime()
         "${localTime.hour}:${localTime.minute}"
     }
 
-    return Pair(lowestReading, highestReading)
+    return Pair(0.0f, highestReading)
 }
 
 @Preview

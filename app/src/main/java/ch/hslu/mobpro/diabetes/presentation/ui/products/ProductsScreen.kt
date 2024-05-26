@@ -35,13 +35,11 @@ import kotlinx.coroutines.withContext
 fun ProductsScreen(
     navController: NavController,
     editable: Boolean,
-    ingredientViewModel: IngredientViewModel? = null
+    ingredientViewModel: IngredientViewModel? = null,
 ) {
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
     var text by remember { mutableStateOf(TextFieldValue("")) }
     onTextInputChange(text.text, productsState)
-
-    val productFormDialogViewModel = ProductFormDialogViewModel()
 
     Scaffold(
         topBar = { Header(Routes.products) }
@@ -56,7 +54,6 @@ fun ProductsScreen(
                 text = newText
                 onTextInputChange(newText.text, productsState)
             },
-            onAddProductClick = { productFormDialogViewModel.addProduct() },
             paddingValues = paddingValues
         )
     }
@@ -70,8 +67,8 @@ fun ProductsContent(
     productsState: MutableState<List<Product>>,
     text: TextFieldValue,
     onTextChange: (TextFieldValue) -> Unit,
-    onAddProductClick: () -> Unit,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    productFormDialogViewModel: ProductFormDialogViewModel = viewModel()
 ) {
     Column(
         modifier = Modifier
@@ -79,9 +76,9 @@ fun ProductsContent(
             .padding(16.dp)
             .fillMaxWidth(),
     ) {
-        ProductFormDialog(viewModel = ProductFormDialogViewModel())
+        ProductFormDialog(viewModel = productFormDialogViewModel)
 
-        SearchBar(text = text, onTextChange = onTextChange, onAddProductClick = onAddProductClick)
+        SearchBar(text = text, onTextChange = onTextChange, onAddProductClick = { productFormDialogViewModel.addProduct() })
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -90,7 +87,7 @@ fun ProductsContent(
             products = productsState.value,
             editable = editable,
             ingredientViewModel = ingredientViewModel,
-            onEditProduct = { product -> ProductFormDialogViewModel().editProduct(product) }
+            onEditProduct = { product -> productFormDialogViewModel.editProduct(product) }
         )
     }
 }
@@ -139,7 +136,7 @@ fun ProductList(
         items(products.size) { index ->
             Box(
                 Modifier
-                    .padding(8.dp)
+                    .padding(2.dp)
                     .fillMaxWidth()
             ) {
                 ProductListItem(
@@ -149,7 +146,6 @@ fun ProductList(
                     ingredientViewModel = ingredientViewModel,
                     onEdit = { onEditProduct(products[index]) }
                 )
-                Spacer(modifier = Modifier.height(60.dp))
             }
         }
     }

@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.adding
+package ch.hslu.mobpro.diabetes.presentation.ui.home.components
 
 import android.widget.Toast
 import androidx.compose.foundation.background

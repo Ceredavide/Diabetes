@@ -19,12 +19,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.database.entity.Product
-import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
-import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.utils.Ingredient
-import ch.hslu.mobpro.diabetes.utils.calculateInsulinDoseAndTotalCarbs
 
 @Composable
 fun ResultScreen(

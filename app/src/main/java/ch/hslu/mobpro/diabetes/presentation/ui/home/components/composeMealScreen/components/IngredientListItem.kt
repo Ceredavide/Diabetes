@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.common
+package ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMealScreen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ch.hslu.mobpro.diabetes.data.database.entity.Product
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.FloatTextField
 import ch.hslu.mobpro.diabetes.utils.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
 

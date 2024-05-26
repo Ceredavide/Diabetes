@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.product.list
+package ch.hslu.mobpro.diabetes.presentation.ui.products
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -30,41 +31,51 @@ import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.MainActivity
 import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.presentation.common.ProductListItem
+import ch.hslu.mobpro.diabetes.presentation.common.shared_components.ProductFormDialog
+import ch.hslu.mobpro.diabetes.presentation.ui.products.components.ProductListItem
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
+import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.ProductFormDialogViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun SearchLocalScreen(
-        navController: NavController,
-        editable: Boolean,
-        ingredientViewModel: IngredientViewModel?
+fun ProductsScreen(
+    navController: NavController,
+    editable: Boolean,
+    ingredientViewModel: IngredientViewModel?
 ) {
 
     val productsState = remember { mutableStateOf<List<Product>>(emptyList()) }
     var text by remember { mutableStateOf(TextFieldValue("")) }
     onTextInputChange(text.text, productsState)
 
+    val productFormDialogViewModel = ProductFormDialogViewModel()
+
     Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
     ) {
+        ProductFormDialog(viewModel = productFormDialogViewModel)
+
+        Button(onClick = { productFormDialogViewModel.addProduct() }) {
+            Text(text = "Add Product")
+        }
+
         val keyboardController = LocalSoftwareKeyboardController.current
         OutlinedTextField(
-                value = text,
-                onValueChange = {
-                    text = it
-                    onTextInputChange(text.text, productsState)
-                },
+            value = text,
+            onValueChange = {
+                text = it
+                onTextInputChange(text.text, productsState)
+            },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-                label = { Text(stringResource(id = R.string.product_name)) },
-                modifier = Modifier
-                    .fillMaxWidth()
+            label = { Text(stringResource(id = R.string.product_name)) },
+            modifier = Modifier
+                .fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -72,15 +83,16 @@ fun SearchLocalScreen(
         LazyColumn {
             items(productsState.value.size) { index ->
                 Box(
-                        Modifier
-                            .fillMaxWidth()
+                    Modifier
+                        .fillMaxWidth()
                 ) {
 
                     ProductListItem(
-                            navController = navController,
-                            product = productsState.value[index],
-                            editable = editable,
-                            ingredientViewModel = ingredientViewModel
+                        navController = navController,
+                        product = productsState.value[index],
+                        editable = editable,
+                        ingredientViewModel = ingredientViewModel,
+                        onEdit = { productFormDialogViewModel.editProduct(productsState.value[index]) }
                     )
                     Spacer(modifier = Modifier.height(60.dp))
                 }
@@ -100,8 +112,7 @@ fun onTextInputChange(productName: String, productsState: MutableState<List<Prod
 
                 productsState.value = foundProducts
             }
-        }
-        else {
+        } else {
 
             val allProducts = MainActivity.productDao.getAllOrdered()
             withContext(Dispatchers.Main) {
@@ -118,9 +129,9 @@ fun SearchLocalPreview() {
 
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
-    SearchLocalScreen(
-            navController = navController,
-            editable = true,
-            ingredientViewModel = ingredientViewModel
+    ProductsScreen(
+        navController = navController,
+        editable = true,
+        ingredientViewModel = ingredientViewModel
     )
 }

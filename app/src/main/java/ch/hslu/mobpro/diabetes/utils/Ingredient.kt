@@ -1,6 +1,6 @@
 package ch.hslu.mobpro.diabetes.utils
 
-import ch.hslu.mobpro.diabetes.data.database.Product
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 
 class Ingredient(val product: Product, var weightAmount: Float?) {
 

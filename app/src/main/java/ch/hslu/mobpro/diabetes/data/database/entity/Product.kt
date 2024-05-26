@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.data.database
+package ch.hslu.mobpro.diabetes.data.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

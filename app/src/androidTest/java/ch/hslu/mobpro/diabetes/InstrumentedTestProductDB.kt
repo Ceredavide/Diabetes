@@ -5,8 +5,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
-import ch.hslu.mobpro.diabetes.data.database.Product
-import ch.hslu.mobpro.diabetes.data.database.ProductDAO
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
+import ch.hslu.mobpro.diabetes.data.database.dao.ProductDAO
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

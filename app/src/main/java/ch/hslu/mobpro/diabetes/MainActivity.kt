@@ -10,11 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
-import ch.hslu.mobpro.diabetes.data.database.dao.ProductDAO
 import ch.hslu.mobpro.diabetes.domain.model.User
+import ch.hslu.mobpro.diabetes.presentation.navigation.AppNavigation
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.presentation.theme.DiabeticsTheme
-import ch.hslu.mobpro.diabetes.presentation.ui.app.AppScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -39,11 +38,11 @@ class MainActivity : ComponentActivity() {
                     WelcomeScreen(onCompleted = {
                         preferenceManager.addUser(it, context = this)
                         preferenceManager.setFirstTime(false)
-                        setContent { AppScreen(this) }
+                        setContent { AppNavigation(this) }
                     })
                 } else {
                     preferenceManager.switchToActiveUser(context = this)
-                    AppScreen(this)
+                    AppNavigation(this)
                 }
             }
         }

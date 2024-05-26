@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.app
+package ch.hslu.mobpro.diabetes.presentation.navigation
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,8 +16,6 @@ import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
-import ch.hslu.mobpro.diabetes.presentation.navigation.BottomNavigationBar
-import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.ui.home.HomeScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.home.components.resultScreen.ResultScreen
 import ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMealScreen.ComposeMealScreen
@@ -27,7 +25,7 @@ import ch.hslu.mobpro.diabetes.presentation.ui.user.form.UserFormScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun AppScreen(context: Context) {
+fun AppNavigation(context: Context) {
     val navController = rememberNavController()
 
     val viewModelStoreOwner = LocalViewModelStoreOwner.current

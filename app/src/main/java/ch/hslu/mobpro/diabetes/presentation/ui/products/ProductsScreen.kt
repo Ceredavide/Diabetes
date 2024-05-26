@@ -82,7 +82,7 @@ fun ProductsScreen(
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-                label = { Text(stringResource(id = R.string.product_name)) }
+                label = { Text( text = "Search Product:")  }
             )
             FloatingActionButton(
                 onClick = { productFormDialogViewModel.addProduct() },
@@ -98,6 +98,7 @@ fun ProductsScreen(
             items(productsState.value.size) { index ->
                 Box(
                     Modifier
+                        .padding(8.dp)
                         .fillMaxWidth()
                 ) {
 

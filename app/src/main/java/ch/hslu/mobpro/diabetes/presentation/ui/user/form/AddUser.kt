@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.ui.adding
+package ch.hslu.mobpro.diabetes.presentation.ui.user.form
 
 import android.content.Context
 import android.widget.Toast
@@ -100,7 +100,8 @@ fun AddUser(navController: NavController, context: Context) {
         if (validate(userName = userNameInput.toString(),
                     insulinPer10gCarbs = insulinPer10gCarbsInput.toFloatOrNull(),
                     insulinPer1mmol_L = insulinper1mmolLInput.toFloatOrNull()
-            )) {
+            )
+        ) {
 
             color = Color.Green
         }
@@ -166,7 +167,8 @@ private fun onSave(userName: String,
 
     if (validate(userName = userName,
                 insulinPer10gCarbs = insulinPer10gCarbs,
-                insulinPer1mmol_L = insulinPer1mmol_L)){
+                insulinPer1mmol_L = insulinPer1mmol_L)
+    ){
 
         return true
     }

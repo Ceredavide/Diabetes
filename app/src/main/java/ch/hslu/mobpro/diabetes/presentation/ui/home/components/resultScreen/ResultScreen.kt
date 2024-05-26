@@ -1,13 +1,11 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.home.components.resultScreen
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -36,46 +34,45 @@ fun ResultScreen(
     resultScreenViewModel.loadUserInfo(context)
     resultScreenViewModel.calculateInsulinAndCarbs(glucoseLevel, ingredients)
 
-    Column(modifier = Modifier
-        .padding(16.dp)
-        .fillMaxSize()
-        .background(Color(0xFFF0F0F0))) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+    ) {
+
+        Text(text = "Results:", fontSize = 24.sp, fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         UserInfoCard(
-            label = "User",
+            label = "User:",
             value = resultScreenViewModel.userName.value
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         UserInfoCard(
-            label = "Glucose level",
-            value = "$glucoseLevel",
-            textDecoration = resultScreenViewModel.textDecoration.value,
-            color = resultScreenViewModel.color.value
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        UserInfoCard(
-            label = "Total carbohydrates",
+            label = "Total carbohydrates:",
             value = "${resultScreenViewModel.totalCarbs.floatValue}g"
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         UserInfoCard(
-            label = "Units insulin",
+            label = "Units insulin:",
             value = "${resultScreenViewModel.insulinDose.intValue}",
             textDecoration = resultScreenViewModel.textDecoration.value,
             color = resultScreenViewModel.color.value
         )
 
-        Divider(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp), thickness = 1.dp, color = Color.Gray)
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp), thickness = 1.dp, color = Color.Gray
+        )
+
+        Text(text = "Ingredients:", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.height(12.dp))
 
         ingredients.forEach {
             IngredientCard(ingredient = it)
@@ -84,12 +81,17 @@ fun ResultScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        NavigationButton(navController = navController, route = Routes.dashboard)
+        NavigationButton(navController = navController, route = Routes.dashboard, ingredientViewModel = ingredientViewModel)
     }
 }
 
 @Composable
-fun UserInfoCard(label: String, value: String, textDecoration: TextDecoration = TextDecoration.None, color: Color = Color.Black) {
+fun UserInfoCard(
+    label: String,
+    value: String,
+    textDecoration: TextDecoration = TextDecoration.None,
+    color: Color = Color.Black
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,13 +141,15 @@ fun IngredientCard(ingredient: Ingredient) {
 }
 
 @Composable
-fun NavigationButton(navController: NavController, route: String) {
+fun NavigationButton(navController: NavController, route: String, ingredientViewModel: IngredientViewModel) {
     Button(
-        onClick = { navController.navigate(route) },
+        onClick = {
+            ingredientViewModel.clearIngredients()
+            navController.navigate(route)
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .clip(RoundedCornerShape(8.dp))
     ) {
         Text(text = "BACK TO COMPOSITION")
     }

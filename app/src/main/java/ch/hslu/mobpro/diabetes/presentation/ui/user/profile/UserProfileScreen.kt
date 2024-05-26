@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -60,9 +63,10 @@ fun ProfileContent(
             .padding(16.dp)
             .fillMaxWidth(),
     ) {
-        val user = MainActivity.activeUserInfo.value!!
 
-        CurrentUserInfo(user)
+        val user = PreferenceManager.instance.getActiveUserInfo(context)
+
+        CurrentUserInfo(user.value!!)
 
         Spacer(modifier = Modifier.height(16.dp))
 

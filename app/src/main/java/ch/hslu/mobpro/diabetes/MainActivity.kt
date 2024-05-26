@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
                 if (preferenceManager.isFirstTime()) {
                     WelcomeScreen(onCompleted = {
                         preferenceManager.addUser(it, context = this)
+                        preferenceManager.switchToActiveUser(context = this)
                         preferenceManager.setFirstTime(false)
                         setContent { AppNavigation(this) }
                     })

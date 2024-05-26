@@ -7,9 +7,9 @@
     <string name="product_name">Product name</string>
     <string name="insulin_per_10g">Insulin per 10g carbohydrates</string>
     <string name="insulin_per_1mmol_l">Insulin per 1mmol_l glucose</string>
-    <string name="user_name">user_name</string>
-    <string name="lower_bounds_glucose_level">lower_bounds_glucose_level</string>
-    <string name="upper_bounds_glucose_level">upper_bounds_glucose_level</string>
+    <string name="user_name">User Name</string>
+    <string name="lower_bounds_glucose_level">Minimum Glucose Level</string>
+    <string name="upper_bounds_glucose_level">Maximum Glucose Level</string>
     <string name="glucose_level">Glucose Level in mmol/L</string>
     <string name="userUid">userUid</string>
     <string name="active_user">active_user</string>

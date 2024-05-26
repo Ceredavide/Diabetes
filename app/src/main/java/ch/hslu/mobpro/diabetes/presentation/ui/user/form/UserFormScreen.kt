@@ -20,6 +20,7 @@ import ch.hslu.mobpro.diabetes.presentation.common.shared_components.UserForm
 fun UserFormScreen(
     navController: NavController,
     user: User?,
+    originalName: String?
 ) {
     val context = LocalContext.current
     val userFormScreenViewModel = UserFormScreenViewModel(context, user)
@@ -62,7 +63,7 @@ fun UserFormScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { userFormScreenViewModel.validateAndSaveUser(context, navController) },
+            onClick = { userFormScreenViewModel.validateAndSaveUser(context, navController, originalName) },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier

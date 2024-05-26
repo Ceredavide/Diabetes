@@ -35,7 +35,7 @@ fun TextField(
             isError = error != null
         )
         if (error != null) {
-            Text(error)
+            Text(error, color = androidx.compose.ui.graphics.Color.Red)
         }
     }
 }

@@ -2,8 +2,10 @@ package ch.hslu.mobpro.diabetes.presentation.ui.welcome
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.hslu.mobpro.diabetes.R
 import ch.hslu.mobpro.diabetes.domain.model.User
 import ch.hslu.mobpro.diabetes.presentation.common.shared_components.UserForm
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.UserFormViewModel
@@ -16,9 +18,9 @@ class WelcomeViewModel : ViewModel() {
     private val userFormViewModel = UserFormViewModel()
 
     val steps: List<Step> = listOf(
-        Step(0, "Welcome to Diabetes") { Text("Welcome to the Diabetes app") },
-        Step(1, "Istruzioni sull'uso dell'app") { UserForm(userFormViewModel) },
-        Step(2, "You're done!") { Text("Setup complete!") }
+        Step(0, "Welcome to Diabetes") { Text(stringResource(id = R.string.welcome_text)) },
+        Step(1, "Set User Infos") { UserForm(userFormViewModel) },
+        Step(2, "You're done!") { Text(stringResource(id = R.string.welcome_steup_complete)) }
     )
 
     var currentStep by mutableStateOf(steps.first())
@@ -32,6 +34,7 @@ class WelcomeViewModel : ViewModel() {
                     currentStep = steps[2]
                 }
             }
+
             2 -> saveUserPreferences(userFormViewModel.userProfileState.value, onCompleted)
         }
     }

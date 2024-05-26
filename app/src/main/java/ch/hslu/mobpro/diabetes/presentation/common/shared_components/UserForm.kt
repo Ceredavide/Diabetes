@@ -22,7 +22,7 @@ fun UserForm(
             onValueChange = {
                 viewModel.updateUserName(it)
             },
-            label = "User Name",
+            label = stringResource(id = R.string.user_name),
             error = viewModel.nameError.value
         )
 
@@ -60,7 +60,7 @@ fun UserForm(
                 val newValue = it.toFloatOrNull() ?: 0.0f
                 viewModel.updateUpperBoundGlucoseLevel(newValue)
             },
-            label = "Maximum Glucose Level",
+            label = stringResource(id = R.string.upper_bounds_glucose_level),
             keyboardType = KeyboardType.Number,
             error = viewModel.upperBoundGlucoseLevelError.value
         )
@@ -73,7 +73,7 @@ fun UserForm(
                 val newValue = it.toFloatOrNull() ?: 0.0f
                 viewModel.updateLowerBoundGlucoseLevel(newValue)
             },
-            label = "Minimum Glucose Level",
+            label =stringResource(id = R.string.lower_bounds_glucose_level),
             keyboardType = KeyboardType.Number,
             error = viewModel.lowerBoundGlucoseLevelError.value
         )

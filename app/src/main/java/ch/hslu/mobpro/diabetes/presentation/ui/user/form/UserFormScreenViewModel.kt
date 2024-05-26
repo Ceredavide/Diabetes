@@ -21,20 +21,22 @@ class UserFormScreenViewModel(
 
     fun validateAndSaveUser(
         context: Context,
-        navController: NavController
+        navController: NavController,
+        originalName: String? = null
     ) {
         if (userFormViewModel.validateAll()) {
             if (isEditMode) {
                 editUser(
                     context,
                     userFormViewModel.userProfileState.value,
-                    navController
+                    navController,
+                    originalName!!
                 )
             } else {
                 addUser(
                     context,
                     userFormViewModel.userProfileState.value,
-                    navController
+                    navController,
                 )
             }
         }
@@ -60,9 +62,10 @@ class UserFormScreenViewModel(
     private fun editUser(
         context: Context,
         user: User,
-        navController: NavController
+        navController: NavController,
+        originalName: String
     ) {
-        PreferenceManager.instance.editUser(user, context)
+        PreferenceManager.instance.editUser(originalName,user, context)
         Toast.makeText(context, "Saved changes", Toast.LENGTH_LONG).show()
         navController.navigate(Routes.user)
     }

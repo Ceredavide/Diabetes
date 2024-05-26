@@ -114,6 +114,7 @@ fun NavGraphBuilder.userGraph(
             UserFormScreen(
                 navController = navController,
                 user = null,
+                originalName = null
             )
         }
         composable(Routes.userFormEdit) { backStackEntry ->
@@ -122,6 +123,7 @@ fun NavGraphBuilder.userGraph(
             UserFormScreen(
                 navController = navController,
                 user = userInfo,
+                originalName = userName
             )
         }
     }

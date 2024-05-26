@@ -1,4 +1,4 @@
-package ch.hslu.mobpro.diabetes.presentation.common
+package ch.hslu.mobpro.diabetes.presentation.common.shared_components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -18,10 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun EditDeleteButtons(modifier: Modifier,
-                      onEdit: () -> Unit,
-                      onDelete: () -> Unit,
-                      deletable: Boolean) {
+fun EditDeleteButtons(
+    modifier: Modifier,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    deletable: Boolean
+) {
 
     Row(modifier = modifier) {
 
@@ -58,8 +60,8 @@ fun EditDeleteButtons(modifier: Modifier,
 fun EditDeleteButtonsPreview() {
 
     val modifier = Modifier.padding(16.dp)
-    val onEdit =  {}
-    val onDelete =  {}
+    val onEdit = {}
+    val onDelete = {}
 
     EditDeleteButtons(modifier, onEdit, onDelete, true)
 }

@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.room.Room
 import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.data.database.AppDatabase
-import ch.hslu.mobpro.diabetes.data.database.ProductDAO
+import ch.hslu.mobpro.diabetes.data.database.dao.ProductDAO
 import ch.hslu.mobpro.diabetes.domain.model.User
 import ch.hslu.mobpro.diabetes.presentation.ui.welcome.WelcomeScreen
 import ch.hslu.mobpro.diabetes.presentation.theme.DiabeticsTheme
@@ -19,8 +19,7 @@ import ch.hslu.mobpro.diabetes.presentation.ui.app.AppScreen
 class MainActivity : ComponentActivity() {
 
     companion object {
-        lateinit var db: AppDatabase
-        lateinit var productDao: ProductDAO
+        lateinit var database: AppDatabase
         var activeUserInfo: MutableState<User?> = mutableStateOf(null)
     }
 
@@ -32,19 +31,18 @@ class MainActivity : ComponentActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         preferenceManager = PreferenceManager(this)
-        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, AppDatabase.NAME).build()
-        productDao = db.productDao()
+        database = Room.databaseBuilder(applicationContext, AppDatabase::class.java, AppDatabase.NAME).build()
 
         setContent {
             DiabeticsTheme {
                 if (preferenceManager.isFirstTime()) {
                     WelcomeScreen(onCompleted = {
-                        preferenceManager.addUser(it, this)
+                        preferenceManager.addUser(it, context = this)
                         preferenceManager.setFirstTime(false)
                         setContent { AppScreen(this) }
                     })
                 } else {
-                    preferenceManager.switchToActiveUser(this)
+                    preferenceManager.switchToActiveUser(context = this)
                     AppScreen(this)
                 }
             }

@@ -1,7 +1,5 @@
 package ch.hslu.mobpro.diabetes.presentation.ui.home.components.composeMeal
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,12 +13,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,37 +26,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ch.hslu.mobpro.diabetes.R
-import ch.hslu.mobpro.diabetes.data.database.entity.GlucoseReading
-import ch.hslu.mobpro.diabetes.data.pref.PreferenceManager
 import ch.hslu.mobpro.diabetes.presentation.common.IngredientListItem
-import ch.hslu.mobpro.diabetes.utils.Ingredient
 import ch.hslu.mobpro.diabetes.presentation.common.ActiveUserIndicator
 import ch.hslu.mobpro.diabetes.presentation.common.FloatTextField
 import ch.hslu.mobpro.diabetes.presentation.navigation.Routes
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.GlucoseReadingsViewModel
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.IngredientViewModel
-import java.util.Date
 
 @Composable
 fun ComposeMeal(
     navController: NavController,
     ingredientViewModel: IngredientViewModel,
     glucoseReadingsViewModel: GlucoseReadingsViewModel,
+    composeMealViewModel: ComposeMealViewModel = viewModel()
 ) {
-
-    val ingredients = ingredientViewModel.ingredients
-    Log.d("ComposeMeal", "Ingredient count: ${ingredients.size}")
-    var check by remember { mutableStateOf(false) }
-    var glucoseLevelString by remember { mutableStateOf("0.0") }
-    var glucoseLevel by remember { mutableFloatStateOf(0.0f) }
-    var color by remember { mutableStateOf(Color.Transparent) }
-
     val context = LocalContext.current
+    val ingredients = ingredientViewModel.ingredients
 
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
-
         ActiveUserIndicator(navController = navController)
 
         Row(
@@ -73,33 +54,9 @@ fun ComposeMeal(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Button(
                 onClick = {
-                    if (validateIngredients(ingredients) && validateGlucoseLevel(
-                            glucoseLevelString.toFloatOrNull()
-                        )
-                    ) {
-                        glucoseLevel = glucoseLevelString.toFloat()
-                        persistGlucoseReading(glucoseLevel = glucoseLevel, glucoseReadingsViewModel = glucoseReadingsViewModel)
-
-                        navController.navigate(Routes.resultScreen(glucoseLevel))
-                    } else if (ingredients.isEmpty()) {
-
-                        Toast.makeText(
-                            context,
-                            "PLEASE ADD PRODUCTS TO THIS MEAL",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-
-                        Toast.makeText(
-                            context,
-                            "PLEASE ENTER MISSING VALUES",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        check = true
-                    }
+                    composeMealViewModel.onCalculateClicked(navController, ingredients, glucoseReadingsViewModel, context)
                 },
                 modifier = Modifier.padding(top = 10.dp)
             ) {
@@ -107,7 +64,7 @@ fun ComposeMeal(
             }
 
             Button(
-                onClick = { ingredientViewModel.clearIngredients() },
+                onClick = { composeMealViewModel.onClearClicked(ingredientViewModel) },
                 modifier = Modifier.padding(top = 10.dp)
             ) {
                 Text(text = "CLEAR", color = Color.White)
@@ -124,25 +81,13 @@ fun ComposeMeal(
         Spacer(modifier = Modifier.padding(top = 16.dp))
 
         FloatTextField(
-            value = glucoseLevelString,
-            onValueChange = {
-                glucoseLevelString = it
-                if (glucoseLevelString.isNotEmpty() && glucoseLevelString.toFloatOrNull() != null) {
-                    glucoseLevel = glucoseLevelString.toFloat()
-                }
-            },
+            value = composeMealViewModel.glucoseLevelString.value,
+            onValueChange = { composeMealViewModel.onGlucoseLevelChanged(it) },
             label = stringResource(id = R.string.glucose_level),
             modifier = Modifier
-                .background(color)
+                .background(composeMealViewModel.color.value)
                 .fillMaxWidth()
-        ).also {
-            val glucoseLevelFloat = glucoseLevelString.toFloatOrNull()
-            if (glucoseLevelString.isEmpty() || glucoseLevelFloat == null || glucoseLevelFloat == 0.0f) {
-                color = Color.Red
-            } else {
-                color = Color.Transparent
-            }
-        }
+        )
 
         Spacer(modifier = Modifier.padding(top = 16.dp))
 
@@ -151,11 +96,10 @@ fun ComposeMeal(
                 Box(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-
                     IngredientListItem(
                         ingredient = ingredients[index],
                         ingredientViewModel = ingredientViewModel,
-                        check = check
+                        check = composeMealViewModel.check.value
                     )
                     Spacer(modifier = Modifier.padding(top = 60.dp))
                 }
@@ -164,48 +108,19 @@ fun ComposeMeal(
     }
 }
 
-fun persistGlucoseReading(glucoseLevel: Float, glucoseReadingsViewModel: GlucoseReadingsViewModel) {
-
-    val currentTime = Date()
-    val glucoseReading = GlucoseReading(
-        userIndex = PreferenceManager.instance.getActiveUserIndex().toInt(),
-        glucoseLevel = glucoseLevel,
-        time = currentTime
-    )
-
-    glucoseReadingsViewModel.addGlucoseReading(glucoseReading)
-}
-
-private fun validateGlucoseLevel(glucoseLevel: Float?): Boolean {
-
-    return glucoseLevel != null && glucoseLevel > 0.0f
-}
-
-private fun validateIngredients(ingredientsState: SnapshotStateList<Ingredient>): Boolean {
-
-    if (ingredientsState.size == 0) {
-        return false
-    }
-    if (ingredientsState.any {
-            it.weightAmount == null || it.weightAmount == 0.0f
-        }) {
-        return false
-    }
-
-    return true
-}
-
 @Preview
 @Composable
 fun ComposeMealPreview() {
-
     val navController = rememberNavController()
     val ingredientViewModel: IngredientViewModel = viewModel()
     val glucoseReadingsViewModel: GlucoseReadingsViewModel = viewModel()
+    val composeMealViewModel = ComposeMealViewModel()
 
     ComposeMeal(
         navController = navController,
         ingredientViewModel = ingredientViewModel,
-        glucoseReadingsViewModel = glucoseReadingsViewModel
+        glucoseReadingsViewModel = glucoseReadingsViewModel,
+        composeMealViewModel = composeMealViewModel
     )
 }
+

@@ -14,12 +14,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ch.hslu.mobpro.diabetes.R
+import ch.hslu.mobpro.diabetes.data.database.entity.Product
 import ch.hslu.mobpro.diabetes.presentation.common.shared_viewmodels.ProductFormDialogViewModel
 import com.journeyapps.barcodescanner.ScanContract
 
 @Composable
 fun ProductFormDialog(
     viewModel: ProductFormDialogViewModel,
+    onSave: (Product) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -96,11 +98,10 @@ fun ProductFormDialog(
                         Text(text = stringResource(id = R.string.scan_barcode))
                     }
                     Button(onClick = {
-                        viewModel.onSave(onSuccess = {
-                            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-                            viewModel.updateProductName("")
-                            viewModel.updateCarbs(0.0f)
+                        viewModel.onSave(onSuccess = { product ->
+                            onSave(product)
                             viewModel.hideDialog()
+                            Toast.makeText(context, "Product saved", Toast.LENGTH_LONG).show()
                         }, onFailure = {
                             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
                         })
@@ -118,5 +119,5 @@ fun ProductFormDialog(
 fun ProductFormDialogPreview() {
     val viewModel = object : ProductFormDialogViewModel() {}
     viewModel.addProduct()
-    ProductFormDialog(viewModel = viewModel)
+    ProductFormDialog(viewModel = viewModel, onSave = {})
 }

@@ -29,7 +29,7 @@ open class ProductFormDialogViewModel : ViewModel() {
     var isEditMode by mutableStateOf(false)
         private set
 
-    private var originalName by mutableStateOf("")
+    var originalName by mutableStateOf("")
 
     var productName by mutableStateOf("")
         private set
@@ -81,7 +81,10 @@ open class ProductFormDialogViewModel : ViewModel() {
         carbsError.value = null
     }
 
-    fun onSave(onSuccess: (String) -> Unit, onFailure: (String) -> Unit) {
+    fun onSave(
+        onSuccess: (Product) -> Unit,
+        onFailure: (String) -> Unit
+    ) {
         if (validateAll()) {
             viewModelScope.launch(Dispatchers.IO) {
                 if (isEditMode) {
@@ -91,7 +94,7 @@ open class ProductFormDialogViewModel : ViewModel() {
                         product.carbs = carbs
                         MainActivity.database.productDao().updateProduct(product)
                         withContext(Dispatchers.Main) {
-                            onSuccess("$productName updated successfully!")
+                            onSuccess(product)
                         }
                     } else {
                         withContext(Dispatchers.Main) {
@@ -103,7 +106,7 @@ open class ProductFormDialogViewModel : ViewModel() {
                     if (!productExistsCheck(productName)) {
                         MainActivity.database.productDao().insertProduct(product)
                         withContext(Dispatchers.Main) {
-                            onSuccess("$productName saved successfully!")
+                            onSuccess(product)
                         }
                     } else {
                         withContext(Dispatchers.Main) {

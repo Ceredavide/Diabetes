@@ -76,7 +76,18 @@ fun ProductsContent(
             .padding(16.dp)
             .fillMaxWidth(),
     ) {
-        ProductFormDialog(viewModel = productFormDialogViewModel)
+        ProductFormDialog(
+            viewModel = productFormDialogViewModel,
+            onSave = { product ->
+                if (productFormDialogViewModel.isEditMode) {
+                    productsState.value = productsState.value.map {
+                        if (it.name == productFormDialogViewModel.originalName) product else it
+                    }
+                } else {
+                    productsState.value += product
+                }
+            }
+        )
 
         SearchBar(text = text, onTextChange = onTextChange, onAddProductClick = { productFormDialogViewModel.addProduct() })
 
@@ -91,6 +102,7 @@ fun ProductsContent(
         )
     }
 }
+
 
 @Composable
 fun SearchBar(
